@@ -1,0 +1,42 @@
+#ifndef GLCONTAINERWIDGET_H
+#define GLCONTAINERWIDGET_H
+
+#include <QObject>
+#include <QGLWidget>
+#include <GL/glu.h>
+
+class ContainerProblem;
+class ContainerSolution;
+
+class GLContainerWidget : public QGLWidget
+{
+public:
+    GLContainerWidget(QWidget *parent = 0);
+    ~GLContainerWidget();
+    void setContainerInfo(const ContainerProblem &problem, const ContainerSolution &solution);
+
+protected:
+    void initializeGL();
+    void paintGL();
+    void resizeGL(int width, int height);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event);
+
+private:
+    void renderBox(int x1, int y1, int z1, int x2, int y2, int z2);
+
+private:
+    GLUquadricObj *quadric;
+    QPoint lastPos;
+    int xRot;
+    int yRot;
+    int zRot;
+    float distance;
+
+    const ContainerProblem *containerProblem;
+    const ContainerSolution *containerSolution;
+};
+
+#endif // GLCONTAINERWIDGET_H

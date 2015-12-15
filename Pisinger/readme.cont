@@ -1,0 +1,73 @@
+
+A tree-search heuristic for the container loading problem
+=========================================================
+
+The code consists of two parts:
+
+  container.c: The callable C-code which heuristically solves the
+               knapsack container loading problem.
+
+  testcont.c:  A main algorithm which generates 20 instances of a
+               given size/type, and calls container.c for the solution. 
+
+To compile the code use one of the following commands
+
+  gcc -ansi -o container -O3 container.c testcont.c  (gnu C)
+  cc  -Aa   -o container +O4 container.c testcont.c  (HP-UX C)
+
+The generated executable file "container" prompts for 
+
+  mindim  Minimum dimension of boxes
+
+  maxdim  Maximum dimension of boxes
+
+  fillpct Boxes are generated until "fillpct" percent of the container volume
+
+  maxtyp  Number of different box types
+
+Output from the test program is appended to the file "contload.out".
+
+To generate the same instances as described in the paper "A tree-search
+heuristic for the container loading problem", use parameters: 
+mindim=25, maxdim=115, fillpct=90, maxtyp=20. The output should
+look as:
+
+  CONTAINER LOADING PROBLEM 25-115 90 20
+   1 : n  76 fill 90.5 miss 0 time  17.95
+   2 : n  92 fill 90.1 miss 0 time  25.65
+   3 : n  66 fill 90.4 miss 0 time  10.03
+   4 : n  68 fill 91.4 miss 0 time  26.87
+   5 : n  65 fill 90.3 miss 0 time   5.95
+   6 : n  74 fill 91.0 miss 0 time   1.34
+   7 : n 105 fill 90.3 miss 0 time   5.33
+   8 : n  73 fill 90.6 miss 0 time   3.62
+   9 : n  88 fill 90.7 miss 0 time   1.78
+  10 : n  78 fill 90.5 miss 0 time   1.91
+  11 : n  73 fill 91.6 miss 0 time  29.92
+  12 : n 102 fill 92.4 miss 0 time  37.09
+  13 : n 127 fill 90.2 miss 0 time  97.63
+  14 : n  86 fill 91.6 miss 0 time  10.78
+  15 : n  86 fill 90.6 miss 0 time   8.31
+  16 : n 114 fill 90.2 miss 0 time  13.09
+  17 : n  98 fill 90.7 miss 0 time  14.32
+  18 : n  83 fill 92.1 miss 0 time  53.83
+  19 : n  72 fill 90.6 miss 0 time   6.63
+  20 : n  92 fill 90.0 miss 0 time   2.17
+  mindim  = 25
+  maxdim  = 115
+  fillpct = 90
+  maxtyp  = 20
+  n       = 85.90
+  fill    = 90.8
+  miss    = 0.0
+  time    = 18.71
+
+(c) Copyright 1998
+
+  David Pisinger                        
+  DIKU, University of Copenhagen        
+  Universitetsparken 1                  
+  Copenhagen, Denmark                   
+
+This code can be used free of charge for research and academic purposes only.
+
