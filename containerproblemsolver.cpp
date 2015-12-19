@@ -20,7 +20,7 @@ void ContainerProblemSolver::solve(const ContainerProblem &problem, ContainerSol
     solution.boxPackedFlags().resize(problem.boxCount());
     QVector<int> boxPackedFlagsInt(problem.boxCount());
 
-    // call the c procedure
+    // call the C procedure
     contload(problem.boxCount(),
              problem.containerLengthX(), problem.containerLengthY(), problem.containerLengthZ(),
              solution.boxLengthsX().data(), solution.boxLengthsY().data(), solution.boxLengthsZ().data(),

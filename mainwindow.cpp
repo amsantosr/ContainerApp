@@ -6,6 +6,7 @@
 #include "glcontainerwidget.h"
 #include "containerproblemtablemodel.h"
 #include "containersolutiontablemodel.h"
+#include "ui_containerproblemform.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
 #include <QTableView>
@@ -52,8 +53,11 @@ void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int
 {
     containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
 
-    QTableView *tableView = new QTableView;
-    int newIndex = ui->tabWidget->addTab(tableView, tr("Problema generado"));
+    //QTableView *tableView = new QTableView;
+    QWidget *widget = new QWidget;
+    Ui::ContainerProblemForm *form = new Ui::ContainerProblemForm;
+    form->setupUi(widget);
+    int newIndex = ui->tabWidget->addTab(widget, tr("Problema generado"));
     ui->tabWidget->setCurrentIndex(newIndex);
 
     QList<int> widths, heights, depths;
@@ -68,7 +72,10 @@ void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int
     }
     ContainerProblemTableModel *model = new ContainerProblemTableModel(this);
     model->initialize(widths, heights, depths);
-    tableView->setModel(model);
+    form->tableView->setModel(model);
+    form->labelContainerLengthX->setText(QString::number(containerProblem.containerLengthX()));
+    form->labelContainerLengthY->setText(QString::number(containerProblem.containerLengthY()));
+    form->labelContainerLengthZ->setText(QString::number(containerProblem.containerLengthZ()));
 }
 
 void MainWindow::generateInstanceFromDialog()
