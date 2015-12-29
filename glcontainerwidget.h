@@ -25,7 +25,7 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
 private:
-    void renderBox(int x1, int y1, int z1, int x2, int y2, int z2);
+    void drawCube(int x1, int y1, int z1, int x2, int y2, int z2);
 
 private:
     GLUquadricObj *quadric;

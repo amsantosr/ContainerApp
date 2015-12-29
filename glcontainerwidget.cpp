@@ -47,7 +47,7 @@ void GLContainerWidget::paintGL()
     if (containerProblem != 0 && containerSolution != 0)
     {
         srand(0);
-        renderBox(0, 0, 0, containerProblem->containerLengthX(), containerProblem->containerLengthY(), containerProblem->containerLengthZ());
+        //drawCube(0, 0, 0, containerProblem->containerLengthX(), containerProblem->containerLengthY(), containerProblem->containerLengthZ());
         for (int index = 0; index < containerProblem->boxCount(); ++index)
         {
             if (containerSolution->isBoxPacked(index))
@@ -58,7 +58,7 @@ void GLContainerWidget::paintGL()
                 int x2 = x1 + containerSolution->boxLengthX(index);
                 int y2 = y1 + containerSolution->boxLengthY(index);
                 int z2 = z1 + containerSolution->boxLengthZ(index);
-                renderBox(x1, y1, z1, x2, y2, z2);
+                drawCube(x1, y1, z1, x2, y2, z2);
             }
         }
     }
@@ -112,39 +112,70 @@ void GLContainerWidget::wheelEvent(QWheelEvent *event)
     updateGL();
 }
 
-void GLContainerWidget::renderBox(int x1, int y1, int z1, int x2, int y2, int z2)
+void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)
 {
+//    glDisable(GL_LIGHTING);
+
+//    glColor3ub(rand() % 256, rand() % 256, rand() % 256);
+//    glBegin(GL_LINES);
+//    glVertex3f(x1, y1, z1);
+//    glVertex3f(x1, y2, z1);
+//    glVertex3f(x1, y2, z1);
+//    glVertex3f(x2, y2, z1);
+//    glVertex3f(x2, y2, z1);
+//    glVertex3f(x2, y1, z1);
+//    glVertex3f(x2, y1, z1);
+//    glVertex3f(x1, y1, z1);
+
+//    glVertex3f(x2, y2, z2);
+//    glVertex3f(x2, y1, z2);
+//    glVertex3f(x2, y1, z2);
+//    glVertex3f(x1, y1, z2);
+//    glVertex3f(x1, y1, z2);
+//    glVertex3f(x1, y2, z2);
+//    glVertex3f(x1, y2, z2);
+//    glVertex3f(x2, y2, z2);
+
+//    glVertex3f(x1, y1, z1);
+//    glVertex3f(x1, y1, z2);
+//    glVertex3f(x1, y2, z1);
+//    glVertex3f(x1, y2, z2);
+//    glVertex3f(x2, y2, z1);
+//    glVertex3f(x2, y2, z2);
+//    glVertex3f(x2, y1, z1);
+//    glVertex3f(x2, y1, z2);
+//    glEnd();
     glDisable(GL_LIGHTING);
-
-    glColor3ub(rand() % 256, rand() % 256, rand() % 256);
-    glBegin(GL_LINES);
+    glBegin(GL_QUADS);
+    glColor4ub(rand() % 256, rand() % 256, rand() % 256, 0);
     glVertex3f(x1, y1, z1);
     glVertex3f(x1, y2, z1);
-    glVertex3f(x1, y2, z1);
-    glVertex3f(x2, y2, z1);
     glVertex3f(x2, y2, z1);
     glVertex3f(x2, y1, z1);
-    glVertex3f(x2, y1, z1);
-    glVertex3f(x1, y1, z1);
 
-    glVertex3f(x2, y2, z2);
-    glVertex3f(x2, y1, z2);
-    glVertex3f(x2, y1, z2);
-    glVertex3f(x1, y1, z2);
     glVertex3f(x1, y1, z2);
     glVertex3f(x1, y2, z2);
-    glVertex3f(x1, y2, z2);
     glVertex3f(x2, y2, z2);
+    glVertex3f(x2, y1, z2);
 
     glVertex3f(x1, y1, z1);
     glVertex3f(x1, y1, z2);
-    glVertex3f(x1, y2, z1);
     glVertex3f(x1, y2, z2);
-    glVertex3f(x2, y2, z1);
-    glVertex3f(x2, y2, z2);
+    glVertex3f(x1, y2, z1);
+
     glVertex3f(x2, y1, z1);
     glVertex3f(x2, y1, z2);
+    glVertex3f(x2, y2, z2);
+    glVertex3f(x2, y2, z1);
+
+    glVertex3f(x1, y1, z1);
+    glVertex3f(x1, y1, z2);
+    glVertex3f(x2, y1, z2);
+    glVertex3f(x2, y1, z1);
+
+    glVertex3f(x1, y2, z1);
+    glVertex3f(x1, y2, z2);
+    glVertex3f(x2, y2, z2);
+    glVertex3f(x2, y2, z1);
     glEnd();
-
-    glEnable(GL_LIGHTING);
 }
