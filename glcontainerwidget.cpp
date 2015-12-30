@@ -44,6 +44,11 @@ void GLContainerWidget::paintGL()
     glRotatef(xRot, 1.0, 0.0, 0.0);
     glRotatef(yRot, 0.0, 1.0, 0.0);
 
+    int midx = containerProblem->containerLengthX() / 2;
+    int midy = containerProblem->containerLengthY() / 2;
+    int midz = containerProblem->containerLengthZ() / 2;
+    glTranslatef(-midx, -midy, -midz);
+
     if (containerProblem != 0 && containerSolution != 0)
     {
         srand(0);
