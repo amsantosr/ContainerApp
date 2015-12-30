@@ -26,8 +26,8 @@ void GLContainerWidget::setContainerInfo(const ContainerProblem &problem, const 
 
 void GLContainerWidget::initializeGL()
 {
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_NORMALIZE);
@@ -150,7 +150,7 @@ void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)
 //    glVertex3f(x2, y1, z1);
 //    glVertex3f(x2, y1, z2);
 //    glEnd();
-    glDisable(GL_LIGHTING);
+//    glDisable(GL_LIGHTING);
     glBegin(GL_QUADS);
     glColor4ub(rand() % 256, rand() % 256, rand() % 256, 0);
     glVertex3f(x1, y1, z1);
