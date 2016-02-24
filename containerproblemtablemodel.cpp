@@ -15,6 +15,15 @@ void ContainerProblemTableModel::initialize(QList<int> widths, QList<int> height
     endResetModel();
 }
 
+void ContainerProblemTableModel::addBox(int xdim, int ydim, int zdim)
+{
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    lengthXValues.append(xdim);
+    lengthYValues.append(ydim);
+    lengthZValues.append(zdim);
+    endInsertRows();
+}
+
 int ContainerProblemTableModel::rowCount(const QModelIndex &) const
 {
     return lengthXValues.size();

@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     glcontainerwidget.cpp \
     containerproblemform.cpp \
     containersolutiontablemodel.cpp \
-    containerproblemtablemodel.cpp
+    containerproblemtablemodel.cpp \
+    dialoganadircaja.cpp
 
 HEADERS  += mainwindow.h \
     dialoggenerarinstancia.h \
@@ -36,11 +37,13 @@ HEADERS  += mainwindow.h \
     glcontainerwidget.h \
     containerproblemform.h \
     containersolutiontablemodel.h \
-    containerproblemtablemodel.h
+    containerproblemtablemodel.h \
+    dialoganadircaja.h
 
 FORMS    += mainwindow.ui \
     dialoggenerarinstancia.ui \
     containerloadform.ui \
-    containerproblemform.ui
+    containerproblemform.ui \
+    dialoganadircaja.ui
 
 LIBS += -lglut -lGLU
