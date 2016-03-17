@@ -18,20 +18,9 @@ void ContainerProblemGenerator::generate(int minimumLength, int maximumLength, i
     problem.setContainerLengthY(containerLengthY);
     problem.setContainerLengthZ(containerLengthZ);
     int itemCount = lastItemPointer - firstItemPointer + 1;
-    problem.setBoxCount(itemCount);
-
-    QVector<int> boxLengthsX(itemCount);
-    QVector<int> boxLengthsY(itemCount);
-    QVector<int> boxLengthsZ(itemCount);
 
     for (int index = 0; index < itemCount; ++index)
     {
-        boxLengthsX[index] = items[index].dx;
-        boxLengthsY[index] = items[index].dy;
-        boxLengthsZ[index] = items[index].dz;
+        problem.addBox(items[index].dx, items[index].dy, items[index].dz);
     }
-
-    problem.setBoxLengthXValues(boxLengthsX);
-    problem.setBoxLengthYValues(boxLengthsY);
-    problem.setBoxLengthZValues(boxLengthsZ);
 }

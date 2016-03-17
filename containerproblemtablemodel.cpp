@@ -51,11 +51,20 @@ QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation ori
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             switch (section) {
-            case 0: return tr("X Length");
-            case 1: return tr("Y Length");
-            case 2: return tr("Z Length");
+            case 0: return tr("X");
+            case 1: return tr("Y");
+            case 2: return tr("Z");
             }
         }
     }
     return QAbstractTableModel::headerData(section, orientation, role);
+}
+
+void ContainerProblemTableModel::clear()
+{
+    beginResetModel();
+    lengthXValues.clear();
+    lengthYValues.clear();
+    lengthZValues.clear();
+    endResetModel();
 }

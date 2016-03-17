@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>713</width>
-    <height>501</height>
+    <width>845</width>
+    <height>547</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,51 +16,17 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
-     <widget class="QSplitter" name="splitterHorizontal">
+     <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QSplitter" name="splitterVertical">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
+      <widget class="QSplitter" name="splitter">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QTabWidget" name="tabWidgetTopLeft">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="tab">
-         <attribute name="title">
-          <string>Automático</string>
-         </attribute>
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QTableView" name="tableView"/>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab_3">
-         <attribute name="title">
-          <string>Manual</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="tab_2">
-         <attribute name="title">
-          <string>Mensajes</string>
-         </attribute>
-        </widget>
-       </widget>
        <widget class="QTabWidget" name="tabWidgetBottomLeft">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
@@ -74,6 +40,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
             </property>
            </widget>
           </item>
@@ -155,8 +127,36 @@
          </layout>
         </widget>
        </widget>
+       <widget class="QTabWidget" name="tabWidgetTopLeft">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Solución</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QTableView" name="tableViewSolution">
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </widget>
-      <widget class="QOpenGLWidget" name="openGLWidget"/>
+      <widget class="GLContainerWidget" name="openGLWidget"/>
      </widget>
     </item>
    </layout>
@@ -166,7 +166,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>713</width>
+     <width>845</width>
      <height>25</height>
     </rect>
    </property>
@@ -184,40 +184,82 @@
    <addaction name="actionAnadirCaja"/>
    <addaction name="actionAbrirProblema"/>
    <addaction name="actionGuardarDatos"/>
+   <addaction name="actionGuardarSolucion"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionGenerarInstanciaDePrueba">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/Generate-tables-icon.png</normaloff>:/icons/Generate-tables-icon.png</iconset>
+   </property>
    <property name="text">
     <string>Generar Instancia de Prueba</string>
    </property>
   </action>
   <action name="actionResolverProblema">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/Brown-Container-32.png</normaloff>:/icons/Brown-Container-32.png</iconset>
+   </property>
    <property name="text">
     <string>Resolver problema</string>
    </property>
   </action>
   <action name="actionVisualizarSolucion">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/3d_modelling.png</normaloff>:/icons/3d_modelling.png</iconset>
+   </property>
    <property name="text">
     <string>Visualizar solución</string>
    </property>
   </action>
   <action name="actionAnadirCaja">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/Box.png</normaloff>:/icons/Box.png</iconset>
+   </property>
    <property name="text">
     <string>Añadir caja</string>
    </property>
   </action>
   <action name="actionGuardarDatos">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/Floppy.png</normaloff>:/icons/Floppy.png</iconset>
+   </property>
    <property name="text">
     <string>Guardar datos</string>
    </property>
+   <property name="toolTip">
+    <string>Guardar datos de problema</string>
+   </property>
   </action>
   <action name="actionAbrirProblema">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/OpenFile.png</normaloff>:/icons/OpenFile.png</iconset>
+   </property>
    <property name="text">
     <string>Abrir problema</string>
    </property>
   </action>
+  <action name="actionGuardarSolucion">
+   <property name="text">
+    <string>Guardar solución</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <customwidgets>
+  <customwidget>
+   <class>GLContainerWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>glcontainerwidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

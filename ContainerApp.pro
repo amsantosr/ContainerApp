@@ -47,3 +47,6 @@ FORMS    += mainwindow.ui \
     dialoganadircaja.ui
 
 LIBS += -lglut -lGLU
+
+RESOURCES += \
+    Resources.qrc

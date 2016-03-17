@@ -9,7 +9,7 @@ public:
     int containerLengthX() const { return containerLengthXValue; }
     int containerLengthY() const { return containerLengthYValue; }
     int containerLengthZ() const { return containerLengthZValue; }
-    int boxCount() const { return boxCountValue; }
+    int boxCount() const { return boxLengthXValues.size(); }
     int boxLengthX(int index) const { return boxLengthXValues[index]; }
     int boxLengthY(int index) const { return boxLengthYValues[index]; }
     int boxLengthZ(int index) const { return boxLengthZValues[index]; }
@@ -20,16 +20,23 @@ public:
     void setContainerLengthX(int value) { containerLengthXValue = value; }
     void setContainerLengthY(int value) { containerLengthYValue = value; }
     void setContainerLengthZ(int value) { containerLengthZValue = value; }
-    void setBoxCount(int value) { boxCountValue = value; }
-    void setBoxLengthXValues(QVector<int> values) { boxLengthXValues = values; }
-    void setBoxLengthYValues(QVector<int> values) { boxLengthYValues = values; }
-    void setBoxLengthZValues(QVector<int> values) { boxLengthZValues = values; }
+    void addBox(int xLength, int yLength, int zLength)
+    {
+        boxLengthXValues.append(xLength);
+        boxLengthYValues.append(yLength);
+        boxLengthZValues.append(zLength);
+    }
+    void clear()
+    {
+        boxLengthXValues.clear();
+        boxLengthYValues.clear();
+        boxLengthZValues.clear();
+    }
 
 private:
     int containerLengthXValue;
     int containerLengthYValue;
     int containerLengthZValue;
-    int boxCountValue;
     QVector<int> boxLengthXValues;
     QVector<int> boxLengthYValues;
     QVector<int> boxLengthZValues;

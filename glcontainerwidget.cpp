@@ -4,7 +4,7 @@
 #include <QMouseEvent>
 
 GLContainerWidget::GLContainerWidget(QWidget *parent)
-    : QGLWidget(parent), containerProblem(0), containerSolution(0)
+    : QOpenGLWidget(parent), containerProblem(0), containerSolution(0)
 {
     distance = -1000.0f;
     xRot = yRot = zRot = 0;
@@ -48,29 +48,33 @@ void GLContainerWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
-    glRotatef(xRot, 1.0, 0.0, 0.0);
-    glRotatef(yRot, 0.0, 1.0, 0.0);
 
-    int midx = containerProblem->containerLengthX() / 2;
-    int midy = containerProblem->containerLengthY() / 2;
-    int midz = containerProblem->containerLengthZ() / 2;
-    glTranslatef(-midx, -midy, -midz);
-
-    if (containerProblem != 0 && containerSolution != 0)
+    if (containerProblem != 0)
     {
-        srand(0);
-        drawContainer();
-        for (int index = 0; index < containerProblem->boxCount(); ++index)
+        glRotatef(xRot, 1.0, 0.0, 0.0);
+        glRotatef(yRot, 0.0, 1.0, 0.0);
+
+        int midx = containerProblem->containerLengthX() / 2;
+        int midy = containerProblem->containerLengthY() / 2;
+        int midz = containerProblem->containerLengthZ() / 2;
+        glTranslatef(-midx, -midy, -midz);
+
+        if (containerProblem != 0 && containerSolution != 0)
         {
-            if (containerSolution->isBoxPacked(index))
+            srand(0);
+            drawContainer();
+            for (int index = 0; index < containerProblem->boxCount(); ++index)
             {
-                int x1 = containerSolution->boxCoordinateX(index);
-                int y1 = containerSolution->boxCoordinateY(index);
-                int z1 = containerSolution->boxCoordinateZ(index);
-                int x2 = x1 + containerSolution->boxLengthX(index);
-                int y2 = y1 + containerSolution->boxLengthY(index);
-                int z2 = z1 + containerSolution->boxLengthZ(index);
-                drawCube(x1, y1, z1, x2, y2, z2);
+                if (containerSolution->isBoxPacked(index))
+                {
+                    int x1 = containerSolution->boxCoordinateX(index);
+                    int y1 = containerSolution->boxCoordinateY(index);
+                    int z1 = containerSolution->boxCoordinateZ(index);
+                    int x2 = x1 + containerSolution->boxLengthX(index);
+                    int y2 = y1 + containerSolution->boxLengthY(index);
+                    int z2 = z1 + containerSolution->boxLengthZ(index);
+                    drawCube(x1, y1, z1, x2, y2, z2);
+                }
             }
         }
     }
@@ -105,7 +109,7 @@ void GLContainerWidget::mouseMoveEvent(QMouseEvent *event)
         (xRot += dy + 360) %= 360;
         (yRot += dx + 360) %= 360;
         lastPos = event->pos();
-        updateGL();
+        update();
     }
 }
 
@@ -121,7 +125,7 @@ void GLContainerWidget::wheelEvent(QWheelEvent *event)
     distance -= event->delta() / 10.0f;
     glLoadIdentity();
     glTranslatef(0.0f, 0.0f, distance);
-    updateGL();
+    update();
 }
 
 void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)

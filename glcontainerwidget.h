@@ -3,19 +3,20 @@
 
 #include <QObject>
 #include <QGLWidget>
+#include <QOpenGLWidget>
 #include <GL/glu.h>
 
 class ContainerProblem;
 class ContainerSolution;
 
-class GLContainerWidget : public QGLWidget
+class GLContainerWidget : public QOpenGLWidget
 {
 public:
     GLContainerWidget(QWidget *parent = 0);
     ~GLContainerWidget();
     void setContainerInfo(const ContainerProblem &problem, const ContainerSolution &solution);
 
-protected:
+public:
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);

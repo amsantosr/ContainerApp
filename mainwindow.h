@@ -12,6 +12,7 @@ class MainWindow;
 class DialogGenerarInstancia;
 class DialogAnadirCaja;
 class ContainerProblemTableModel;
+class ContainerSolutionTableModel;
 
 class MainWindow : public QMainWindow
 {
@@ -30,9 +31,9 @@ private slots:
 
     //void on_tabWidget_tabCloseRequested(int index);
 
-    //void on_actionResolverProblema_triggered();
+    void on_actionResolverProblema_triggered();
 
-    //void on_actionVisualizarSolucion_triggered();
+    void on_actionVisualizarSolucion_triggered();
 
     void on_actionAnadirCaja_triggered();
 
@@ -40,6 +41,8 @@ private slots:
 
     void on_actionAbrirProblema_triggered();
     
+    void on_actionGuardarSolucion_triggered();
+
 private:
     Ui::MainWindow *ui;
     DialogGenerarInstancia *dialogGenerarInstancia;
@@ -49,6 +52,7 @@ private:
     ContainerProblem containerProblem;
     ContainerSolution containerSolution;
     ContainerProblemTableModel *containerProblemTableModel;
+    ContainerSolutionTableModel *containerSolutionTableModel;
     //void generateTestInstancePlainText(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateInstanceFromDialog();

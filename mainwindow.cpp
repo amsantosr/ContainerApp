@@ -21,15 +21,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     dialogGenerarInstancia(new DialogGenerarInstancia(this)),
     dialogAnadirCaja(new DialogAnadirCaja(this)),
-    containerProblemTableModel(new ContainerProblemTableModel(this))
+    containerProblemTableModel(new ContainerProblemTableModel(this)),
+    containerSolutionTableModel(new ContainerSolutionTableModel(this))
 {
     ui->setupUi(this);
-    // las siguientes líneas no están funcionando :(
-    ui->splitterVertical->setStretchFactor(0, 1);
-    ui->splitterVertical->setStretchFactor(1, 1);
-    ui->splitterHorizontal->setStretchFactor(0, 1);
-    ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewCajas->setModel(containerProblemTableModel);
+    ui->tableViewSolution->setModel(containerSolutionTableModel);
 }
 
 MainWindow::~MainWindow()
@@ -61,34 +58,25 @@ MainWindow::~MainWindow()
 //    plainText->setPlainText(string);
 //}
 
-//void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
-//{
-//    containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
+void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
+{
+    containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
 
-//    //QTableView *tableView = new QTableView;
-//    QWidget *widget = new QWidget;
-//    Ui::ContainerProblemForm *form = new Ui::ContainerProblemForm;
-//    form->setupUi(widget);
-//    int newIndex = ui->tabWidget->addTab(widget, tr("Problema generado"));
-//    ui->tabWidget->setCurrentIndex(newIndex);
-
-//    QList<int> widths, heights, depths;
-//    widths.reserve(containerProblem.boxCount());
-//    heights.reserve(containerProblem.boxCount());
-//    depths.reserve(containerProblem.boxCount());
-//    for (int index = 0; index < containerProblem.boxCount(); ++index)
-//    {
-//        widths.append(containerProblem.boxLengthX(index));
-//        heights.append(containerProblem.boxLengthY(index));
-//        depths.append(containerProblem.boxLengthZ(index));
-//    }
-//    ContainerProblemTableModel *model = new ContainerProblemTableModel(this);
-//    model->initialize(widths, heights, depths);
-//    form->tableView->setModel(model);
-//    form->labelContainerLengthX->setText(QString::number(containerProblem.containerLengthX()));
-//    form->labelContainerLengthY->setText(QString::number(containerProblem.containerLengthY()));
-//    form->labelContainerLengthZ->setText(QString::number(containerProblem.containerLengthZ()));
-//}
+    QList<int> widths, heights, depths;
+    widths.reserve(containerProblem.boxCount());
+    heights.reserve(containerProblem.boxCount());
+    depths.reserve(containerProblem.boxCount());
+    for (int index = 0; index < containerProblem.boxCount(); ++index)
+    {
+        widths.append(containerProblem.boxLengthX(index));
+        heights.append(containerProblem.boxLengthY(index));
+        depths.append(containerProblem.boxLengthZ(index));
+    }
+    containerProblemTableModel->initialize(widths, heights, depths);
+    ui->spinBoxContainerDimensionX->setValue(containerProblem.containerLengthX());
+    ui->spinBoxContainerDimensionY->setValue(containerProblem.containerLengthY());
+    ui->spinBoxContainerDimensionZ->setValue(containerProblem.containerLengthZ());
+}
 
 void MainWindow::generateInstanceFromDialog()
 {
@@ -96,7 +84,7 @@ void MainWindow::generateInstanceFromDialog()
     int maximumDimension = dialogGenerarInstancia->ui->spinBoxMaximumDimension->value();
     int fillPercentage = dialogGenerarInstancia->ui->spinBoxFillPercentage->value();
     int maximumDifferentBoxes = dialogGenerarInstancia->ui->spinBoxDifferentTypes->value();
-    //generateTestInstanceTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
+    generateTestInstanceTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
 }
 
 void MainWindow::on_actionGenerarInstanciaDePrueba_triggered()
@@ -128,31 +116,24 @@ void MainWindow::testGenerateInstance()
 //        delete widget;
 //}
 
-//void MainWindow::on_actionResolverProblema_triggered()
-//{
-//    containerProblemSolver.solve(containerProblem, containerSolution);
-//    ContainerSolutionTableModel *model = new ContainerSolutionTableModel(this);
-//    model->initialize(containerSolution.boxLengthsX(),
-//                      containerSolution.boxLengthsY(),
-//                      containerSolution.boxLengthsZ(),
-//                      containerSolution.boxCoordinatesX(),
-//                      containerSolution.boxCoordinatesY(),
-//                      containerSolution.boxCoordinatesZ(),
-//                      containerSolution.boxPackedFlags());
-//    QTableView *tableView = new QTableView;
-//    int currentIndex = ui->tabWidget->addTab(tableView, "Problema resuelto");
-//    ui->tabWidget->setCurrentIndex(currentIndex);
-//    tableView->setModel(model);
-//}
+void MainWindow::on_actionResolverProblema_triggered()
+{
+    containerProblemSolver.solve(containerProblem, containerSolution);
+    containerSolutionTableModel->initialize(
+                containerSolution.boxLengthsX(),
+                containerSolution.boxLengthsY(),
+                containerSolution.boxLengthsZ(),
+                containerSolution.boxCoordinatesX(),
+                containerSolution.boxCoordinatesY(),
+                containerSolution.boxCoordinatesZ(),
+                containerSolution.boxPackedFlags());
+}
 
-//void MainWindow::on_actionVisualizarSolucion_triggered()
-//{
-//    GLContainerWidget *glWidget = new GLContainerWidget;
-//    glWidget->setContainerInfo(containerProblem, containerSolution);
-//    int currentIndex = ui->tabWidget->addTab(glWidget, tr("Visualización"));
-//    ui->tabWidget->setCurrentIndex(currentIndex);
-//    glWidget->updateGL();
-//}
+void MainWindow::on_actionVisualizarSolucion_triggered()
+{
+    ui->openGLWidget->setContainerInfo(containerProblem, containerSolution);
+    ui->openGLWidget->update();
+}
 
 void MainWindow::on_actionAnadirCaja_triggered()
 {
@@ -215,6 +196,7 @@ void MainWindow::on_actionAbrirProblema_triggered()
         QFile file(filename);
         if (file.open(QFile::ReadOnly))
         {
+            containerProblem.clear();
             containerProblemTableModel->clear();
             QXmlStreamReader stream(&file);
             while (!stream.atEnd())
@@ -229,16 +211,19 @@ void MainWindow::on_actionAbrirProblema_triggered()
                             {
                                 int dimensionX = attribute.value().toInt();
                                 ui->spinBoxContainerDimensionX->setValue(dimensionX);
+                                containerProblem.setContainerLengthX(dimensionX);
                             }
                             else if (attribute.name() == "DimensionY")
                             {
                                 int dimensionY = attribute.value().toInt();
                                 ui->spinBoxContainerDimensionY->setValue(dimensionY);
+                                containerProblem.setContainerLengthY(dimensionY);
                             }
                             else if (attribute.name() == "DimensionZ")
                             {
                                 int dimensionZ = attribute.value().toInt();
                                 ui->spinBoxContainerDimensionZ->setValue(dimensionZ);
+                                containerProblem.setContainerLengthZ(dimensionZ);
                             }
                         }
                     }
@@ -261,6 +246,7 @@ void MainWindow::on_actionAbrirProblema_triggered()
                             }
                         }
                         containerProblemTableModel->addBox(boxDimensionX, boxDimensionY, boxDimensionZ);
+                        containerProblem.addBox(boxDimensionX, boxDimensionY, boxDimensionZ);
                     }
                 }
             }
@@ -268,6 +254,37 @@ void MainWindow::on_actionAbrirProblema_triggered()
             {
                 // procesar errores aqui
             }
+        }
+    }
+}
+
+void MainWindow::on_actionGuardarSolucion_triggered()
+{
+    QString filename = QFileDialog::getSaveFileName(this, tr("Guardar solución"));
+    if (!filename.isNull())
+    {
+        QFile file(filename);
+        if (file.open(QFile::WriteOnly))
+        {
+            QXmlStreamWriter stream(&file);
+            stream.setAutoFormatting(true);
+            stream.writeStartDocument();
+            stream.writeStartElement("ContainerSolution");
+
+            stream.writeStartElement("Boxes");
+            int boxCount = containerProblemTableModel->lengthXValues.size();
+            for (int index = 0; index < boxCount; ++index)
+            {
+                stream.writeEmptyElement("Box");
+                int posX = containerSolution.boxCoordinateX(index);
+                int posY = containerSolution.boxCoordinateY(index);
+                int posZ = containerSolution.boxCoordinateZ(index);
+                stream.writeAttribute("PositionX", QString::number(posX));
+                stream.writeAttribute("PositionY", QString::number(posY));
+                stream.writeAttribute("PositionZ", QString::number(posZ));
+            }
+            stream.writeEndElement();
+            stream.writeEndDocument();
         }
     }
 }

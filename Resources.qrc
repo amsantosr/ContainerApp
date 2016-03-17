@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>Brown-Container-32.png</file>
+        <file>Generate-tables-icon.png</file>
+        <file>3d_modelling.png</file>
+        <file>Box.png</file>
+        <file>OpenFile.png</file>
+        <file>Floppy.png</file>
+        <file>Drive-Floppy-icon.png</file>
+    </qresource>
+</RCC>
