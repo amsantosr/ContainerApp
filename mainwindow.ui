@@ -245,6 +245,10 @@
    </property>
   </action>
   <action name="actionGuardarSolucion">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/Drive-Floppy-icon.png</normaloff>:/icons/Drive-Floppy-icon.png</iconset>
+   </property>
    <property name="text">
     <string>Guardar solución</string>
    </property>

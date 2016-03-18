@@ -14,6 +14,7 @@ public:
     int boxCoordinateZ(int index) const { return boxCoordinateZvalues[index]; }
     bool isBoxPacked(int index) const { return boxPackedFlagValues[index]; }
     int packedVolume() const { return packedVolumeValue; }
+    int boxCount() const { return boxPackedFlagValues.size(); }
 
     void setBoxLengthsX(QVector<int> values) { boxLengthXvalues = values; }
     void setBoxLengthsY(QVector<int> values) { boxLengthYvalues = values; }

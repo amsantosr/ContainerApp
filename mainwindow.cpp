@@ -272,16 +272,30 @@ void MainWindow::on_actionGuardarSolucion_triggered()
             stream.writeStartElement("ContainerSolution");
 
             stream.writeStartElement("Boxes");
-            int boxCount = containerProblemTableModel->lengthXValues.size();
-            for (int index = 0; index < boxCount; ++index)
+            for (int index = 0; index < containerSolution.boxCount(); ++index)
             {
-                stream.writeEmptyElement("Box");
-                int posX = containerSolution.boxCoordinateX(index);
-                int posY = containerSolution.boxCoordinateY(index);
-                int posZ = containerSolution.boxCoordinateZ(index);
-                stream.writeAttribute("PositionX", QString::number(posX));
-                stream.writeAttribute("PositionY", QString::number(posY));
-                stream.writeAttribute("PositionZ", QString::number(posZ));
+                if (containerSolution.isBoxPacked(index))
+                {
+                    stream.writeStartElement("Box");
+
+                    stream.writeEmptyElement("Position");
+                    int posX = containerSolution.boxCoordinateX(index);
+                    int posY = containerSolution.boxCoordinateY(index);
+                    int posZ = containerSolution.boxCoordinateZ(index);
+                    stream.writeAttribute("X", QString::number(posX));
+                    stream.writeAttribute("Y", QString::number(posY));
+                    stream.writeAttribute("Z", QString::number(posZ));
+
+                    stream.writeEmptyElement("Dimensions");
+                    int x = containerSolution.boxLengthX(index);
+                    int y = containerSolution.boxLengthZ(index);
+                    int z = containerSolution.boxLengthZ(index);
+                    stream.writeAttribute("X", QString::number(x));
+                    stream.writeAttribute("Y", QString::number(y));
+                    stream.writeAttribute("Z", QString::number(z));
+
+                    stream.writeEndElement();
+                }
             }
             stream.writeEndElement();
             stream.writeEndDocument();
