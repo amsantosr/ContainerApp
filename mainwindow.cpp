@@ -34,30 +34,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//void MainWindow::generateTestInstancePlainText(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
-//{
-//    containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
-
-//    QPlainTextEdit *plainText = new QPlainTextEdit;
-//    plainText->setFont(QFont("Courier"));
-//    ui->tabWidget->addTab(plainText, tr("Problema generado"));
-//    ui->tabWidget->setCurrentWidget(plainText);
-
-//    QString string;
-//    {
-//        QTextStream output(&string);
-//        output << " no [ dx, dy, dz]\n";
-//        for (int index = 0; index < containerProblem.boxCount(); ++index)
-//        {
-//            output << qSetFieldWidth(3) << right << index + 1 << qSetFieldWidth(0) << " [";
-//            output << qSetFieldWidth(3) << right << containerProblem.boxLengthX(index) << qSetFieldWidth(0) << ",";
-//            output << qSetFieldWidth(3) << right << containerProblem.boxLengthY(index) << qSetFieldWidth(0) << ",";
-//            output << qSetFieldWidth(3) << right << containerProblem.boxLengthZ(index) << qSetFieldWidth(0) << "]\n";
-//        }
-//    }
-//    plainText->setPlainText(string);
-//}
-
 void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
 {
     containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
@@ -103,18 +79,8 @@ void MainWindow::testGenerateInstance()
     dialogGenerarInstancia->ui->spinBoxFillPercentage->setValue(90);
     dialogGenerarInstancia->ui->spinBoxDifferentTypes->setValue(20);
     this->generateInstanceFromDialog();
-    //this->on_actionResolverProblema_triggered();
-    //this->on_actionVisualizarSolucion_triggered();
 }
 #endif
-
-//void MainWindow::on_tabWidget_tabCloseRequested(int index)
-//{
-//    QWidget *widget = ui->tabWidget->widget(index);
-//    ui->tabWidget->removeTab(index);
-//    if (widget != 0)
-//        delete widget;
-//}
 
 void MainWindow::on_actionResolverProblema_triggered()
 {
@@ -145,7 +111,10 @@ void MainWindow::on_actionAnadirCaja_triggered()
         int cantidad = dialogAnadirCaja->ui->spinBoxCantidad->value();
 
         for (int i = 0; i < cantidad; ++i)
+        {
             containerProblemTableModel->addBox(dimensionX, dimensionY, dimensionZ);
+            containerProblem.addBox(dimensionX, dimensionY, dimensionZ);
+        }
     }
 }
 
@@ -301,4 +270,10 @@ void MainWindow::on_actionGuardarSolucion_triggered()
             stream.writeEndDocument();
         }
     }
+}
+
+void MainWindow::on_actionNuevoProblema_triggered()
+{
+    containerProblem.clear();
+    containerProblemTableModel->clear();
 }

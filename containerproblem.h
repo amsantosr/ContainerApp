@@ -31,6 +31,9 @@ public:
         boxLengthXValues.clear();
         boxLengthYValues.clear();
         boxLengthZValues.clear();
+        containerLengthXValue = 0;
+        containerLengthYValue = 0;
+        containerLengthZValue = 0;
     }
 
 private:

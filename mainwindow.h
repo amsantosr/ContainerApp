@@ -29,8 +29,6 @@ public:
 private slots:
     void on_actionGenerarInstanciaDePrueba_triggered();
 
-    //void on_tabWidget_tabCloseRequested(int index);
-
     void on_actionResolverProblema_triggered();
 
     void on_actionVisualizarSolucion_triggered();
@@ -43,6 +41,8 @@ private slots:
     
     void on_actionGuardarSolucion_triggered();
 
+    void on_actionNuevoProblema_triggered();
+
 private:
     Ui::MainWindow *ui;
     DialogGenerarInstancia *dialogGenerarInstancia;
@@ -53,7 +53,6 @@ private:
     ContainerSolution containerSolution;
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
-    //void generateTestInstancePlainText(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateInstanceFromDialog();
 };

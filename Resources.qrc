@@ -7,5 +7,6 @@
         <file>OpenFile.png</file>
         <file>Floppy.png</file>
         <file>Drive-Floppy-icon.png</file>
+        <file>NewFileIcon.png</file>
     </qresource>
 </RCC>

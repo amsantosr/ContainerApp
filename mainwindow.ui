@@ -178,6 +178,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionNuevoProblema"/>
    <addaction name="actionGenerarInstanciaDePrueba"/>
    <addaction name="actionResolverProblema"/>
    <addaction name="actionVisualizarSolucion"/>
@@ -251,6 +252,15 @@
    </property>
    <property name="text">
     <string>Guardar solución</string>
+   </property>
+  </action>
+  <action name="actionNuevoProblema">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/NewFileIcon.png</normaloff>:/icons/NewFileIcon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nuevo problema</string>
    </property>
   </action>
  </widget>
