@@ -1,32 +1,51 @@
 #include "containerproblemtablemodel.h"
 
 ContainerProblemTableModel::ContainerProblemTableModel(QObject *parent)
-    : QAbstractTableModel(parent)
+    : QAbstractTableModel(parent),
+      containerProblem(0)
 {
 
 }
 
-void ContainerProblemTableModel::initialize(QList<int> widths, QList<int> heights, QList<int> depths)
+void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
 {
-    beginResetModel();
-    this->lengthXValues = widths;
-    this->lengthYValues = heights;
-    this->lengthZValues = depths;
-    endResetModel();
+    if (containerProblem != pointer)
+    {
+        if (containerProblem != 0)
+            disconnect(containerProblem, 0, this, 0);
+        containerProblem = pointer;
+        connect(containerProblem, SIGNAL(beforeAddBox()), this, SLOT(beforeAddBox()));
+        connect(containerProblem, SIGNAL(afterAddBox()), this, SLOT(afterAddBox()));
+        connect(containerProblem, SIGNAL(beforeBoxCountChanged()), this, SLOT(slotBeginReset()));
+        connect(containerProblem, SIGNAL(afterBoxCountChanged()), this, SLOT(slotEndReset()));
+    }
 }
 
-void ContainerProblemTableModel::addBox(int xdim, int ydim, int zdim)
+void ContainerProblemTableModel::beforeAddBox()
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    lengthXValues.append(xdim);
-    lengthYValues.append(ydim);
-    lengthZValues.append(zdim);
+}
+
+void ContainerProblemTableModel::afterAddBox()
+{
     endInsertRows();
+}
+
+void ContainerProblemTableModel::slotBeginReset()
+{
+    beginResetModel();
+}
+
+void ContainerProblemTableModel::slotEndReset()
+{
+    endResetModel();
 }
 
 int ContainerProblemTableModel::rowCount(const QModelIndex &) const
 {
-    return lengthXValues.size();
+    if (!containerProblem)
+        return 0;
+    return containerProblem->boxCount();
 }
 
 int ContainerProblemTableModel::columnCount(const QModelIndex &) const
@@ -38,9 +57,9 @@ QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) co
 {
     if (role == Qt::DisplayRole) {
         switch (index.column()) {
-        case 0: return lengthXValues[index.row()];
-        case 1: return lengthYValues[index.row()];
-        case 2: return lengthZValues[index.row()];
+        case 0: return containerProblem->boxLengthX(index.row());
+        case 1: return containerProblem->boxLengthY(index.row());
+        case 2: return containerProblem->boxLengthZ(index.row());
         }
     }
     return QVariant();
@@ -58,13 +77,4 @@ QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation ori
         }
     }
     return QAbstractTableModel::headerData(section, orientation, role);
-}
-
-void ContainerProblemTableModel::clear()
-{
-    beginResetModel();
-    lengthXValues.clear();
-    lengthYValues.clear();
-    lengthZValues.clear();
-    endResetModel();
 }

@@ -27,6 +27,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->tableViewCajas->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
+    containerProblemTableModel->setContainerProblem(&containerProblem);
+
+    // connect the problem to the spinboxes and back
+    connect(&containerProblem, SIGNAL(containerLengthX_changed(int)),
+            ui->spinBoxContainerDimensionX, SLOT(setValue(int)));
+    connect(&containerProblem, SIGNAL(containerLengthY_changed(int)),
+            ui->spinBoxContainerDimensionY, SLOT(setValue(int)));
+    connect(&containerProblem, SIGNAL(containerLengthZ_changed(int)),
+            ui->spinBoxContainerDimensionZ, SLOT(setValue(int)));
+
+    connect(ui->spinBoxContainerDimensionX, SIGNAL(valueChanged(int)),
+            &containerProblem, SLOT(setContainerLengthX(int)));
+    connect(ui->spinBoxContainerDimensionY, SIGNAL(valueChanged(int)),
+            &containerProblem, SLOT(setContainerLengthY(int)));
+    connect(ui->spinBoxContainerDimensionZ, SIGNAL(valueChanged(int)),
+            &containerProblem, SLOT(setContainerLengthZ(int)));
 }
 
 MainWindow::~MainWindow()
@@ -38,20 +54,17 @@ void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int
 {
     containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
 
-    QList<int> widths, heights, depths;
-    widths.reserve(containerProblem.boxCount());
-    heights.reserve(containerProblem.boxCount());
-    depths.reserve(containerProblem.boxCount());
-    for (int index = 0; index < containerProblem.boxCount(); ++index)
-    {
-        widths.append(containerProblem.boxLengthX(index));
-        heights.append(containerProblem.boxLengthY(index));
-        depths.append(containerProblem.boxLengthZ(index));
-    }
-    containerProblemTableModel->initialize(widths, heights, depths);
-    ui->spinBoxContainerDimensionX->setValue(containerProblem.containerLengthX());
-    ui->spinBoxContainerDimensionY->setValue(containerProblem.containerLengthY());
-    ui->spinBoxContainerDimensionZ->setValue(containerProblem.containerLengthZ());
+//    QList<int> widths, heights, depths;
+//    widths.reserve(containerProblem.boxCount());
+//    heights.reserve(containerProblem.boxCount());
+//    depths.reserve(containerProblem.boxCount());
+//    for (int index = 0; index < containerProblem.boxCount(); ++index)
+//    {
+//        widths.append(containerProblem.boxLengthX(index));
+//        heights.append(containerProblem.boxLengthY(index));
+//        depths.append(containerProblem.boxLengthZ(index));
+//    }
+//    containerProblemTableModel->initialize(widths, heights, depths);
 }
 
 void MainWindow::generateInstanceFromDialog()
@@ -112,7 +125,6 @@ void MainWindow::on_actionAnadirCaja_triggered()
 
         for (int i = 0; i < cantidad; ++i)
         {
-            containerProblemTableModel->addBox(dimensionX, dimensionY, dimensionZ);
             containerProblem.addBox(dimensionX, dimensionY, dimensionZ);
         }
     }
@@ -141,13 +153,12 @@ void MainWindow::on_actionGuardarDatos_triggered()
             stream.writeEndElement();
 
             stream.writeStartElement("Boxes");
-            int boxCount = containerProblemTableModel->lengthXValues.size();
-            for (int index = 0; index < boxCount; ++index)
+            for (int index = 0; index < containerProblem.boxCount(); ++index)
             {
                 stream.writeEmptyElement("Box");
-                int lengthX = containerProblemTableModel->lengthXValues[index];
-                int lengthY = containerProblemTableModel->lengthYValues[index];
-                int lengthZ = containerProblemTableModel->lengthZValues[index];
+                int lengthX = containerProblem.boxLengthX(index);
+                int lengthY = containerProblem.boxLengthY(index);
+                int lengthZ = containerProblem.boxLengthZ(index);
                 stream.writeAttribute("DimensionX", QString::number(lengthX));
                 stream.writeAttribute("DimensionY", QString::number(lengthY));
                 stream.writeAttribute("DimensionZ", QString::number(lengthZ));
@@ -166,7 +177,6 @@ void MainWindow::on_actionAbrirProblema_triggered()
         if (file.open(QFile::ReadOnly))
         {
             containerProblem.clear();
-            containerProblemTableModel->clear();
             QXmlStreamReader stream(&file);
             while (!stream.atEnd())
             {
@@ -179,19 +189,16 @@ void MainWindow::on_actionAbrirProblema_triggered()
                             if (attribute.name() == "DimensionX")
                             {
                                 int dimensionX = attribute.value().toInt();
-                                ui->spinBoxContainerDimensionX->setValue(dimensionX);
                                 containerProblem.setContainerLengthX(dimensionX);
                             }
                             else if (attribute.name() == "DimensionY")
                             {
                                 int dimensionY = attribute.value().toInt();
-                                ui->spinBoxContainerDimensionY->setValue(dimensionY);
                                 containerProblem.setContainerLengthY(dimensionY);
                             }
                             else if (attribute.name() == "DimensionZ")
                             {
                                 int dimensionZ = attribute.value().toInt();
-                                ui->spinBoxContainerDimensionZ->setValue(dimensionZ);
                                 containerProblem.setContainerLengthZ(dimensionZ);
                             }
                         }
@@ -214,7 +221,6 @@ void MainWindow::on_actionAbrirProblema_triggered()
                                 boxDimensionZ = attribute.value().toInt();
                             }
                         }
-                        containerProblemTableModel->addBox(boxDimensionX, boxDimensionY, boxDimensionZ);
                         containerProblem.addBox(boxDimensionX, boxDimensionY, boxDimensionZ);
                     }
                 }
@@ -275,5 +281,4 @@ void MainWindow::on_actionGuardarSolucion_triggered()
 void MainWindow::on_actionNuevoProblema_triggered()
 {
     containerProblem.clear();
-    containerProblemTableModel->clear();
 }

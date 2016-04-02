@@ -2,24 +2,27 @@
 #define CONTAINERPROBLEMTABLEMODEL_H
 
 #include <QAbstractTableModel>
+#include "containerproblem.h"
 
 class ContainerProblemTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     ContainerProblemTableModel(QObject *parent = 0);
-    void initialize(QList<int> lengthXValues, QList<int> lengthYValues, QList<int> lengthZValues);
-    void addBox(int xdim, int ydim, int zdim);
+    void setContainerProblem(ContainerProblem *problem);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    void clear();
 
-public:
-    QList<int> lengthXValues;
-    QList<int> lengthYValues;
-    QList<int> lengthZValues;
+private slots:
+    void beforeAddBox();
+    void afterAddBox();
+    void slotBeginReset();
+    void slotEndReset();
+
+private:
+    ContainerProblem *containerProblem;
 };
 
 #endif // CONTAINERPROBLEMTABLEMODEL_H

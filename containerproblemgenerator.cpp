@@ -14,6 +14,7 @@ void ContainerProblemGenerator::generate(int minimumLength, int maximumLength, i
 
     //prepareitems(firstItem, lastItem, Widths, Heights, Depths);
 
+    problem.clear();
     problem.setContainerLengthX(containerLengthX);
     problem.setContainerLengthY(containerLengthY);
     problem.setContainerLengthZ(containerLengthZ);
