@@ -10,6 +10,9 @@ void contload(int n, int W, int H, int D,
 void ContainerProblemSolver::solve(const ContainerProblem &problem, ContainerSolution &solution)
 {
     int volume = 0;
+    solution.setContainerLengthX(problem.containerLengthX());
+    solution.setContainerLengthY(problem.containerLengthY());
+    solution.setContainerLengthZ(problem.containerLengthZ());
     solution.boxLengthsX() = problem.boxLengthsX();
     solution.boxLengthsY() = problem.boxLengthsY();
     solution.boxLengthsZ() = problem.boxLengthsZ();

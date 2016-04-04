@@ -14,19 +14,19 @@ void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
         if (containerProblem != 0)
             disconnect(containerProblem, 0, this, 0);
         containerProblem = pointer;
-        connect(containerProblem, SIGNAL(beforeAddBox()), this, SLOT(beforeAddBox()));
-        connect(containerProblem, SIGNAL(afterAddBox()), this, SLOT(afterAddBox()));
+        connect(containerProblem, SIGNAL(beforeAddBox()), this, SLOT(slotBeforeAddBox()));
+        connect(containerProblem, SIGNAL(afterAddBox()), this, SLOT(slotAfterAddBox()));
         connect(containerProblem, SIGNAL(beforeBoxCountChanged()), this, SLOT(slotBeginReset()));
         connect(containerProblem, SIGNAL(afterBoxCountChanged()), this, SLOT(slotEndReset()));
     }
 }
 
-void ContainerProblemTableModel::beforeAddBox()
+void ContainerProblemTableModel::slotBeforeAddBox()
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
 }
 
-void ContainerProblemTableModel::afterAddBox()
+void ContainerProblemTableModel::slotAfterAddBox()
 {
     endInsertRows();
 }

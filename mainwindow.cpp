@@ -110,7 +110,7 @@ void MainWindow::on_actionResolverProblema_triggered()
 
 void MainWindow::on_actionVisualizarSolucion_triggered()
 {
-    ui->openGLWidget->setContainerInfo(containerProblem, containerSolution);
+    ui->openGLWidget->setContainerSolution(containerSolution);
     ui->openGLWidget->update();
 }
 
@@ -281,4 +281,5 @@ void MainWindow::on_actionGuardarSolucion_triggered()
 void MainWindow::on_actionNuevoProblema_triggered()
 {
     containerProblem.clear();
+    containerSolution.clear();
 }

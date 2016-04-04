@@ -6,6 +6,21 @@
 class ContainerSolution
 {
 public:
+    void clear()
+    {
+        boxLengthXvalues.clear();
+        boxLengthYvalues.clear();
+        boxLengthZvalues.clear();
+        boxCoordinateXvalues.clear();
+        boxCoordinateYvalues.clear();
+        boxCoordinateZvalues.clear();
+        boxPackedFlagValues.clear();
+        packedVolumeValue = 0;
+    }
+
+    int containerLengthX() const { return containerLengthXvalue; }
+    int containerLengthY() const { return containerLengthYvalue; }
+    int containerLengthZ() const { return containerLengthZvalue; }
     int boxLengthX(int index) const { return boxLengthXvalues[index]; }
     int boxLengthY(int index) const { return boxLengthYvalues[index]; }
     int boxLengthZ(int index) const { return boxLengthZvalues[index]; }
@@ -16,6 +31,9 @@ public:
     int packedVolume() const { return packedVolumeValue; }
     int boxCount() const { return boxPackedFlagValues.size(); }
 
+    void setContainerLengthX(int value) { containerLengthXvalue = value; }
+    void setContainerLengthY(int value) { containerLengthYvalue = value; }
+    void setContainerLengthZ(int value) { containerLengthZvalue = value; }
     void setBoxLengthsX(QVector<int> values) { boxLengthXvalues = values; }
     void setBoxLengthsY(QVector<int> values) { boxLengthYvalues = values; }
     void setBoxLengthsZ(QVector<int> values) { boxLengthZvalues = values; }
@@ -34,6 +52,9 @@ public:
     QVector<bool> &boxPackedFlags() { return boxPackedFlagValues; }
 
 private:
+    int containerLengthXvalue;
+    int containerLengthYvalue;
+    int containerLengthZvalue;
     QVector<int> boxLengthXvalues;
     QVector<int> boxLengthYvalues;
     QVector<int> boxLengthZvalues;

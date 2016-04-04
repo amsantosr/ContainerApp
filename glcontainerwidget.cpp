@@ -4,7 +4,7 @@
 #include <QMouseEvent>
 
 GLContainerWidget::GLContainerWidget(QWidget *parent)
-    : QOpenGLWidget(parent), containerProblem(0), containerSolution(0)
+    : QOpenGLWidget(parent), containerSolution(0)
 {
     distance = -1000.0f;
     xRot = yRot = zRot = 0;
@@ -18,9 +18,8 @@ GLContainerWidget::~GLContainerWidget()
     gluDeleteQuadric(quadric);
 }
 
-void GLContainerWidget::setContainerInfo(const ContainerProblem &problem, const ContainerSolution &solution)
+void GLContainerWidget::setContainerSolution(const ContainerSolution &solution)
 {
-    containerProblem = &problem;
     containerSolution = &solution;
 }
 
@@ -49,32 +48,29 @@ void GLContainerWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
 
-    if (containerProblem != 0)
+    if (containerSolution != 0)
     {
         glRotatef(xRot, 1.0, 0.0, 0.0);
         glRotatef(yRot, 0.0, 1.0, 0.0);
 
-        int midx = containerProblem->containerLengthX() / 2;
-        int midy = containerProblem->containerLengthY() / 2;
-        int midz = containerProblem->containerLengthZ() / 2;
+        int midx = containerSolution->containerLengthX() / 2;
+        int midy = containerSolution->containerLengthY() / 2;
+        int midz = containerSolution->containerLengthZ() / 2;
         glTranslatef(-midx, -midy, -midz);
 
-        if (containerProblem != 0 && containerSolution != 0)
+        srand(0);
+        drawContainer();
+        for (int index = 0; index < containerSolution->boxCount(); ++index)
         {
-            srand(0);
-            drawContainer();
-            for (int index = 0; index < containerProblem->boxCount(); ++index)
+            if (containerSolution->isBoxPacked(index))
             {
-                if (containerSolution->isBoxPacked(index))
-                {
-                    int x1 = containerSolution->boxCoordinateX(index);
-                    int y1 = containerSolution->boxCoordinateY(index);
-                    int z1 = containerSolution->boxCoordinateZ(index);
-                    int x2 = x1 + containerSolution->boxLengthX(index);
-                    int y2 = y1 + containerSolution->boxLengthY(index);
-                    int z2 = z1 + containerSolution->boxLengthZ(index);
-                    drawCube(x1, y1, z1, x2, y2, z2);
-                }
+                int x1 = containerSolution->boxCoordinateX(index);
+                int y1 = containerSolution->boxCoordinateY(index);
+                int z1 = containerSolution->boxCoordinateZ(index);
+                int x2 = x1 + containerSolution->boxLengthX(index);
+                int y2 = y1 + containerSolution->boxLengthY(index);
+                int z2 = z1 + containerSolution->boxLengthZ(index);
+                drawCube(x1, y1, z1, x2, y2, z2);
             }
         }
     }
@@ -174,9 +170,9 @@ void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)
 void GLContainerWidget::drawContainer()
 {
     int x1 = 0, y1 = 0, z1 = 0;
-    int x2 = containerProblem->containerLengthX();
-    int y2 = containerProblem->containerLengthY();
-    int z2 = containerProblem->containerLengthZ();
+    int x2 = containerSolution->containerLengthX();
+    int y2 = containerSolution->containerLengthY();
+    int z2 = containerSolution->containerLengthZ();
     glColor3i(INT_MAX, INT_MAX, INT_MAX);
 
     glBegin(GL_LINE_LOOP);

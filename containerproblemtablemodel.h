@@ -16,8 +16,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
 private slots:
-    void beforeAddBox();
-    void afterAddBox();
+    void slotBeforeAddBox();
+    void slotAfterAddBox();
     void slotBeginReset();
     void slotEndReset();
 
