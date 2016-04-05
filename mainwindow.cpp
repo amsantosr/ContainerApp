@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableViewCajas->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
     containerProblemTableModel->setContainerProblem(&containerProblem);
+    containerSolutionTableModel->setContainerSolution(&containerSolution);
 
     // connect the problem to the spinboxes and back
     connect(&containerProblem, SIGNAL(containerLengthX_changed(int)),
@@ -98,14 +99,6 @@ void MainWindow::testGenerateInstance()
 void MainWindow::on_actionResolverProblema_triggered()
 {
     containerProblemSolver.solve(containerProblem, containerSolution);
-    containerSolutionTableModel->initialize(
-                containerSolution.boxLengthsX(),
-                containerSolution.boxLengthsY(),
-                containerSolution.boxLengthsZ(),
-                containerSolution.boxCoordinatesX(),
-                containerSolution.boxCoordinatesY(),
-                containerSolution.boxCoordinatesZ(),
-                containerSolution.boxPackedFlags());
 }
 
 void MainWindow::on_actionVisualizarSolucion_triggered()

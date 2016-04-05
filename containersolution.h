@@ -1,21 +1,49 @@
 #ifndef CONTAINERSOLUTION_H
 #define CONTAINERSOLUTION_H
 
+#include <QObject>
 #include <QVector>
+#include "containerproblem.h"
 
-class ContainerSolution
+class ContainerSolution : public QObject
 {
+    Q_OBJECT
+signals:
+    void beforeBoxCountChanged();
+    void afterBoxCountChanged();
+
 public:
     void clear()
     {
-        boxLengthXvalues.clear();
-        boxLengthYvalues.clear();
-        boxLengthZvalues.clear();
-        boxCoordinateXvalues.clear();
-        boxCoordinateYvalues.clear();
-        boxCoordinateZvalues.clear();
-        boxPackedFlagValues.clear();
+        if (!boxLengthXvalues.empty())
+        {
+            emit beforeBoxCountChanged();
+            boxLengthXvalues.clear();
+            boxLengthYvalues.clear();
+            boxLengthZvalues.clear();
+            boxCoordinateXvalues.clear();
+            boxCoordinateYvalues.clear();
+            boxCoordinateZvalues.clear();
+            boxPackedFlagValues.clear();
+            emit afterBoxCountChanged();
+        }
         packedVolumeValue = 0;
+    }
+
+    void setProblem(const ContainerProblem &problem)
+    {
+        emit beforeBoxCountChanged();
+        containerLengthXvalue = problem.containerLengthX();
+        containerLengthYvalue = problem.containerLengthY();
+        containerLengthZvalue = problem.containerLengthZ();
+        boxLengthXvalues = problem.boxLengthsX();
+        boxLengthYvalues = problem.boxLengthsY();
+        boxLengthZvalues = problem.boxLengthsZ();
+        boxCoordinateXvalues.resize(problem.boxCount());
+        boxCoordinateYvalues.resize(problem.boxCount());
+        boxCoordinateZvalues.resize(problem.boxCount());
+        boxPackedFlagValues.resize(problem.boxCount());
+        emit afterBoxCountChanged();
     }
 
     int containerLengthX() const { return containerLengthXvalue; }
@@ -31,25 +59,21 @@ public:
     int packedVolume() const { return packedVolumeValue; }
     int boxCount() const { return boxPackedFlagValues.size(); }
 
-    void setContainerLengthX(int value) { containerLengthXvalue = value; }
-    void setContainerLengthY(int value) { containerLengthYvalue = value; }
-    void setContainerLengthZ(int value) { containerLengthZvalue = value; }
-    void setBoxLengthsX(QVector<int> values) { boxLengthXvalues = values; }
-    void setBoxLengthsY(QVector<int> values) { boxLengthYvalues = values; }
-    void setBoxLengthsZ(QVector<int> values) { boxLengthZvalues = values; }
-    void setBoxCoordinatesX(QVector<int> values) { boxCoordinateXvalues = values; }
-    void setBoxCoordinatesY(QVector<int> values) { boxCoordinateYvalues = values; }
-    void setBoxCoordinatesZ(QVector<int> values) { boxCoordinateZvalues = values; }
-    void setBoxPackedFlags(QVector<bool> values) { boxPackedFlagValues = values; }
-    void setPackedVolume(int value) { packedVolumeValue = value; }
-
-    QVector<int> &boxLengthsX() { return boxLengthXvalues; }
-    QVector<int> &boxLengthsY() { return boxLengthYvalues; }
-    QVector<int> &boxLengthsZ() { return boxLengthZvalues; }
-    QVector<int> &boxCoordinatesX() { return boxCoordinateXvalues; }
-    QVector<int> &boxCoordinatesY() { return boxCoordinateYvalues; }
-    QVector<int> &boxCoordinatesZ() { return boxCoordinateZvalues; }
-    QVector<bool> &boxPackedFlags() { return boxPackedFlagValues; }
+    void setSolution(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
+                     QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
+                     QVector<bool> boxPackedFlagsBool, int volume)
+    {
+        emit beforeBoxCountChanged();
+        boxLengthXvalues = boxLengthsX;
+        boxLengthYvalues = boxLengthsY;
+        boxLengthZvalues = boxLengthsZ;
+        boxCoordinateXvalues = boxCoordinatesX;
+        boxCoordinateYvalues = boxCoordinatesY;
+        boxCoordinateZvalues = boxCoordinatesZ;
+        boxPackedFlagValues = boxPackedFlagsBool;
+        packedVolumeValue = volume;
+        emit afterBoxCountChanged();
+    }
 
 private:
     int containerLengthXvalue;

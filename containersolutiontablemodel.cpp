@@ -1,36 +1,34 @@
 #include "containersolutiontablemodel.h"
 
 ContainerSolutionTableModel::ContainerSolutionTableModel(QObject *parent)
-    : QAbstractTableModel(parent)
+    : QAbstractTableModel(parent), containerSolution(0)
 {
 
 }
 
-void ContainerSolutionTableModel::initialize(QVector<int> boxLengthXvalues,
-                                             QVector<int> boxLengthYvalues,
-                                             QVector<int> boxLengthZvalues,
-                                             QVector<int> boxCoordinateXvalues,
-                                             QVector<int> boxCoordinateYvalues,
-                                             QVector<int> boxCoordinateZvalues,
-                                             QVector<bool> boxPackedFlagValues)
+void ContainerSolutionTableModel::setContainerSolution(ContainerSolution *solution)
 {
-    beginResetModel();
-    this->boxLengthXvalues = boxLengthXvalues;
-    this->boxLengthYvalues = boxLengthYvalues;
-    this->boxLengthZvalues = boxLengthZvalues;
-    this->boxCoordinateXvalues = boxCoordinateXvalues;
-    this->boxCoordinateYvalues = boxCoordinateYvalues;
-    this->boxCoordinateZvalues = boxCoordinateZvalues;
-    this->boxPackedFlagValues = boxPackedFlagValues;
-    endResetModel();
+    if (solution != containerSolution)
+    {
+        qSwap(containerSolution, solution);
+        if (containerSolution != 0)
+        {
+            connect(containerSolution, SIGNAL(beforeBoxCountChanged()), this, SLOT(slotBeforeBoxCountChanged()));
+            connect(containerSolution, SIGNAL(afterBoxCountChanged()), this, SLOT(slotAfterBoxCountChanged()));
+        }
+        if (solution != 0)
+        {
+            disconnect(solution, 0, this, 0);
+        }
+    }
 }
 
-int ContainerSolutionTableModel::rowCount(const QModelIndex &parent) const
+int ContainerSolutionTableModel::rowCount(const QModelIndex &) const
 {
-    return boxLengthXvalues.size();
+    return containerSolution != 0 ? containerSolution->boxCount() : 0;
 }
 
-int ContainerSolutionTableModel::columnCount(const QModelIndex &parent) const
+int ContainerSolutionTableModel::columnCount(const QModelIndex &) const
 {
     return 7;
 }
@@ -42,13 +40,13 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
     {
         switch (index.column())
         {
-        case 0: result = boxLengthXvalues[index.row()]; break;
-        case 1: result = boxLengthYvalues[index.row()]; break;
-        case 2: result = boxLengthZvalues[index.row()]; break;
-        case 3: result = boxCoordinateXvalues[index.row()]; break;
-        case 4: result = boxCoordinateYvalues[index.row()]; break;
-        case 5: result = boxCoordinateZvalues[index.row()]; break;
-        case 6: result = boxPackedFlagValues[index.row()] ? tr("Yes") : tr("No"); break;
+        case 0: result = containerSolution->boxLengthX(index.row()); break;
+        case 1: result = containerSolution->boxLengthY(index.row()); break;
+        case 2: result = containerSolution->boxLengthZ(index.row()); break;
+        case 3: result = containerSolution->boxCoordinateX(index.row()); break;
+        case 4: result = containerSolution->boxCoordinateY(index.row()); break;
+        case 5: result = containerSolution->boxCoordinateZ(index.row()); break;
+        case 6: result = containerSolution->isBoxPacked(index.row()) ? tr("Yes") : tr("No"); break;
         }
     }
     return result;
@@ -73,4 +71,14 @@ QVariant ContainerSolutionTableModel::headerData(int section, Qt::Orientation or
         }
     }
     return QAbstractTableModel::headerData(section, orientation, role);
+}
+
+void ContainerSolutionTableModel::slotBeforeBoxCountChanged()
+{
+    beginResetModel();
+}
+
+void ContainerSolutionTableModel::slotAfterBoxCountChanged()
+{
+    endResetModel();
 }

@@ -3,31 +3,25 @@
 
 #include <QAbstractTableModel>
 #include <QVector>
+#include "containersolution.h"
 
 class ContainerSolutionTableModel : public QAbstractTableModel
 {
+    Q_OBJECT
 public:
     ContainerSolutionTableModel(QObject *parent = 0);
-    void initialize(QVector<int> boxLengthXvalues,
-                    QVector<int> boxLengthYvalues,
-                    QVector<int> boxLengthZvalues,
-                    QVector<int> boxCoordinateXvalues,
-                    QVector<int> boxCoordinateYvalues,
-                    QVector<int> boxCoordinateZvalues,
-                    QVector<bool> boxPackedFlagValues);
+    void setContainerSolution(ContainerSolution *solution);
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
+private slots:
+    void slotBeforeBoxCountChanged();
+    void slotAfterBoxCountChanged();
+
 private:
-    QVector<int> boxLengthXvalues;
-    QVector<int> boxLengthYvalues;
-    QVector<int> boxLengthZvalues;
-    QVector<int> boxCoordinateXvalues;
-    QVector<int> boxCoordinateYvalues;
-    QVector<int> boxCoordinateZvalues;
-    QVector<bool> boxPackedFlagValues;
+    ContainerSolution *containerSolution;
 };
 
 #endif // CONTAINERSOLUTIONTABLEMODEL_H
