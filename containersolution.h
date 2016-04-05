@@ -13,39 +13,8 @@ signals:
     void afterBoxCountChanged();
 
 public:
-    void clear()
-    {
-        if (!boxLengthXvalues.empty())
-        {
-            emit beforeBoxCountChanged();
-            boxLengthXvalues.clear();
-            boxLengthYvalues.clear();
-            boxLengthZvalues.clear();
-            boxCoordinateXvalues.clear();
-            boxCoordinateYvalues.clear();
-            boxCoordinateZvalues.clear();
-            boxPackedFlagValues.clear();
-            emit afterBoxCountChanged();
-        }
-        packedVolumeValue = 0;
-    }
-
-    void setProblem(const ContainerProblem &problem)
-    {
-        emit beforeBoxCountChanged();
-        containerLengthXvalue = problem.containerLengthX();
-        containerLengthYvalue = problem.containerLengthY();
-        containerLengthZvalue = problem.containerLengthZ();
-        boxLengthXvalues = problem.boxLengthsX();
-        boxLengthYvalues = problem.boxLengthsY();
-        boxLengthZvalues = problem.boxLengthsZ();
-        boxCoordinateXvalues.resize(problem.boxCount());
-        boxCoordinateYvalues.resize(problem.boxCount());
-        boxCoordinateZvalues.resize(problem.boxCount());
-        boxPackedFlagValues.resize(problem.boxCount());
-        emit afterBoxCountChanged();
-    }
-
+    void clear();
+    void setProblem(const ContainerProblem &problem);
     int containerLengthX() const { return containerLengthXvalue; }
     int containerLengthY() const { return containerLengthYvalue; }
     int containerLengthZ() const { return containerLengthZvalue; }
@@ -58,22 +27,9 @@ public:
     bool isBoxPacked(int index) const { return boxPackedFlagValues[index]; }
     int packedVolume() const { return packedVolumeValue; }
     int boxCount() const { return boxPackedFlagValues.size(); }
-
     void setSolution(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
                      QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
-                     QVector<bool> boxPackedFlagsBool, int volume)
-    {
-        emit beforeBoxCountChanged();
-        boxLengthXvalues = boxLengthsX;
-        boxLengthYvalues = boxLengthsY;
-        boxLengthZvalues = boxLengthsZ;
-        boxCoordinateXvalues = boxCoordinatesX;
-        boxCoordinateYvalues = boxCoordinatesY;
-        boxCoordinateZvalues = boxCoordinatesZ;
-        boxPackedFlagValues = boxPackedFlagsBool;
-        packedVolumeValue = volume;
-        emit afterBoxCountChanged();
-    }
+                     QVector<bool> boxPackedFlagsBool, int volume);
 
 private:
     int containerLengthXvalue;

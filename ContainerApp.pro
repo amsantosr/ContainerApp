@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     containerproblemform.cpp \
     containersolutiontablemodel.cpp \
     containerproblemtablemodel.cpp \
-    dialoganadircaja.cpp
+    dialoganadircaja.cpp \
+    containersolution.cpp
 
 HEADERS  += mainwindow.h \
     dialoggenerarinstancia.h \
