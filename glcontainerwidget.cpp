@@ -18,9 +18,11 @@ GLContainerWidget::~GLContainerWidget()
     gluDeleteQuadric(quadric);
 }
 
-void GLContainerWidget::setContainerSolution(const ContainerSolution &solution)
+void GLContainerWidget::setContainerSolution(ContainerSolution &solution)
 {
     containerSolution = &solution;
+    connect(containerSolution, &ContainerSolution::afterDataChange,
+            this, static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update));
 }
 
 void GLContainerWidget::initializeGL()
@@ -53,13 +55,20 @@ void GLContainerWidget::paintGL()
         glRotatef(xRot, 1.0, 0.0, 0.0);
         glRotatef(yRot, 0.0, 1.0, 0.0);
 
-        int midx = containerSolution->containerLengthX() / 2;
-        int midy = containerSolution->containerLengthY() / 2;
-        int midz = containerSolution->containerLengthZ() / 2;
-        glTranslatef(-midx, -midy, -midz);
+        int lengthX = containerSolution->containerLengthX();
+        int lengthY = containerSolution->containerLengthY();
+        int lengthZ = containerSolution->containerLengthZ();
+
+        if (lengthX > 0 && lengthY > 0 && lengthZ > 0)
+        {
+            int midX = containerSolution->containerLengthX() / 2;
+            int midY = containerSolution->containerLengthY() / 2;
+            int midZ = containerSolution->containerLengthZ() / 2;
+            glTranslatef(-midX, -midY, -midZ);
+            drawContainer();
+        }
 
         srand(0);
-        drawContainer();
         for (int index = 0; index < containerSolution->boxCount(); ++index)
         {
             if (containerSolution->isBoxPacked(index))
@@ -91,7 +100,8 @@ void GLContainerWidget::resizeGL(int width, int height)
 
 void GLContainerWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (event->buttons() & Qt::LeftButton) {
+    if (event->buttons() & Qt::LeftButton)
+    {
         setCursor(Qt::ClosedHandCursor);
         lastPos = event->pos();
     }
@@ -99,7 +109,8 @@ void GLContainerWidget::mousePressEvent(QMouseEvent *event)
 
 void GLContainerWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if (event->buttons() & Qt::LeftButton) {
+    if (event->buttons() & Qt::LeftButton)
+    {
         int dx = event->x() - lastPos.x();
         int dy = event->y() - lastPos.y();
         (xRot += dy + 360) %= 360;
@@ -111,7 +122,8 @@ void GLContainerWidget::mouseMoveEvent(QMouseEvent *event)
 
 void GLContainerWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton)
+    {
         setCursor(Qt::OpenHandCursor);
     }
 }

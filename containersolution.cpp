@@ -4,7 +4,10 @@ void ContainerSolution::clear()
 {
     if (!boxLengthXvalues.empty())
     {
-        emit beforeBoxCountChanged();
+        emit beforeDataChange();
+        containerLengthXvalue = 0;
+        containerLengthYvalue = 0;
+        containerLengthZvalue = 0;
         boxLengthXvalues.clear();
         boxLengthYvalues.clear();
         boxLengthZvalues.clear();
@@ -12,14 +15,14 @@ void ContainerSolution::clear()
         boxCoordinateYvalues.clear();
         boxCoordinateZvalues.clear();
         boxPackedFlagValues.clear();
-        emit afterBoxCountChanged();
+        emit afterDataChange();
     }
     packedVolumeValue = 0;
 }
 
 void ContainerSolution::setProblem(const ContainerProblem &problem)
 {
-    emit beforeBoxCountChanged();
+    emit beforeDataChange();
     containerLengthXvalue = problem.containerLengthX();
     containerLengthYvalue = problem.containerLengthY();
     containerLengthZvalue = problem.containerLengthZ();
@@ -30,14 +33,14 @@ void ContainerSolution::setProblem(const ContainerProblem &problem)
     boxCoordinateYvalues.resize(problem.boxCount());
     boxCoordinateZvalues.resize(problem.boxCount());
     boxPackedFlagValues.resize(problem.boxCount());
-    emit afterBoxCountChanged();
+    emit afterDataChange();
 }
 
 void ContainerSolution::setSolution(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
                  QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
                  QVector<bool> boxPackedFlagsBool, int volume)
 {
-    emit beforeBoxCountChanged();
+    emit beforeDataChange();
     boxLengthXvalues = boxLengthsX;
     boxLengthYvalues = boxLengthsY;
     boxLengthZvalues = boxLengthsZ;
@@ -46,5 +49,5 @@ void ContainerSolution::setSolution(QVector<int> boxLengthsX, QVector<int> boxLe
     boxCoordinateZvalues = boxCoordinatesZ;
     boxPackedFlagValues = boxPackedFlagsBool;
     packedVolumeValue = volume;
-    emit afterBoxCountChanged();
+    emit afterDataChange();
 }

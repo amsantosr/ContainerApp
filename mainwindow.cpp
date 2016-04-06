@@ -31,19 +31,19 @@ MainWindow::MainWindow(QWidget *parent) :
     containerSolutionTableModel->setContainerSolution(&containerSolution);
 
     // connect the problem to the spinboxes and back
-    connect(&containerProblem, SIGNAL(containerLengthX_changed(int)),
-            ui->spinBoxContainerDimensionX, SLOT(setValue(int)));
-    connect(&containerProblem, SIGNAL(containerLengthY_changed(int)),
-            ui->spinBoxContainerDimensionY, SLOT(setValue(int)));
-    connect(&containerProblem, SIGNAL(containerLengthZ_changed(int)),
-            ui->spinBoxContainerDimensionZ, SLOT(setValue(int)));
+    connect(&containerProblem, &ContainerProblem::containerLengthX_changed,
+            ui->spinBoxContainerDimensionX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue));
+    connect(&containerProblem, &ContainerProblem::containerLengthY_changed,
+            ui->spinBoxContainerDimensionY, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue));
+    connect(&containerProblem, &ContainerProblem::containerLengthZ_changed,
+            ui->spinBoxContainerDimensionZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue));
 
-    connect(ui->spinBoxContainerDimensionX, SIGNAL(valueChanged(int)),
-            &containerProblem, SLOT(setContainerLengthX(int)));
-    connect(ui->spinBoxContainerDimensionY, SIGNAL(valueChanged(int)),
-            &containerProblem, SLOT(setContainerLengthY(int)));
-    connect(ui->spinBoxContainerDimensionZ, SIGNAL(valueChanged(int)),
-            &containerProblem, SLOT(setContainerLengthZ(int)));
+    connect(ui->spinBoxContainerDimensionX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            &containerProblem, &ContainerProblem::setContainerLengthX);
+    connect(ui->spinBoxContainerDimensionY, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            &containerProblem, &ContainerProblem::setContainerLengthY);
+    connect(ui->spinBoxContainerDimensionZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            &containerProblem, &ContainerProblem::setContainerLengthZ);
 }
 
 MainWindow::~MainWindow()
@@ -54,18 +54,6 @@ MainWindow::~MainWindow()
 void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
 {
     containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
-
-//    QList<int> widths, heights, depths;
-//    widths.reserve(containerProblem.boxCount());
-//    heights.reserve(containerProblem.boxCount());
-//    depths.reserve(containerProblem.boxCount());
-//    for (int index = 0; index < containerProblem.boxCount(); ++index)
-//    {
-//        widths.append(containerProblem.boxLengthX(index));
-//        heights.append(containerProblem.boxLengthY(index));
-//        depths.append(containerProblem.boxLengthZ(index));
-//    }
-//    containerProblemTableModel->initialize(widths, heights, depths);
 }
 
 void MainWindow::generateInstanceFromDialog()

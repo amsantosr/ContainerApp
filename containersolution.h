@@ -9,8 +9,8 @@ class ContainerSolution : public QObject
 {
     Q_OBJECT
 signals:
-    void beforeBoxCountChanged();
-    void afterBoxCountChanged();
+    void beforeDataChange();
+    void afterDataChange();
 
 public:
     void clear();

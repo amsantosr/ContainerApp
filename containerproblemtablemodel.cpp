@@ -14,31 +14,17 @@ void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
         if (containerProblem != 0)
             disconnect(containerProblem, 0, this, 0);
         containerProblem = pointer;
-        connect(containerProblem, SIGNAL(beforeAddBox()), this, SLOT(slotBeforeAddBox()));
-        connect(containerProblem, SIGNAL(afterAddBox()), this, SLOT(slotAfterAddBox()));
-        connect(containerProblem, SIGNAL(beforeBoxCountChanged()), this, SLOT(slotBeginReset()));
-        connect(containerProblem, SIGNAL(afterBoxCountChanged()), this, SLOT(slotEndReset()));
+        connect(containerProblem, &ContainerProblem::beforeAddBox,
+                this, [=]() {
+            beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        });
+        connect(containerProblem, &ContainerProblem::afterAddBox,
+                this, &ContainerProblemTableModel::endInsertRows);
+        connect(containerProblem, &ContainerProblem::beforeBoxCountChanged,
+                this, &ContainerProblemTableModel::beginResetModel);
+        connect(containerProblem, &ContainerProblem::afterBoxCountChanged,
+                this, &ContainerProblemTableModel::endResetModel);
     }
-}
-
-void ContainerProblemTableModel::slotBeforeAddBox()
-{
-    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-}
-
-void ContainerProblemTableModel::slotAfterAddBox()
-{
-    endInsertRows();
-}
-
-void ContainerProblemTableModel::slotBeginReset()
-{
-    beginResetModel();
-}
-
-void ContainerProblemTableModel::slotEndReset()
-{
-    endResetModel();
 }
 
 int ContainerProblemTableModel::rowCount(const QModelIndex &) const

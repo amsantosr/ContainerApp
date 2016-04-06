@@ -13,8 +13,10 @@ void ContainerSolutionTableModel::setContainerSolution(ContainerSolution *soluti
         qSwap(containerSolution, solution);
         if (containerSolution != 0)
         {
-            connect(containerSolution, SIGNAL(beforeBoxCountChanged()), this, SLOT(slotBeforeBoxCountChanged()));
-            connect(containerSolution, SIGNAL(afterBoxCountChanged()), this, SLOT(slotAfterBoxCountChanged()));
+            connect(containerSolution, &ContainerSolution::beforeDataChange,
+                    this, &ContainerSolutionTableModel::beginResetModel);
+            connect(containerSolution, &ContainerSolution::afterDataChange,
+                    this, &ContainerSolutionTableModel::endResetModel);
         }
         if (solution != 0)
         {
@@ -71,14 +73,4 @@ QVariant ContainerSolutionTableModel::headerData(int section, Qt::Orientation or
         }
     }
     return QAbstractTableModel::headerData(section, orientation, role);
-}
-
-void ContainerSolutionTableModel::slotBeforeBoxCountChanged()
-{
-    beginResetModel();
-}
-
-void ContainerSolutionTableModel::slotAfterBoxCountChanged()
-{
-    endResetModel();
 }

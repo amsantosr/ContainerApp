@@ -7,7 +7,6 @@
 
 class ContainerSolutionTableModel : public QAbstractTableModel
 {
-    Q_OBJECT
 public:
     ContainerSolutionTableModel(QObject *parent = 0);
     void setContainerSolution(ContainerSolution *solution);
@@ -15,10 +14,6 @@ public:
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-
-private slots:
-    void slotBeforeBoxCountChanged();
-    void slotAfterBoxCountChanged();
 
 private:
     ContainerSolution *containerSolution;

@@ -13,7 +13,7 @@ class GLContainerWidget : public QOpenGLWidget
 public:
     GLContainerWidget(QWidget *parent = 0);
     ~GLContainerWidget();
-    void setContainerSolution(const ContainerSolution &solution);
+    void setContainerSolution(ContainerSolution &solution);
 
 public:
     void initializeGL();
@@ -36,7 +36,7 @@ private:
     int zRot;
     float distance;
 
-    const ContainerSolution *containerSolution;
+    ContainerSolution *containerSolution;
 };
 
 #endif // GLCONTAINERWIDGET_H
