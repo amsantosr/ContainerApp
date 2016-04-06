@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     containerSolutionTableModel(new ContainerSolutionTableModel(this))
 {
     ui->setupUi(this);
+    ui->splitterHorizontal->setStretchFactor(0, 0);
+    ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewCajas->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
     ui->openGLWidget->setContainerSolution(containerSolution);
@@ -45,6 +47,16 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerProblem, &ContainerProblem::setContainerLengthY);
     connect(ui->spinBoxContainerDimensionZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             &containerProblem, &ContainerProblem::setContainerLengthZ);
+
+    // connect the slider to the GLContainerWidget
+    connect(ui->sliderNumCajas, &QSlider::valueChanged, ui->openGLWidget, &GLContainerWidget::setDisplayedBoxesLimit);
+
+    connect(&containerSolution, &ContainerSolution::afterDataChange, this, [&]()
+    {
+        // update the maximum value in the slider and set the value to the maximum
+        ui->sliderNumCajas->setMaximum(containerSolution.packedBoxesCount());
+        ui->sliderNumCajas->setValue(containerSolution.packedBoxesCount());
+    });
 }
 
 MainWindow::~MainWindow()
@@ -258,4 +270,5 @@ void MainWindow::on_actionNuevoProblema_triggered()
 {
     containerProblem.clear();
     containerSolution.clear();
+    ui->openGLWidget->resetView();
 }

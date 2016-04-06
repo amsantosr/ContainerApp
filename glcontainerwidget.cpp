@@ -6,9 +6,7 @@
 GLContainerWidget::GLContainerWidget(QWidget *parent)
     : QOpenGLWidget(parent), containerSolution(0)
 {
-    distance = -1000.0f;
-    xRot = yRot = zRot = 0;
-
+    resetView();
     setCursor(Qt::OpenHandCursor);
     quadric = gluNewQuadric();
 }
@@ -38,7 +36,7 @@ void GLContainerWidget::initializeGL()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_NORMALIZE);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -69,18 +67,17 @@ void GLContainerWidget::paintGL()
         }
 
         srand(0);
-        for (int index = 0; index < containerSolution->boxCount(); ++index)
+        int displayedBoxes = std::min(displayedBoxesLimit, containerSolution->packedBoxesCount());
+        for (int count = 0; count < displayedBoxes; ++count)
         {
-            if (containerSolution->isBoxPacked(index))
-            {
-                int x1 = containerSolution->boxCoordinateX(index);
-                int y1 = containerSolution->boxCoordinateY(index);
-                int z1 = containerSolution->boxCoordinateZ(index);
-                int x2 = x1 + containerSolution->boxLengthX(index);
-                int y2 = y1 + containerSolution->boxLengthY(index);
-                int z2 = z1 + containerSolution->boxLengthZ(index);
-                drawCube(x1, y1, z1, x2, y2, z2);
-            }
+            int boxIndex = containerSolution->boxOrderIndex(count);
+            int x1 = containerSolution->boxCoordinateX(boxIndex);
+            int y1 = containerSolution->boxCoordinateY(boxIndex);
+            int z1 = containerSolution->boxCoordinateZ(boxIndex);
+            int x2 = x1 + containerSolution->boxLengthX(boxIndex);
+            int y2 = y1 + containerSolution->boxLengthY(boxIndex);
+            int z2 = z1 + containerSolution->boxLengthZ(boxIndex);
+            drawCube(x1, y1, z1, x2, y2, z2);
         }
     }
 
@@ -94,7 +91,7 @@ void GLContainerWidget::resizeGL(int width, int height)
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-width/side, width/side, -height/side, height/side, 5.0, 1200.0);
+    glFrustum(-width/side, width/side, -height/side, height/side, 5.0, 1500.0);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -134,6 +131,22 @@ void GLContainerWidget::wheelEvent(QWheelEvent *event)
     glLoadIdentity();
     glTranslatef(0.0f, 0.0f, distance);
     update();
+}
+
+void GLContainerWidget::resetView()
+{
+    distance = -1000.0f;
+    xRot = yRot = zRot = 0;
+    update();
+}
+
+void GLContainerWidget::setDisplayedBoxesLimit(int value)
+{
+    if (displayedBoxesLimit != value)
+    {
+        displayedBoxesLimit = value;
+        update();
+    }
 }
 
 void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)
@@ -185,7 +198,9 @@ void GLContainerWidget::drawContainer()
     int x2 = containerSolution->containerLengthX();
     int y2 = containerSolution->containerLengthY();
     int z2 = containerSolution->containerLengthZ();
-    glColor3i(INT_MAX, INT_MAX, INT_MAX);
+
+    GLint color[] = { 0, INT_MAX, 0, INT_MAX };
+    glMaterialiv(GL_FRONT, GL_DIFFUSE, color);
 
     glBegin(GL_LINE_LOOP);
     glVertex3i(x1, y1, z1);

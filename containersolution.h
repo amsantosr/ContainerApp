@@ -30,6 +30,8 @@ public:
     void setSolution(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
                      QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
                      QVector<bool> boxPackedFlagsBool, int volume);
+    int packedBoxesCount() const { return boxOrderIndexes.size(); }
+    int boxOrderIndex(int i) const { return boxOrderIndexes[i]; }
 
 private:
     int containerLengthXvalue;
@@ -42,6 +44,7 @@ private:
     QVector<int> boxCoordinateYvalues;
     QVector<int> boxCoordinateZvalues;
     QVector<bool> boxPackedFlagValues;
+    QVector<int> boxOrderIndexes;
     int packedVolumeValue;
 };
 

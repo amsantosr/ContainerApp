@@ -14,8 +14,6 @@ public:
     GLContainerWidget(QWidget *parent = 0);
     ~GLContainerWidget();
     void setContainerSolution(ContainerSolution &solution);
-
-public:
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
@@ -23,6 +21,8 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void resetView();
+    void setDisplayedBoxesLimit(int value);
 
 private:
     void drawCube(int x1, int y1, int z1, int x2, int y2, int z2);
@@ -35,6 +35,7 @@ private:
     int yRot;
     int zRot;
     float distance;
+    int displayedBoxesLimit;
 
     ContainerSolution *containerSolution;
 };

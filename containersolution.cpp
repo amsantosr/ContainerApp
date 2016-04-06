@@ -15,6 +15,7 @@ void ContainerSolution::clear()
         boxCoordinateYvalues.clear();
         boxCoordinateZvalues.clear();
         boxPackedFlagValues.clear();
+        boxOrderIndexes.clear();
         emit afterDataChange();
     }
     packedVolumeValue = 0;
@@ -49,5 +50,22 @@ void ContainerSolution::setSolution(QVector<int> boxLengthsX, QVector<int> boxLe
     boxCoordinateZvalues = boxCoordinatesZ;
     boxPackedFlagValues = boxPackedFlagsBool;
     packedVolumeValue = volume;
+
+    boxOrderIndexes.clear();
+    for (int index = 0; index < boxPackedFlagValues.size(); ++index)
+    {
+        if (isBoxPacked(index))
+        {
+            boxOrderIndexes.append(index);
+        }
+    }
+    std::sort(boxOrderIndexes.begin(), boxOrderIndexes.end(), [&](int a, int b) -> bool
+    {
+        if (boxCoordinateZvalues[a] != boxCoordinateZvalues[b])
+            return boxCoordinateZvalues[a] < boxCoordinateZvalues[b];
+        if (boxCoordinateYvalues[a] != boxCoordinateYvalues[b])
+            return boxCoordinateYvalues[a] < boxCoordinateYvalues[b];
+        return boxCoordinateXvalues[a] < boxCoordinateXvalues[b];
+    });
     emit afterDataChange();
 }
