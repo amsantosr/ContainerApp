@@ -31,8 +31,6 @@ private slots:
 
     void on_actionResolverProblema_triggered();
 
-    void on_actionVisualizarSolucion_triggered();
-
     void on_actionAnadirCaja_triggered();
 
     void on_actionGuardarDatos_triggered();

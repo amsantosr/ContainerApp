@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->tableViewCajas->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
+    ui->openGLWidget->setContainerSolution(containerSolution);
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerSolutionTableModel->setContainerSolution(&containerSolution);
 
@@ -87,12 +88,6 @@ void MainWindow::testGenerateInstance()
 void MainWindow::on_actionResolverProblema_triggered()
 {
     containerProblemSolver.solve(containerProblem, containerSolution);
-}
-
-void MainWindow::on_actionVisualizarSolucion_triggered()
-{
-    ui->openGLWidget->setContainerSolution(containerSolution);
-    ui->openGLWidget->update();
 }
 
 void MainWindow::on_actionAnadirCaja_triggered()

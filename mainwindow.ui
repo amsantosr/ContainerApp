@@ -181,7 +181,6 @@
    <addaction name="actionNuevoProblema"/>
    <addaction name="actionGenerarInstanciaDePrueba"/>
    <addaction name="actionResolverProblema"/>
-   <addaction name="actionVisualizarSolucion"/>
    <addaction name="actionAnadirCaja"/>
    <addaction name="actionAbrirProblema"/>
    <addaction name="actionGuardarDatos"/>
@@ -204,15 +203,6 @@
    </property>
    <property name="text">
     <string>Resolver problema</string>
-   </property>
-  </action>
-  <action name="actionVisualizarSolucion">
-   <property name="icon">
-    <iconset resource="Resources.qrc">
-     <normaloff>:/icons/3d_modelling.png</normaloff>:/icons/3d_modelling.png</iconset>
-   </property>
-   <property name="text">
-    <string>Visualizar solución</string>
    </property>
   </action>
   <action name="actionAnadirCaja">
