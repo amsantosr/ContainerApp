@@ -37,10 +37,6 @@ void GLContainerWidget::initializeGL()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_NORMALIZE);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, distance);
 }
 
 void GLContainerWidget::paintGL()
@@ -48,6 +44,9 @@ void GLContainerWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
 
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(0.0f, 0.0f, distance);
     if (containerSolution != 0)
     {
         glRotatef(xRot, 1.0, 0.0, 0.0);
