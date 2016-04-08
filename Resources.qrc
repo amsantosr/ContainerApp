@@ -8,5 +8,7 @@
         <file>Floppy.png</file>
         <file>Drive-Floppy-icon.png</file>
         <file>NewFileIcon.png</file>
+        <file>Minus.png</file>
+        <file>Add.png</file>
     </qresource>
 </RCC>

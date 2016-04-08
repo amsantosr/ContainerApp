@@ -32,9 +32,60 @@
          <attribute name="title">
           <string>Cajas</string>
          </attribute>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QTableView" name="tableViewCajas">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QToolButton" name="toolButtonAddBox">
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="icon">
+               <iconset resource="Resources.qrc">
+                <normaloff>:/icons/Add.png</normaloff>:/icons/Add.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="toolButtonDeleteBox">
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="icon">
+               <iconset resource="Resources.qrc">
+                <normaloff>:/icons/Minus.png</normaloff>:/icons/Minus.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="BoxesTableView" name="tableViewCajas">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -156,7 +207,7 @@
         </widget>
        </widget>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="GLContainerWidget" name="openGLWidget"/>
@@ -194,10 +245,10 @@
    <addaction name="actionNuevoProblema"/>
    <addaction name="actionGenerarInstanciaDePrueba"/>
    <addaction name="actionResolverProblema"/>
-   <addaction name="actionAnadirCaja"/>
    <addaction name="actionAbrirProblema"/>
    <addaction name="actionGuardarDatos"/>
    <addaction name="actionGuardarSolucion"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionGenerarInstanciaDePrueba">
@@ -221,7 +272,7 @@
   <action name="actionAnadirCaja">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/Box.png</normaloff>:/icons/Box.png</iconset>
+     <normaloff>:/icons/Add.png</normaloff>:/icons/Add.png</iconset>
    </property>
    <property name="text">
     <string>Añadir caja</string>
@@ -266,6 +317,18 @@
     <string>Nuevo problema</string>
    </property>
   </action>
+  <action name="actionEliminarCaja">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/icons/Minus.png</normaloff>:/icons/Minus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Eliminar caja</string>
+   </property>
+   <property name="toolTip">
+    <string>Eliminar la caja seleccionada</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -274,9 +337,47 @@
    <extends>QOpenGLWidget</extends>
    <header>glcontainerwidget.h</header>
   </customwidget>
+  <customwidget>
+   <class>BoxesTableView</class>
+   <extends>QTableView</extends>
+   <header>boxestableview.h</header>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="Resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>toolButtonAddBox</sender>
+   <signal>clicked()</signal>
+   <receiver>actionAnadirCaja</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButtonDeleteBox</sender>
+   <signal>clicked()</signal>
+   <receiver>actionEliminarCaja</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>59</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

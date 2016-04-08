@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QModelIndexList>
 
 class ContainerProblem : public QObject
 {
@@ -18,6 +19,7 @@ public:
     const QVector<int> &boxLengthsX() const { return boxLengthXValues; }
     const QVector<int> &boxLengthsY() const { return boxLengthYValues; }
     const QVector<int> &boxLengthsZ() const { return boxLengthZValues; }
+    void removeIndexes(QModelIndexList indexes);
 
 signals:
     void containerLengthX_changed(int value);
@@ -29,57 +31,13 @@ signals:
     void afterBoxCountChanged();
 
 public:
-    void addBox(int xLength, int yLength, int zLength)
-    {
-        emit beforeAddBox();
-        emit beforeBoxCountChanged();
-        boxLengthXValues.append(xLength);
-        boxLengthYValues.append(yLength);
-        boxLengthZValues.append(zLength);
-        emit afterBoxCountChanged();
-        emit afterAddBox();
-    }
-
-    void clear()
-    {
-        if (boxLengthXValues.size() > 0)
-        {
-            emit beforeBoxCountChanged();
-            boxLengthXValues.clear();
-            boxLengthYValues.clear();
-            boxLengthZValues.clear();
-            emit afterBoxCountChanged();
-        }
-        setContainerLengthX(0);
-        setContainerLengthY(0);
-        setContainerLengthZ(0);
-    }
+    void addBox(int xLength, int yLength, int zLength);
+    void clear();
 
 public slots:
-    void setContainerLengthX(int value)
-    {
-        if (containerLengthXValue != value)
-        {
-            containerLengthXValue = value;
-            emit containerLengthX_changed(value);
-        }
-    }
-    void setContainerLengthY(int value)
-    {
-        if (containerLengthYValue != value)
-        {
-            containerLengthYValue = value;
-            emit containerLengthY_changed(value);
-        }
-    }
-    void setContainerLengthZ(int value)
-    {
-        if (containerLengthZValue != value)
-        {
-            containerLengthZValue = value;
-            emit containerLengthZ_changed(value);
-        }
-    }
+    void setContainerLengthX(int value);
+    void setContainerLengthY(int value);
+    void setContainerLengthZ(int value);
 
 private:
     int containerLengthXValue;

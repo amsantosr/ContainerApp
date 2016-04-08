@@ -41,6 +41,8 @@ private slots:
 
     void on_actionNuevoProblema_triggered();
 
+    void on_actionEliminarCaja_triggered();
+
 private:
     Ui::MainWindow *ui;
     DialogGenerarInstancia *dialogGenerarInstancia;

@@ -272,3 +272,8 @@ void MainWindow::on_actionNuevoProblema_triggered()
     containerSolution.clear();
     ui->openGLWidget->resetView();
 }
+
+void MainWindow::on_actionEliminarCaja_triggered()
+{
+    containerProblem.removeIndexes(ui->tableViewCajas->selectedIndexes());
+}
