@@ -27,7 +27,9 @@ SOURCES += main.cpp\
     dialoganadircaja.cpp \
     containersolution.cpp \
     boxestableview.cpp \
-    containerproblem.cpp
+    containerproblem.cpp \
+    algorithmthread.cpp \
+    algorithmexecutiondialog.cpp
 
 HEADERS  += mainwindow.h \
     dialoggenerarinstancia.h \
@@ -42,13 +44,16 @@ HEADERS  += mainwindow.h \
     containersolutiontablemodel.h \
     containerproblemtablemodel.h \
     dialoganadircaja.h \
-    boxestableview.h
+    boxestableview.h \
+    algorithmthread.h \
+    algorithmexecutiondialog.h
 
 FORMS    += mainwindow.ui \
     dialoggenerarinstancia.ui \
     containerloadform.ui \
     containerproblemform.ui \
-    dialoganadircaja.ui
+    dialoganadircaja.ui \
+    algorithmexecutiondialog.ui
 
 LIBS += -lglut -lGLU
 

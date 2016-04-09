@@ -15,6 +15,7 @@
 #include <QList>
 #include <QXmlStreamWriter>
 #include <QFileDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,7 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogGenerarInstancia(new DialogGenerarInstancia(this)),
     dialogAnadirCaja(new DialogAnadirCaja(this)),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
-    containerSolutionTableModel(new ContainerSolutionTableModel(this))
+    containerSolutionTableModel(new ContainerSolutionTableModel(this)),
+    algorithmThread(this),
+    algorithmExecutionDialog(this)
 {
     ui->setupUi(this);
     ui->splitterHorizontal->setStretchFactor(0, 0);
@@ -57,6 +60,10 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->sliderNumCajas->setMaximum(containerSolution.packedBoxesCount());
         ui->sliderNumCajas->setValue(containerSolution.packedBoxesCount());
     });
+
+    // connect the signals from the AlgorithmThread thread
+    connect(&algorithmThread, &AlgorithmThread::started, &algorithmExecutionDialog, &AlgorithmExecutionDialog::show);
+    connect(&algorithmThread, &AlgorithmThread::finished, &algorithmExecutionDialog, &AlgorithmExecutionDialog::hide);
 }
 
 MainWindow::~MainWindow()
@@ -76,6 +83,11 @@ void MainWindow::generateInstanceFromDialog()
     int fillPercentage = dialogGenerarInstancia->ui->spinBoxFillPercentage->value();
     int maximumDifferentBoxes = dialogGenerarInstancia->ui->spinBoxDifferentTypes->value();
     generateTestInstanceTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
+}
+
+void MainWindow::solveProblem()
+{
+    containerProblemSolver.solve(containerProblem, containerSolution);
 }
 
 void MainWindow::on_actionGenerarInstanciaDePrueba_triggered()
@@ -99,7 +111,7 @@ void MainWindow::testGenerateInstance()
 
 void MainWindow::on_actionResolverProblema_triggered()
 {
-    containerProblemSolver.solve(containerProblem, containerSolution);
+    algorithmThread.start();
 }
 
 void MainWindow::on_actionAnadirCaja_triggered()

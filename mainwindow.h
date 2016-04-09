@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "containerproblemgenerator.h"
 #include "containerproblemsolver.h"
+#include "algorithmthread.h"
+#include "algorithmexecutiondialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void solveProblem();
 
 #ifdef DEBUG_ISSUES
     void testGenerateInstance();
@@ -53,6 +56,8 @@ private:
     ContainerSolution containerSolution;
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
+    AlgorithmThread algorithmThread;
+    AlgorithmExecutionDialog algorithmExecutionDialog;
     void generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateInstanceFromDialog();
 };

@@ -25,7 +25,7 @@
  *   void contload(int n, int W, int H, int D,
  *             int *w, int *h, int *d, 
  *             int *x, int *y, int *z, int *k
- *             int *z);
+ *             int *vol);
  * the meaning of the parameters is the following:
  *   n         Size of problem, i.e. number of boxes to be packed.
  *   W,H,D     Width, height and depth of the container.

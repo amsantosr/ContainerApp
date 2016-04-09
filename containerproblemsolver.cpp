@@ -20,7 +20,7 @@ void ContainerProblemSolver::solve(const ContainerProblem &problem, ContainerSol
     QVector<int> boxPackedFlagsInt(problem.boxCount());
     QVector<bool> boxPackedFlagsBool(problem.boxCount());
 
-    // call the C procedure
+    // llamar al procedimiento en C
     contload(problem.boxCount(),
              problem.containerLengthX(), problem.containerLengthY(), problem.containerLengthZ(),
              boxLengthsX.data(), boxLengthsY.data(), boxLengthsZ.data(),

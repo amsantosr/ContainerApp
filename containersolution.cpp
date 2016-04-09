@@ -1,4 +1,5 @@
 #include "containersolution.h"
+#include <QRect>
 
 void ContainerSolution::clear()
 {
@@ -61,11 +62,27 @@ void ContainerSolution::setSolution(QVector<int> boxLengthsX, QVector<int> boxLe
     }
     std::sort(boxOrderIndexes.begin(), boxOrderIndexes.end(), [&](int a, int b) -> bool
     {
-        if (boxCoordinateZvalues[a] != boxCoordinateZvalues[b])
-            return boxCoordinateZvalues[a] < boxCoordinateZvalues[b];
-        if (boxCoordinateYvalues[a] != boxCoordinateYvalues[b])
-            return boxCoordinateYvalues[a] < boxCoordinateYvalues[b];
-        return boxCoordinateXvalues[a] < boxCoordinateXvalues[b];
+        if (boxCoordinateZ(a) != boxCoordinateZ(b))
+            return boxCoordinateZ(a) < boxCoordinateZ(b);
+        if (boxCoordinateY(a) != boxCoordinateY(b))
+            return boxCoordinateY(a) < boxCoordinateY(b);
+        return boxCoordinateX(a) < boxCoordinateX(b);
     });
+    for (int j = 1; j < boxOrderIndexes.size(); ++j)
+    {
+        int b = boxOrderIndexes[j];
+        for (int i = 0; i < j; ++i)
+        {
+            int a = boxOrderIndexes[i];
+            QRect rectBoxA(boxCoordinateX(a), boxCoordinateZ(a), boxLengthX(a), boxLengthZ(a));
+            QRect rectBoxB(boxCoordinateX(b), boxCoordinateZ(b), boxLengthX(b), boxLengthZ(b));
+            if (rectBoxA.intersects(rectBoxB) && boxCoordinateY(b) < boxCoordinateY(a))
+            {
+                boxOrderIndexes.remove(j);
+                boxOrderIndexes.insert(i, b);
+                break;
+            }
+        }
+    }
     emit afterDataChange();
 }
