@@ -10,7 +10,6 @@ void contload(int n, int W, int H, int D,
 void ContainerProblemSolver::solve(const ContainerProblem &problem, ContainerSolution &solution)
 {
     int volume = 0;
-    solution.setProblem(problem);
     QVector<int> boxLengthsX = problem.boxLengthsX();
     QVector<int> boxLengthsY = problem.boxLengthsY();
     QVector<int> boxLengthsZ = problem.boxLengthsZ();
@@ -32,6 +31,10 @@ void ContainerProblemSolver::solve(const ContainerProblem &problem, ContainerSol
         boxPackedFlagsBool[index] = (boxPackedFlagsInt[index] != 0);
     }
 
-    solution.setSolution(boxLengthsX, boxLengthsY, boxLengthsZ,
-                         boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ, boxPackedFlagsBool, volume);
+    solution.setSolution(problem.containerLengthX(),
+                         problem.containerLengthY(),
+                         problem.containerLengthZ(),
+                         boxLengthsX, boxLengthsY, boxLengthsZ,
+                         boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ,
+                         boxPackedFlagsBool, volume);
 }

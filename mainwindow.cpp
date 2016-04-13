@@ -52,7 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerProblem, &ContainerProblem::setContainerLengthZ);
 
     // connect the slider to the GLContainerWidget
-    connect(ui->sliderNumCajas, &QSlider::valueChanged, ui->openGLWidget, &GLContainerWidget::setDisplayedBoxesLimit);
+    connect(ui->sliderNumCajas, &QSlider::valueChanged,
+            ui->openGLWidget, &GLContainerWidget::setDisplayedBoxesLimit);
 
     connect(&containerSolution, &ContainerSolution::afterDataChange, this, [&]()
     {
@@ -62,8 +63,10 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     // connect the signals from the AlgorithmThread thread
-    connect(&algorithmThread, &AlgorithmThread::started, &algorithmExecutionDialog, &AlgorithmExecutionDialog::show);
-    connect(&algorithmThread, &AlgorithmThread::finished, &algorithmExecutionDialog, &AlgorithmExecutionDialog::hide);
+    connect(&algorithmThread, &AlgorithmThread::started,
+            &algorithmExecutionDialog, &AlgorithmExecutionDialog::show);
+    connect(&algorithmThread, &AlgorithmThread::finished,
+            &algorithmExecutionDialog, &AlgorithmExecutionDialog::hide);
 }
 
 MainWindow::~MainWindow()

@@ -199,8 +199,8 @@ void GLContainerWidget::drawContainer()
     int z2 = containerSolution->containerLengthZ();
 
     GLint color[] = { 0, INT_MAX, 0, INT_MAX };
-    glMaterialiv(GL_FRONT, GL_DIFFUSE, color);
-
+    glColor3i(0, INT_MAX, 0);
+    glDisable(GL_LIGHTING);
     glBegin(GL_LINE_LOOP);
     glVertex3i(x1, y1, z1);
     glVertex3i(x1, y2, z1);
@@ -225,4 +225,5 @@ void GLContainerWidget::drawContainer()
     glVertex3i(x2, y1, z1);
     glVertex3i(x2, y1, z2);
     glEnd();
+    glEnable(GL_LIGHTING);
 }
