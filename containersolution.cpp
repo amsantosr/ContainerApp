@@ -54,13 +54,18 @@ void ContainerSolution::setSolution(int containerLengthX,
             boxOrderIndexes.append(index);
         }
     }
+    // ordering of the boxes according to the explained algorithm
     std::sort(boxOrderIndexes.begin(), boxOrderIndexes.end(), [&](int a, int b) -> bool
     {
         if (boxCoordinateZ(a) != boxCoordinateZ(b))
             return boxCoordinateZ(a) < boxCoordinateZ(b);
-        if (boxCoordinateY(a) != boxCoordinateY(b))
-            return boxCoordinateY(a) < boxCoordinateY(b);
-        return boxCoordinateX(a) < boxCoordinateX(b);
+//        int posZa = boxCoordinateZ(a) + boxLengthZ(a);
+//        int posZb = boxCoordinateZ(b) + boxLengthZ(b);
+//        if (posZa != posZb)
+//            return posZa < posZb;
+        if (boxCoordinateX(a) != boxCoordinateX(b))
+            return boxCoordinateX(a) < boxCoordinateX(b);
+        return boxCoordinateY(a) < boxCoordinateY(b);
     });
     for (int j = 1; j < boxOrderIndexes.size(); ++j)
     {

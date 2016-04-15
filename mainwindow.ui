@@ -213,7 +213,7 @@
          <widget class="GLContainerWidget" name="openGLWidget"/>
         </item>
         <item>
-         <widget class="QSlider" name="sliderNumCajas">
+         <widget class="QSlider" name="sliderBoxCount">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -242,16 +242,16 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNuevoProblema"/>
-   <addaction name="actionGenerarInstanciaDePrueba"/>
-   <addaction name="actionResolverProblema"/>
-   <addaction name="actionAbrirProblema"/>
-   <addaction name="actionGuardarDatos"/>
-   <addaction name="actionGuardarSolucion"/>
+   <addaction name="actionNewProblem"/>
+   <addaction name="actionGenerateProblem"/>
+   <addaction name="actionSolveProblem"/>
+   <addaction name="actionOpenProblem"/>
+   <addaction name="actionSaveProblem"/>
+   <addaction name="actionSaveSolution"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionGenerarInstanciaDePrueba">
+  <action name="actionGenerateProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/icons/Generate-tables-icon.png</normaloff>:/icons/Generate-tables-icon.png</iconset>
@@ -260,7 +260,7 @@
     <string>Generar Instancia de Prueba</string>
    </property>
   </action>
-  <action name="actionResolverProblema">
+  <action name="actionSolveProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/icons/Brown-Container-32.png</normaloff>:/icons/Brown-Container-32.png</iconset>
@@ -269,7 +269,7 @@
     <string>Resolver problema</string>
    </property>
   </action>
-  <action name="actionAnadirCaja">
+  <action name="actionAddBox">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/icons/Add.png</normaloff>:/icons/Add.png</iconset>
@@ -278,7 +278,7 @@
     <string>Añadir caja</string>
    </property>
   </action>
-  <action name="actionGuardarDatos">
+  <action name="actionSaveProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/icons/Floppy.png</normaloff>:/icons/Floppy.png</iconset>
@@ -290,7 +290,7 @@
     <string>Guardar datos de problema</string>
    </property>
   </action>
-  <action name="actionAbrirProblema">
+  <action name="actionOpenProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/icons/OpenFile.png</normaloff>:/icons/OpenFile.png</iconset>
@@ -299,7 +299,7 @@
     <string>Abrir problema</string>
    </property>
   </action>
-  <action name="actionGuardarSolucion">
+  <action name="actionSaveSolution">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/icons/Drive-Floppy-icon.png</normaloff>:/icons/Drive-Floppy-icon.png</iconset>
@@ -308,7 +308,7 @@
     <string>Guardar solución</string>
    </property>
   </action>
-  <action name="actionNuevoProblema">
+  <action name="actionNewProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/icons/NewFileIcon.png</normaloff>:/icons/NewFileIcon.png</iconset>
@@ -317,7 +317,7 @@
     <string>Nuevo problema</string>
    </property>
   </action>
-  <action name="actionEliminarCaja">
+  <action name="actionDeleteBox">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/icons/Minus.png</normaloff>:/icons/Minus.png</iconset>
@@ -350,7 +350,7 @@
   <connection>
    <sender>toolButtonAddBox</sender>
    <signal>clicked()</signal>
-   <receiver>actionAnadirCaja</receiver>
+   <receiver>actionAddBox</receiver>
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -366,7 +366,7 @@
   <connection>
    <sender>toolButtonDeleteBox</sender>
    <signal>clicked()</signal>
-   <receiver>actionEliminarCaja</receiver>
+   <receiver>actionDeleteBox</receiver>
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">

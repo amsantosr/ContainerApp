@@ -14,7 +14,6 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dialoggenerarinstancia.cpp \
     Pisinger/container.c \
     Pisinger/testcont.c \
     containerloadform.cpp \
@@ -29,10 +28,10 @@ SOURCES += main.cpp\
     boxestableview.cpp \
     containerproblem.cpp \
     algorithmthread.cpp \
-    algorithmexecutiondialog.cpp
+    algorithmexecutiondialog.cpp \
+    dialoggenerateproblem.cpp
 
 HEADERS  += mainwindow.h \
-    dialoggenerarinstancia.h \
     Pisinger/testcont.h \
     containerloadform.h \
     containerproblem.h \
@@ -46,14 +45,15 @@ HEADERS  += mainwindow.h \
     dialoganadircaja.h \
     boxestableview.h \
     algorithmthread.h \
-    algorithmexecutiondialog.h
+    algorithmexecutiondialog.h \
+    dialoggenerateproblem.h
 
 FORMS    += mainwindow.ui \
-    dialoggenerarinstancia.ui \
     containerloadform.ui \
     containerproblemform.ui \
-    dialoganadircaja.ui \
-    algorithmexecutiondialog.ui
+    algorithmexecutiondialog.ui \
+    dialogaddbox.ui \
+    dialoggenerateproblem.ui
 
 LIBS += -lglut -lGLU
 

@@ -11,7 +11,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class DialogGenerarInstancia;
+class DialogGenerateProblem;
 class DialogAnadirCaja;
 class ContainerProblemTableModel;
 class ContainerSolutionTableModel;
@@ -30,25 +30,25 @@ public:
 #endif
 
 private slots:
-    void on_actionGenerarInstanciaDePrueba_triggered();
+    void on_actionGenerateProblem_triggered();
 
-    void on_actionResolverProblema_triggered();
+    void on_actionSolveProblem_triggered();
 
-    void on_actionAnadirCaja_triggered();
+    void on_actionAddBox_triggered();
 
-    void on_actionGuardarDatos_triggered();
+    void on_actionSaveProblem_triggered();
 
-    void on_actionAbrirProblema_triggered();
+    void on_actionOpenProblem_triggered();
     
-    void on_actionGuardarSolucion_triggered();
+    void on_actionSaveSolution_triggered();
 
-    void on_actionNuevoProblema_triggered();
+    void on_actionNewProblem_triggered();
 
-    void on_actionEliminarCaja_triggered();
+    void on_actionDeleteBox_triggered();
 
 private:
     Ui::MainWindow *ui;
-    DialogGenerarInstancia *dialogGenerarInstancia;
+    DialogGenerateProblem *dialogGenerarInstancia;
     DialogAnadirCaja *dialogAnadirCaja;
     ContainerProblemGenerator containerProblemGenerator;
     ContainerProblemSolver containerProblemSolver;

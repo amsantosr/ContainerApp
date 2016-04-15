@@ -1,6 +1,6 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "dialoggenerarinstancia.h"
+#include "dialoggenerateproblem.h"
 #include "ui_dialoggenerarinstancia.h"
 #include "Pisinger/testcont.h"
 #include "glcontainerwidget.h"
@@ -20,7 +20,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    dialogGenerarInstancia(new DialogGenerarInstancia(this)),
+    dialogGenerarInstancia(new DialogGenerateProblem(this)),
     dialogAnadirCaja(new DialogAnadirCaja(this)),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
@@ -52,14 +52,14 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerProblem, &ContainerProblem::setContainerLengthZ);
 
     // connect the slider to the GLContainerWidget
-    connect(ui->sliderNumCajas, &QSlider::valueChanged,
+    connect(ui->sliderBoxCount, &QSlider::valueChanged,
             ui->openGLWidget, &GLContainerWidget::setDisplayedBoxesLimit);
 
     connect(&containerSolution, &ContainerSolution::afterDataChange, this, [&]()
     {
         // update the maximum value in the slider and set the value to the maximum
-        ui->sliderNumCajas->setMaximum(containerSolution.packedBoxesCount());
-        ui->sliderNumCajas->setValue(containerSolution.packedBoxesCount());
+        ui->sliderBoxCount->setMaximum(containerSolution.packedBoxesCount());
+        ui->sliderBoxCount->setValue(containerSolution.packedBoxesCount());
     });
 
     // connect the signals from the AlgorithmThread thread
@@ -93,7 +93,7 @@ void MainWindow::solveProblem()
     containerProblemSolver.solve(containerProblem, containerSolution);
 }
 
-void MainWindow::on_actionGenerarInstanciaDePrueba_triggered()
+void MainWindow::on_actionGenerateProblem_triggered()
 {
     if (dialogGenerarInstancia->exec() == QDialog::Accepted)
     {
@@ -112,12 +112,12 @@ void MainWindow::testGenerateInstance()
 }
 #endif
 
-void MainWindow::on_actionResolverProblema_triggered()
+void MainWindow::on_actionSolveProblem_triggered()
 {
     algorithmThread.start();
 }
 
-void MainWindow::on_actionAnadirCaja_triggered()
+void MainWindow::on_actionAddBox_triggered()
 {
     if (dialogAnadirCaja->exec() == QDialog::Accepted)
     {
@@ -133,7 +133,7 @@ void MainWindow::on_actionAnadirCaja_triggered()
     }
 }
 
-void MainWindow::on_actionGuardarDatos_triggered()
+void MainWindow::on_actionSaveProblem_triggered()
 {
     QString filename = QFileDialog::getSaveFileName(this, tr("Guardar archivo"));
     if (!filename.isNull())
@@ -171,7 +171,7 @@ void MainWindow::on_actionGuardarDatos_triggered()
     }
 }
 
-void MainWindow::on_actionAbrirProblema_triggered()
+void MainWindow::on_actionOpenProblem_triggered()
 {
     QString filename = QFileDialog::getOpenFileName(this, tr("Abrir archivo"));
     if (!filename.isNull())
@@ -236,7 +236,7 @@ void MainWindow::on_actionAbrirProblema_triggered()
     }
 }
 
-void MainWindow::on_actionGuardarSolucion_triggered()
+void MainWindow::on_actionSaveSolution_triggered()
 {
     QString filename = QFileDialog::getSaveFileName(this, tr("Guardar solución"));
     if (!filename.isNull())
@@ -281,14 +281,14 @@ void MainWindow::on_actionGuardarSolucion_triggered()
     }
 }
 
-void MainWindow::on_actionNuevoProblema_triggered()
+void MainWindow::on_actionNewProblem_triggered()
 {
     containerProblem.clear();
     containerSolution.clear();
     ui->openGLWidget->resetView();
 }
 
-void MainWindow::on_actionEliminarCaja_triggered()
+void MainWindow::on_actionDeleteBox_triggered()
 {
     containerProblem.removeIndexes(ui->tableViewCajas->selectedIndexes());
 }
