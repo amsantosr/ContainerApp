@@ -23,13 +23,13 @@ SOURCES += main.cpp\
     containerproblemform.cpp \
     containersolutiontablemodel.cpp \
     containerproblemtablemodel.cpp \
-    dialoganadircaja.cpp \
     containersolution.cpp \
     boxestableview.cpp \
     containerproblem.cpp \
     algorithmthread.cpp \
     algorithmexecutiondialog.cpp \
-    dialoggenerateproblem.cpp
+    dialoggenerateproblem.cpp \
+    dialogaddbox.cpp
 
 HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
@@ -42,11 +42,11 @@ HEADERS  += mainwindow.h \
     containerproblemform.h \
     containersolutiontablemodel.h \
     containerproblemtablemodel.h \
-    dialoganadircaja.h \
     boxestableview.h \
     algorithmthread.h \
     algorithmexecutiondialog.h \
-    dialoggenerateproblem.h
+    dialoggenerateproblem.h \
+    dialogaddbox.h
 
 FORMS    += mainwindow.ui \
     containerloadform.ui \

@@ -198,7 +198,6 @@ void GLContainerWidget::drawContainer()
     int y2 = containerSolution->containerLengthY();
     int z2 = containerSolution->containerLengthZ();
 
-    GLint color[] = { 0, INT_MAX, 0, INT_MAX };
     glColor3i(0, INT_MAX, 0);
     glDisable(GL_LIGHTING);
     glBegin(GL_LINE_LOOP);

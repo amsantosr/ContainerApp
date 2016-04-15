@@ -1,14 +1,14 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialoggenerateproblem.h"
-#include "ui_dialoggenerarinstancia.h"
+#include "ui_dialoggenerateproblem.h"
 #include "Pisinger/testcont.h"
 #include "glcontainerwidget.h"
 #include "containerproblemtablemodel.h"
 #include "containersolutiontablemodel.h"
 #include "ui_containerproblemform.h"
-#include "dialoganadircaja.h"
-#include "ui_dialoganadircaja.h"
+#include "dialogaddbox.h"
+#include "ui_dialogaddbox.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
 #include <QTableView>
@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     dialogGenerarInstancia(new DialogGenerateProblem(this)),
-    dialogAnadirCaja(new DialogAnadirCaja(this)),
+    dialogAnadirCaja(new DialogAddBox(this)),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
     algorithmThread(this),
@@ -52,14 +52,14 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerProblem, &ContainerProblem::setContainerLengthZ);
 
     // connect the slider to the GLContainerWidget
-    connect(ui->sliderBoxCount, &QSlider::valueChanged,
+    connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged,
             ui->openGLWidget, &GLContainerWidget::setDisplayedBoxesLimit);
 
     connect(&containerSolution, &ContainerSolution::afterDataChange, this, [&]()
     {
         // update the maximum value in the slider and set the value to the maximum
-        ui->sliderBoxCount->setMaximum(containerSolution.packedBoxesCount());
-        ui->sliderBoxCount->setValue(containerSolution.packedBoxesCount());
+        ui->sliderDisplayedBoxes->setMaximum(containerSolution.packedBoxesCount());
+        ui->sliderDisplayedBoxes->setValue(containerSolution.packedBoxesCount());
     });
 
     // connect the signals from the AlgorithmThread thread
@@ -114,6 +114,18 @@ void MainWindow::testGenerateInstance()
 
 void MainWindow::on_actionSolveProblem_triggered()
 {
+    if (ui->spinBoxContainerDimensionX->value() == 0 ||
+            ui->spinBoxContainerDimensionY->value() == 0 ||
+            ui->spinBoxContainerDimensionZ->value() == 0)
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Todas las dimensiones del contenedor deben ser mayor que cero."));
+        return;
+    }
+    if (containerProblem.boxCount() == 0)
+    {
+        QMessageBox::critical(this, tr("Error"), tr("No se han ingresado cajas para procesar."));
+        return;
+    }
     algorithmThread.start();
 }
 

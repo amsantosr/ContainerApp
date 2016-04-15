@@ -1,9 +1,9 @@
-#include "dialoganadircaja.h"
-#include "ui_dialoganadircaja.h"
+#include "dialogaddbox.h"
+#include "ui_dialogaddbox.h"
 
-DialogAnadirCaja::DialogAnadirCaja(QWidget *parent) :
+DialogAddBox::DialogAddBox(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogAnadirCaja)
+    ui(new Ui::DialogAddBox)
 {
     ui->setupUi(this);
     ui->spinBoxDimensionX->setValue(10);
@@ -12,7 +12,7 @@ DialogAnadirCaja::DialogAnadirCaja(QWidget *parent) :
     ui->spinBoxCantidad->setValue(1);
 }
 
-DialogAnadirCaja::~DialogAnadirCaja()
+DialogAddBox::~DialogAddBox()
 {
     delete ui;
 }

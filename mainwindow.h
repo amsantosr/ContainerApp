@@ -12,7 +12,7 @@ class MainWindow;
 }
 
 class DialogGenerateProblem;
-class DialogAnadirCaja;
+class DialogAddBox;
 class ContainerProblemTableModel;
 class ContainerSolutionTableModel;
 
@@ -49,7 +49,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     DialogGenerateProblem *dialogGenerarInstancia;
-    DialogAnadirCaja *dialogAnadirCaja;
+    DialogAddBox *dialogAnadirCaja;
     ContainerProblemGenerator containerProblemGenerator;
     ContainerProblemSolver containerProblemSolver;
     ContainerProblem containerProblem;

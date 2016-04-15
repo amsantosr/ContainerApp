@@ -213,7 +213,7 @@
          <widget class="GLContainerWidget" name="openGLWidget"/>
         </item>
         <item>
-         <widget class="QSlider" name="sliderBoxCount">
+         <widget class="QSlider" name="sliderDisplayedBoxes">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
