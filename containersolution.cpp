@@ -3,23 +3,53 @@
 
 void ContainerSolution::clear()
 {
-    if (!boxLengthXvalues.empty())
+    if (!boxLengthXValues.empty())
     {
         emit beforeDataChange();
         containerLengthXvalue = 0;
         containerLengthYvalue = 0;
         containerLengthZvalue = 0;
-        boxLengthXvalues.clear();
-        boxLengthYvalues.clear();
-        boxLengthZvalues.clear();
-        boxCoordinateXvalues.clear();
-        boxCoordinateYvalues.clear();
-        boxCoordinateZvalues.clear();
+        boxLengthXValues.clear();
+        boxLengthYValues.clear();
+        boxLengthZValues.clear();
+        boxCoordinateXValues.clear();
+        boxCoordinateYValues.clear();
+        boxCoordinateZValues.clear();
         boxPackedFlagValues.clear();
         boxOrderIndexes.clear();
         emit afterDataChange();
     }
     packedVolumeValue = 0;
+}
+
+void ContainerSolution::setContainerLengthX(int value)
+{
+    if (containerLengthXvalue != value)
+    {
+        emit beforeDataChange();
+        containerLengthXvalue = value;
+        emit afterDataChange();
+    }
+}
+
+void ContainerSolution::setContainerLengthY(int value)
+{
+    if (containerLengthYvalue != value)
+    {
+        emit beforeDataChange();
+        containerLengthYvalue = value;
+        emit afterDataChange();
+    }
+}
+
+void ContainerSolution::setContainerLengthZ(int value)
+{
+    if (containerLengthZvalue != value)
+    {
+        emit beforeDataChange();
+        containerLengthZvalue = value;
+        emit afterDataChange();
+    }
 }
 
 void ContainerSolution::setSolution(int containerLengthX,
@@ -37,12 +67,12 @@ void ContainerSolution::setSolution(int containerLengthX,
     containerLengthXvalue = containerLengthX;
     containerLengthYvalue = containerLengthY;
     containerLengthZvalue = containerLengthZ;
-    boxLengthXvalues = boxLengthsX;
-    boxLengthYvalues = boxLengthsY;
-    boxLengthZvalues = boxLengthsZ;
-    boxCoordinateXvalues = boxCoordinatesX;
-    boxCoordinateYvalues = boxCoordinatesY;
-    boxCoordinateZvalues = boxCoordinatesZ;
+    boxLengthXValues = boxLengthsX;
+    boxLengthYValues = boxLengthsY;
+    boxLengthZValues = boxLengthsZ;
+    boxCoordinateXValues = boxCoordinatesX;
+    boxCoordinateYValues = boxCoordinatesY;
+    boxCoordinateZValues = boxCoordinatesZ;
     boxPackedFlagValues = boxPackedFlagsBool;
     packedVolumeValue = volume;
 

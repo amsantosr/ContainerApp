@@ -3,7 +3,7 @@
 
 DialogGenerateProblem::DialogGenerateProblem(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogGenerarInstancia)
+    ui(new Ui::DialogGenerateProblem)
 {
     ui->setupUi(this);
 }

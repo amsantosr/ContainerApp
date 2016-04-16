@@ -1,6 +1,6 @@
 #include "containerproblem.h"
 
-void ContainerProblem::removeIndexes(QModelIndexList indexes)
+void ContainerProblem::removeBoxes(QModelIndexList indexes)
 {
     if (!indexes.empty())
     {
@@ -26,13 +26,13 @@ void ContainerProblem::removeIndexes(QModelIndexList indexes)
     }
 }
 
-void ContainerProblem::addBox(int xLength, int yLength, int zLength)
+void ContainerProblem::addBox(int lengthX, int lengthY, int lengthZ)
 {
     emit beforeAddBox();
     emit beforeBoxCountChanged();
-    boxLengthXValues.append(xLength);
-    boxLengthYValues.append(yLength);
-    boxLengthZValues.append(zLength);
+    boxLengthXValues.append(lengthX);
+    boxLengthYValues.append(lengthY);
+    boxLengthZValues.append(lengthZ);
     emit afterBoxCountChanged();
     emit afterAddBox();
 }

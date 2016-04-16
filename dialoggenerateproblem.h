@@ -4,7 +4,7 @@
 #include <QDialog>
 
 namespace Ui {
-class DialogGenerarInstancia;
+class DialogGenerateProblem;
 }
 
 class DialogGenerateProblem : public QDialog
@@ -16,7 +16,7 @@ public:
     ~DialogGenerateProblem();
 
 public:
-    Ui::DialogGenerarInstancia *ui;
+    Ui::DialogGenerateProblem *ui;
 };
 
 #endif // DIALOGGENERATEPROBLEM_H

@@ -50,6 +50,12 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerProblem, &ContainerProblem::setContainerLengthY);
     connect(ui->spinBoxContainerDimensionZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             &containerProblem, &ContainerProblem::setContainerLengthZ);
+    connect(&containerProblem, &ContainerProblem::containerLengthX_changed,
+            &containerSolution, &ContainerSolution::setContainerLengthX);
+    connect(&containerProblem, &ContainerProblem::containerLengthY_changed,
+            &containerSolution, &ContainerSolution::setContainerLengthY);
+    connect(&containerProblem, &ContainerProblem::containerLengthZ_changed,
+            &containerSolution, &ContainerSolution::setContainerLengthZ);
 
     // connect the slider to the GLContainerWidget
     connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged,
@@ -242,7 +248,7 @@ void MainWindow::on_actionOpenProblem_triggered()
             }
             if (stream.hasError())
             {
-                // procesar errores aqui
+                // process xml errors here
             }
         }
     }
@@ -302,5 +308,5 @@ void MainWindow::on_actionNewProblem_triggered()
 
 void MainWindow::on_actionDeleteBox_triggered()
 {
-    containerProblem.removeIndexes(ui->tableViewCajas->selectedIndexes());
+    containerProblem.removeBoxes(ui->tableViewCajas->selectedIndexes());
 }

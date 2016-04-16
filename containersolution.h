@@ -13,16 +13,16 @@ signals:
     void afterDataChange();
 
 public:
-    void clear();
+    void clear( );
     int containerLengthX() const { return containerLengthXvalue; }
     int containerLengthY() const { return containerLengthYvalue; }
     int containerLengthZ() const { return containerLengthZvalue; }
-    int boxLengthX(int index) const { return boxLengthXvalues[index]; }
-    int boxLengthY(int index) const { return boxLengthYvalues[index]; }
-    int boxLengthZ(int index) const { return boxLengthZvalues[index]; }
-    int boxCoordinateX(int index) const { return boxCoordinateXvalues[index]; }
-    int boxCoordinateY(int index) const { return boxCoordinateYvalues[index]; }
-    int boxCoordinateZ(int index) const { return boxCoordinateZvalues[index]; }
+    int boxLengthX(int index) const { return boxLengthXValues[index]; }
+    int boxLengthY(int index) const { return boxLengthYValues[index]; }
+    int boxLengthZ(int index) const { return boxLengthZValues[index]; }
+    int boxCoordinateX(int index) const { return boxCoordinateXValues[index]; }
+    int boxCoordinateY(int index) const { return boxCoordinateYValues[index]; }
+    int boxCoordinateZ(int index) const { return boxCoordinateZValues[index]; }
     bool isBoxPacked(int index) const { return boxPackedFlagValues[index]; }
     int packedVolume() const { return packedVolumeValue; }
     int boxCount() const { return boxPackedFlagValues.size(); }
@@ -32,17 +32,20 @@ public:
                      QVector<bool> boxPackedFlagsBool, int volume);
     int packedBoxesCount() const { return boxOrderIndexes.size(); }
     int boxOrderIndex(int i) const { return boxOrderIndexes[i]; }
+    void setContainerLengthX(int value);
+    void setContainerLengthY(int value);
+    void setContainerLengthZ(int value);
 
 private:
     int containerLengthXvalue;
     int containerLengthYvalue;
     int containerLengthZvalue;
-    QVector<int> boxLengthXvalues;
-    QVector<int> boxLengthYvalues;
-    QVector<int> boxLengthZvalues;
-    QVector<int> boxCoordinateXvalues;
-    QVector<int> boxCoordinateYvalues;
-    QVector<int> boxCoordinateZvalues;
+    QVector<int> boxLengthXValues;
+    QVector<int> boxLengthYValues;
+    QVector<int> boxLengthZValues;
+    QVector<int> boxCoordinateXValues;
+    QVector<int> boxCoordinateYValues;
+    QVector<int> boxCoordinateZValues;
     QVector<bool> boxPackedFlagValues;
     QVector<int> boxOrderIndexes;
     int packedVolumeValue;

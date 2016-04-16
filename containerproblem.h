@@ -19,7 +19,7 @@ public:
     const QVector<int> &boxLengthsX() const { return boxLengthXValues; }
     const QVector<int> &boxLengthsY() const { return boxLengthYValues; }
     const QVector<int> &boxLengthsZ() const { return boxLengthZValues; }
-    void removeIndexes(QModelIndexList indexes);
+    void removeBoxes(QModelIndexList indexes);
 
 signals:
     void containerLengthX_changed(int value);
@@ -31,7 +31,7 @@ signals:
     void afterBoxCountChanged();
 
 public:
-    void addBox(int xLength, int yLength, int zLength);
+    void addBox(int lengthX, int lengthY, int lengthZ);
     void clear();
 
 public slots:
