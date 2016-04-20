@@ -8,12 +8,10 @@ GLContainerWidget::GLContainerWidget(QWidget *parent)
 {
     resetView();
     setCursor(Qt::OpenHandCursor);
-    quadric = gluNewQuadric();
 }
 
 GLContainerWidget::~GLContainerWidget()
 {
-    gluDeleteQuadric(quadric);
 }
 
 void GLContainerWidget::setContainerSolution(ContainerSolution &solution)

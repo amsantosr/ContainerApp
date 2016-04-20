@@ -29,7 +29,6 @@ private:
     void drawContainer();
 
 private:
-    GLUquadricObj *quadric;
     QPoint lastPos;
     int xRot;
     int yRot;
