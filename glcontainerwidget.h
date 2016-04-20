@@ -29,10 +29,10 @@ private:
     void drawContainer();
 
 private:
-    QPoint lastPos;
-    int xRot;
-    int yRot;
-    int zRot;
+    QPoint mouseLastPosition;
+    int rotationX;
+    int rotationY;
+    int rotationZ;
     float distance;
     int displayedBoxesLimit;
 

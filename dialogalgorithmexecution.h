@@ -7,13 +7,13 @@ namespace Ui {
 class AlgorithmExecutionDialog;
 }
 
-class AlgorithmExecutionDialog : public QDialog
+class DialogAlgorithmExecution : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AlgorithmExecutionDialog(QWidget *parent = 0);
-    ~AlgorithmExecutionDialog();
+    explicit DialogAlgorithmExecution(QWidget *parent = 0);
+    ~DialogAlgorithmExecution();
 
 private:
     Ui::AlgorithmExecutionDialog *ui;

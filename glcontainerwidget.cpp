@@ -47,8 +47,8 @@ void GLContainerWidget::paintGL()
     glTranslatef(0.0f, 0.0f, distance);
     if (containerSolution != 0)
     {
-        glRotatef(xRot, 1.0, 0.0, 0.0);
-        glRotatef(yRot, 0.0, 1.0, 0.0);
+        glRotatef(rotationX, 1.0, 0.0, 0.0);
+        glRotatef(rotationY, 0.0, 1.0, 0.0);
 
         int lengthX = containerSolution->containerLengthX();
         int lengthY = containerSolution->containerLengthY();
@@ -97,7 +97,7 @@ void GLContainerWidget::mousePressEvent(QMouseEvent *event)
     if (event->buttons() & Qt::LeftButton)
     {
         setCursor(Qt::ClosedHandCursor);
-        lastPos = event->pos();
+        mouseLastPosition = event->pos();
     }
 }
 
@@ -105,11 +105,11 @@ void GLContainerWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
-        int dx = event->x() - lastPos.x();
-        int dy = event->y() - lastPos.y();
-        (xRot += dy + 360) %= 360;
-        (yRot += dx + 360) %= 360;
-        lastPos = event->pos();
+        int dx = event->x() - mouseLastPosition.x();
+        int dy = event->y() - mouseLastPosition.y();
+        (rotationX += dy + 360) %= 360;
+        (rotationY += dx + 360) %= 360;
+        mouseLastPosition = event->pos();
         update();
     }
 }
@@ -133,7 +133,7 @@ void GLContainerWidget::wheelEvent(QWheelEvent *event)
 void GLContainerWidget::resetView()
 {
     distance = -1000.0f;
-    xRot = yRot = zRot = 0;
+    rotationX = rotationY = rotationZ = 0;
     update();
 }
 

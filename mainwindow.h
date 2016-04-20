@@ -5,7 +5,7 @@
 #include "containerproblemgenerator.h"
 #include "containerproblemsolver.h"
 #include "algorithmthread.h"
-#include "algorithmexecutiondialog.h"
+#include "dialogalgorithmexecution.h"
 
 namespace Ui {
 class MainWindow;
@@ -57,7 +57,7 @@ private:
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
     AlgorithmThread algorithmThread;
-    AlgorithmExecutionDialog algorithmExecutionDialog;
+    DialogAlgorithmExecution algorithmExecutionDialog;
     void generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateInstanceFromDialog();
 };

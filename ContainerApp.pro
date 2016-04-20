@@ -16,7 +16,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     Pisinger/container.c \
     Pisinger/testcont.c \
-    containerloadform.cpp \
     containerproblemgenerator.cpp \
     containerproblemsolver.cpp \
     glcontainerwidget.cpp \
@@ -27,13 +26,12 @@ SOURCES += main.cpp\
     boxestableview.cpp \
     containerproblem.cpp \
     algorithmthread.cpp \
-    algorithmexecutiondialog.cpp \
     dialoggenerateproblem.cpp \
-    dialogaddbox.cpp
+    dialogaddbox.cpp \
+    dialogalgorithmexecution.cpp
 
 HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
-    containerloadform.h \
     containerproblem.h \
     containerproblemgenerator.h \
     containerproblemsolver.h \
@@ -44,16 +42,15 @@ HEADERS  += mainwindow.h \
     containerproblemtablemodel.h \
     boxestableview.h \
     algorithmthread.h \
-    algorithmexecutiondialog.h \
     dialoggenerateproblem.h \
-    dialogaddbox.h
+    dialogaddbox.h \
+    dialogalgorithmexecution.h
 
 FORMS    += mainwindow.ui \
-    containerloadform.ui \
     containerproblemform.ui \
-    algorithmexecutiondialog.ui \
     dialogaddbox.ui \
-    dialoggenerateproblem.ui
+    dialoggenerateproblem.ui \
+    dialogalgorithmexecution.ui
 
 LIBS += -lglut -lGLU
 

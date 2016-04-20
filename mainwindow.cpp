@@ -70,9 +70,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // connect the signals from the AlgorithmThread thread
     connect(&algorithmThread, &AlgorithmThread::started,
-            &algorithmExecutionDialog, &AlgorithmExecutionDialog::show);
+            &algorithmExecutionDialog, &DialogAlgorithmExecution::show);
     connect(&algorithmThread, &AlgorithmThread::finished,
-            &algorithmExecutionDialog, &AlgorithmExecutionDialog::hide);
+            &algorithmExecutionDialog, &DialogAlgorithmExecution::hide);
 }
 
 MainWindow::~MainWindow()
