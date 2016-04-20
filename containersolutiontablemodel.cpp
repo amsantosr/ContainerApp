@@ -10,7 +10,7 @@ void ContainerSolutionTableModel::setContainerSolution(ContainerSolution *soluti
 {
     if (solution != containerSolution)
     {
-        qSwap(containerSolution, solution);
+        std::swap(containerSolution, solution);
         if (containerSolution != 0)
         {
             connect(containerSolution, &ContainerSolution::beforeDataChange,
@@ -62,9 +62,9 @@ QVariant ContainerSolutionTableModel::headerData(int section, Qt::Orientation or
         {
             switch (section)
             {
-            case 0: return tr("Length X"); break;
-            case 1: return tr("Length Y"); break;
-            case 2: return tr("Length Z"); break;
+            case 0: return tr("Dim X"); break;
+            case 1: return tr("Dim Y"); break;
+            case 2: return tr("Dim Z"); break;
             case 3: return tr("X"); break;
             case 4: return tr("Y"); break;
             case 5: return tr("Z"); break;

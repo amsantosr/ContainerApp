@@ -6,6 +6,7 @@
 #include "glcontainerwidget.h"
 #include "containerproblemtablemodel.h"
 #include "containersolutiontablemodel.h"
+#include "boxesorderingtablemodel.h"
 #include "ui_containerproblemform.h"
 #include "dialogaddbox.h"
 #include "ui_dialogaddbox.h"
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogAnadirCaja(new DialogAddBox(this)),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
+    boxesOrderingTableModel(new BoxesOrderingTableModel(this)),
     algorithmThread(this),
     dialogAlgorithmExecution(this),
     UiAlgorithmExecution(new Ui::DialogAlgorithmExecution)
@@ -35,9 +37,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewCajas->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
+    ui->tableViewOrdering->setModel(boxesOrderingTableModel);
     ui->openGLWidget->setContainerSolution(containerSolution);
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerSolutionTableModel->setContainerSolution(&containerSolution);
+    boxesOrderingTableModel->setContainerSolution(&containerSolution);
 
     // connect the problem to the spinboxes and back
     connect(&containerProblem, &ContainerProblem::containerLengthX_changed,

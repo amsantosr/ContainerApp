@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     containerproblem.cpp \
     algorithmthread.cpp \
     dialoggenerateproblem.cpp \
-    dialogaddbox.cpp
+    dialogaddbox.cpp \
+    boxesorderingtablemodel.cpp
 
 HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     boxestableview.h \
     algorithmthread.h \
     dialoggenerateproblem.h \
-    dialogaddbox.h
+    dialogaddbox.h \
+    boxesorderingtablemodel.h
 
 FORMS    += mainwindow.ui \
     containerproblemform.ui \

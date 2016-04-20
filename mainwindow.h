@@ -16,6 +16,7 @@ class DialogGenerateProblem;
 class DialogAddBox;
 class ContainerProblemTableModel;
 class ContainerSolutionTableModel;
+class BoxesOrderingTableModel;
 
 class MainWindow : public QMainWindow
 {
@@ -57,6 +58,7 @@ private:
     ContainerSolution containerSolution;
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
+    BoxesOrderingTableModel *boxesOrderingTableModel;
     AlgorithmThread algorithmThread;
     //DialogAlgorithmExecution algorithmExecutionDialog;
     QDialog dialogAlgorithmExecution;
