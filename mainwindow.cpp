@@ -22,8 +22,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    dialogGenerarInstancia(new DialogGenerateProblem(this)),
-    dialogAnadirCaja(new DialogAddBox(this)),
+    dialogGenerateProblem(new DialogGenerateProblem(this)),
+    dialogAddBox(new DialogAddBox(this)),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
     boxesOrderingTableModel(new BoxesOrderingTableModel(this)),
@@ -97,10 +97,10 @@ void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int
 
 void MainWindow::generateInstanceFromDialog()
 {
-    int minimumDimension = dialogGenerarInstancia->ui->spinBoxMinimumDimension->value();
-    int maximumDimension = dialogGenerarInstancia->ui->spinBoxMaximumDimension->value();
-    int fillPercentage = dialogGenerarInstancia->ui->spinBoxFillPercentage->value();
-    int maximumDifferentBoxes = dialogGenerarInstancia->ui->spinBoxDifferentTypes->value();
+    int minimumDimension = dialogGenerateProblem->ui->spinBoxMinimumDimension->value();
+    int maximumDimension = dialogGenerateProblem->ui->spinBoxMaximumDimension->value();
+    int fillPercentage = dialogGenerateProblem->ui->spinBoxFillPercentage->value();
+    int maximumDifferentBoxes = dialogGenerateProblem->ui->spinBoxDifferentTypes->value();
     generateTestInstanceTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
 }
 
@@ -111,7 +111,7 @@ void MainWindow::solveProblem()
 
 void MainWindow::on_actionGenerateProblem_triggered()
 {
-    if (dialogGenerarInstancia->exec() == QDialog::Accepted)
+    if (dialogGenerateProblem->exec() == QDialog::Accepted)
     {
         generateInstanceFromDialog();
     }
@@ -120,10 +120,10 @@ void MainWindow::on_actionGenerateProblem_triggered()
 #ifdef DEBUG_ISSUES
 void MainWindow::testGenerateInstance()
 {
-    dialogGenerarInstancia->ui->spinBoxMinimumDimension->setValue(25);
-    dialogGenerarInstancia->ui->spinBoxMaximumDimension->setValue(115);
-    dialogGenerarInstancia->ui->spinBoxFillPercentage->setValue(90);
-    dialogGenerarInstancia->ui->spinBoxDifferentTypes->setValue(20);
+    dialogGenerateProblem->ui->spinBoxMinimumDimension->setValue(25);
+    dialogGenerateProblem->ui->spinBoxMaximumDimension->setValue(115);
+    dialogGenerateProblem->ui->spinBoxFillPercentage->setValue(90);
+    dialogGenerateProblem->ui->spinBoxDifferentTypes->setValue(20);
     this->generateInstanceFromDialog();
 }
 #endif
@@ -147,12 +147,12 @@ void MainWindow::on_actionSolveProblem_triggered()
 
 void MainWindow::on_actionAddBox_triggered()
 {
-    if (dialogAnadirCaja->exec() == QDialog::Accepted)
+    if (dialogAddBox->exec() == QDialog::Accepted)
     {
-        int dimensionX = dialogAnadirCaja->ui->spinBoxDimensionX->value();
-        int dimensionY = dialogAnadirCaja->ui->spinBoxDimensionY->value();
-        int dimensionZ = dialogAnadirCaja->ui->spinBoxDimensionZ->value();
-        int cantidad = dialogAnadirCaja->ui->spinBoxCantidad->value();
+        int dimensionX = dialogAddBox->ui->spinBoxDimensionX->value();
+        int dimensionY = dialogAddBox->ui->spinBoxDimensionY->value();
+        int dimensionZ = dialogAddBox->ui->spinBoxDimensionZ->value();
+        int cantidad = dialogAddBox->ui->spinBoxCantidad->value();
 
         for (int i = 0; i < cantidad; ++i)
         {

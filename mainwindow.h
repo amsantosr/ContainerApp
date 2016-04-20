@@ -50,8 +50,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    DialogGenerateProblem *dialogGenerarInstancia;
-    DialogAddBox *dialogAnadirCaja;
+    DialogGenerateProblem *dialogGenerateProblem;
+    DialogAddBox *dialogAddBox;
     ContainerProblemGenerator containerProblemGenerator;
     ContainerProblemSolver containerProblemSolver;
     ContainerProblem containerProblem;
@@ -60,7 +60,6 @@ private:
     ContainerSolutionTableModel *containerSolutionTableModel;
     BoxesOrderingTableModel *boxesOrderingTableModel;
     AlgorithmThread algorithmThread;
-    //DialogAlgorithmExecution algorithmExecutionDialog;
     QDialog dialogAlgorithmExecution;
     Ui::DialogAlgorithmExecution *UiAlgorithmExecution;
     void generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);

@@ -57,7 +57,7 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
         {
             switch (index.column())
             {
-            case 6: result = tr("No");
+            case 6: result = tr("No"); break;
             }
         }
     }
