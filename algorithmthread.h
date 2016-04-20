@@ -2,17 +2,20 @@
 #define ALGORITHMTHREAD_H
 
 #include <QThread>
-
-class MainWindow;
+#include "containerproblemsolver.h"
 
 class AlgorithmThread : public QThread
 {
 public:
-    AlgorithmThread(MainWindow *window);
+    AlgorithmThread(QObject *parent = 0);
+    void setArguments(ContainerProblemSolver *solver, ContainerProblem *problem, ContainerSolution *solution);
     void run();
+    void cancel();
 
 private:
-    MainWindow *mainWindow;
+    ContainerProblemSolver *containerProblemSolver;
+    ContainerProblem *containerProblem;
+    ContainerSolution *containerSolution;
 };
 
 #endif // ALGORITHMTHREAD_H

@@ -9,6 +9,7 @@
 #include "ui_containerproblemform.h"
 #include "dialogaddbox.h"
 #include "ui_dialogaddbox.h"
+#include "ui_dialogalgorithmexecution.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
 #include <QTableView>
@@ -25,9 +26,11 @@ MainWindow::MainWindow(QWidget *parent) :
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
     algorithmThread(this),
-    algorithmExecutionDialog(this)
+    dialogAlgorithmExecution(this),
+    UiAlgorithmExecution(new Ui::DialogAlgorithmExecution)
 {
     ui->setupUi(this);
+    UiAlgorithmExecution->setupUi(&dialogAlgorithmExecution);
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewCajas->setModel(containerProblemTableModel);
@@ -69,10 +72,13 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     // connect the signals from the AlgorithmThread thread
+    algorithmThread.setArguments(&containerProblemSolver, &containerProblem, &containerSolution);
     connect(&algorithmThread, &AlgorithmThread::started,
-            &algorithmExecutionDialog, &DialogAlgorithmExecution::show);
+            &dialogAlgorithmExecution, &DialogAlgorithmExecution::show);
     connect(&algorithmThread, &AlgorithmThread::finished,
-            &algorithmExecutionDialog, &DialogAlgorithmExecution::hide);
+            &dialogAlgorithmExecution, &DialogAlgorithmExecution::hide);
+    connect(UiAlgorithmExecution->pushButtonCancel, &QPushButton::clicked,
+            &algorithmThread, &AlgorithmThread::cancel);
 }
 
 MainWindow::~MainWindow()

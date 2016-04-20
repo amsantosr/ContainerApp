@@ -4,7 +4,7 @@
 #include <QDialog>
 
 namespace Ui {
-class AlgorithmExecutionDialog;
+class DialogAlgorithmExecution;
 }
 
 class DialogAlgorithmExecution : public QDialog
@@ -16,7 +16,7 @@ public:
     ~DialogAlgorithmExecution();
 
 private:
-    Ui::AlgorithmExecutionDialog *ui;
+    Ui::DialogAlgorithmExecution *ui;
 };
 
 #endif // ALGORITHMEXECUTIONDIALOG_H

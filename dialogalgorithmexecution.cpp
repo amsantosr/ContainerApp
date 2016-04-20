@@ -1,9 +1,9 @@
 #include "dialogalgorithmexecution.h"
-#include "ui_algorithmexecutiondialog.h"
+#include "ui_dialogalgorithmexecution.h"
 
 DialogAlgorithmExecution::DialogAlgorithmExecution(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::AlgorithmExecutionDialog)
+    ui(new Ui::DialogAlgorithmExecution)
 {
     ui->setupUi(this);
 }
