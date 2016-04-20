@@ -40,15 +40,25 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
     QVariant result;
     if (role == Qt::DisplayRole)
     {
-        switch (index.column())
+        if (containerSolution->isBoxPacked(index.row()))
         {
-        case 0: result = containerSolution->boxLengthX(index.row()); break;
-        case 1: result = containerSolution->boxLengthY(index.row()); break;
-        case 2: result = containerSolution->boxLengthZ(index.row()); break;
-        case 3: result = containerSolution->boxCoordinateX(index.row()); break;
-        case 4: result = containerSolution->boxCoordinateY(index.row()); break;
-        case 5: result = containerSolution->boxCoordinateZ(index.row()); break;
-        case 6: result = containerSolution->isBoxPacked(index.row()) ? tr("Yes") : tr("No"); break;
+            switch (index.column())
+            {
+            case 0: result = containerSolution->boxLengthX(index.row()); break;
+            case 1: result = containerSolution->boxLengthY(index.row()); break;
+            case 2: result = containerSolution->boxLengthZ(index.row()); break;
+            case 3: result = containerSolution->boxCoordinateX(index.row()); break;
+            case 4: result = containerSolution->boxCoordinateY(index.row()); break;
+            case 5: result = containerSolution->boxCoordinateZ(index.row()); break;
+            case 6: result = tr("Si"); break;
+            }
+        }
+        else
+        {
+            switch (index.column())
+            {
+            case 6: result = tr("No");
+            }
         }
     }
     return result;
@@ -68,7 +78,7 @@ QVariant ContainerSolutionTableModel::headerData(int section, Qt::Orientation or
             case 3: return tr("X"); break;
             case 4: return tr("Y"); break;
             case 5: return tr("Z"); break;
-            case 6: return tr("Is packed"); break;
+            case 6: return tr("Colocada"); break;
             }
         }
     }
