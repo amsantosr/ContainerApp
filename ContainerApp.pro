@@ -25,10 +25,10 @@ SOURCES += main.cpp\
     containersolution.cpp \
     boxestableview.cpp \
     containerproblem.cpp \
-    algorithmthread.cpp \
     dialoggenerateproblem.cpp \
     dialogaddbox.cpp \
-    boxesorderingtablemodel.cpp
+    boxesorderingtablemodel.cpp \
+    workercontainerproblemsolver.cpp
 
 HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
@@ -41,10 +41,10 @@ HEADERS  += mainwindow.h \
     containersolutiontablemodel.h \
     containerproblemtablemodel.h \
     boxestableview.h \
-    algorithmthread.h \
     dialoggenerateproblem.h \
     dialogaddbox.h \
-    boxesorderingtablemodel.h
+    boxesorderingtablemodel.h \
+    workercontainerproblemsolver.h
 
 FORMS    += mainwindow.ui \
     containerproblemform.ui \

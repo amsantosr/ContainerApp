@@ -11,6 +11,7 @@
 #include "dialogaddbox.h"
 #include "ui_dialogaddbox.h"
 #include "ui_dialogalgorithmexecution.h"
+#include "workercontainerproblemsolver.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
 #include <QTableView>
@@ -27,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
     boxesOrderingTableModel(new BoxesOrderingTableModel(this)),
-    algorithmThread(this),
     dialogAlgorithmExecution(this),
     UiAlgorithmExecution(new Ui::DialogAlgorithmExecution)
 {
@@ -75,45 +75,50 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->sliderDisplayedBoxes->setValue(containerSolution.packedBoxesCount());
     });
 
-    // connect the signals from the AlgorithmThread thread
-    algorithmThread.setArguments(&containerProblemSolver, &containerProblem, &containerSolution);
-    connect(&algorithmThread, &AlgorithmThread::started,
+    WorkerContainerProblemSolver *worker = new WorkerContainerProblemSolver;
+    worker->moveToThread(&threadWorker);
+    connect(&threadWorker, &QThread::finished, worker, &QObject::deleteLater);
+    connect(this, &MainWindow::solveProblemAsync, worker, &WorkerContainerProblemSolver::doWork);
+    connect(worker, &WorkerContainerProblemSolver::workStarts,
             &dialogAlgorithmExecution, &DialogAlgorithmExecution::show);
-    connect(&algorithmThread, &AlgorithmThread::finished,
+    connect(worker, &WorkerContainerProblemSolver::workEnds,
             &dialogAlgorithmExecution, &DialogAlgorithmExecution::hide);
-    connect(UiAlgorithmExecution->pushButtonCancel, &QPushButton::clicked,
-            &algorithmThread, &AlgorithmThread::cancel);
+    connect(UiAlgorithmExecution->pushButtonCancel, &QPushButton::clicked, [&]()
+    {
+        threadWorker.terminate();
+        threadWorker.wait();
+        dialogAlgorithmExecution.hide();
+        threadWorker.start();
+    });
+    threadWorker.start();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    threadWorker.quit();
+    threadWorker.wait();
 }
 
-void MainWindow::generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
+void MainWindow::generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
 {
     containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
 }
 
-void MainWindow::generateInstanceFromDialog()
+void MainWindow::generateProblemFromDialog()
 {
     int minimumDimension = dialogGenerateProblem->ui->spinBoxMinimumDimension->value();
     int maximumDimension = dialogGenerateProblem->ui->spinBoxMaximumDimension->value();
     int fillPercentage = dialogGenerateProblem->ui->spinBoxFillPercentage->value();
     int maximumDifferentBoxes = dialogGenerateProblem->ui->spinBoxDifferentTypes->value();
-    generateTestInstanceTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
-}
-
-void MainWindow::solveProblem()
-{
-    containerProblemSolver.solve(containerProblem, containerSolution);
+    generateProblemTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
 }
 
 void MainWindow::on_actionGenerateProblem_triggered()
 {
     if (dialogGenerateProblem->exec() == QDialog::Accepted)
     {
-        generateInstanceFromDialog();
+        generateProblemFromDialog();
     }
 }
 
@@ -124,7 +129,7 @@ void MainWindow::testGenerateInstance()
     dialogGenerateProblem->ui->spinBoxMaximumDimension->setValue(115);
     dialogGenerateProblem->ui->spinBoxFillPercentage->setValue(90);
     dialogGenerateProblem->ui->spinBoxDifferentTypes->setValue(20);
-    this->generateInstanceFromDialog();
+    this->generateProblemFromDialog();
 }
 #endif
 
@@ -142,7 +147,7 @@ void MainWindow::on_actionSolveProblem_triggered()
         QMessageBox::critical(this, tr("Error"), tr("No se han ingresado cajas para procesar."));
         return;
     }
-    algorithmThread.start();
+    emit solveProblemAsync(&containerProblem, &containerSolution);
 }
 
 void MainWindow::on_actionAddBox_triggered()

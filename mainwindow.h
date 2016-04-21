@@ -2,9 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QThread>
 #include "containerproblemgenerator.h"
 #include "containerproblemsolver.h"
-#include "algorithmthread.h"
 #include "dialogalgorithmexecution.h"
 #include "ui_dialogalgorithmexecution.h"
 
@@ -25,8 +25,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void solveProblem();
 
+signals:
+    void solveProblemAsync(ContainerProblem *problem, ContainerSolution *solution);
+
+public:
 #ifdef DEBUG_ISSUES
     void testGenerateInstance();
 #endif
@@ -59,11 +62,11 @@ private:
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
     BoxesOrderingTableModel *boxesOrderingTableModel;
-    AlgorithmThread algorithmThread;
+    QThread threadWorker;
     QDialog dialogAlgorithmExecution;
     Ui::DialogAlgorithmExecution *UiAlgorithmExecution;
-    void generateTestInstanceTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
-    void generateInstanceFromDialog();
+    void generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
+    void generateProblemFromDialog();
 };
 
 #endif // MAINWINDOW_H

@@ -13,7 +13,7 @@ signals:
     void afterDataChange();
 
 public:
-    void clear( );
+    void clear();
     int containerLengthX() const { return containerLengthXvalue; }
     int containerLengthY() const { return containerLengthYvalue; }
     int containerLengthZ() const { return containerLengthZvalue; }
@@ -26,6 +26,7 @@ public:
     bool isBoxPacked(int index) const { return boxPackedFlagValues[index]; }
     int packedVolume() const { return packedVolumeValue; }
     int boxCount() const { return boxPackedFlagValues.size(); }
+
     void setSolution(int containerLengthX, int containerLengthY, int containerLengthZ,
                      QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
                      QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
