@@ -12,7 +12,6 @@
 #include "ui_dialogaddbox.h"
 #include "ui_dialogalgorithmexecution.h"
 #include "workercontainerproblemsolver.h"
-#include "dialogaddbox.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
 #include <QTableView>
@@ -25,17 +24,18 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     dialogGenerateProblem(new DialogGenerateProblem(this)),
-    dialogAddBox(new DialogAddBox(this)),
+    dialogAddBox(this),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
     boxesOrderingTableModel(new BoxesOrderingTableModel(this)),
     dialogAlgorithmExecution(this),
-    UiAlgorithmExecution(new Ui::DialogAlgorithmExecution)
+    uiAlgorithmExecution(new Ui::DialogAlgorithmExecution)
 {
     ui->setupUi(this);
     Ui::DialogAbout uiDialogAbout;
     uiDialogAbout.setupUi(&dialogAbout);
-    UiAlgorithmExecution->setupUi(&dialogAlgorithmExecution);
+    uiDialogAddBox.setupUi(&dialogAddBox);
+    uiAlgorithmExecution->setupUi(&dialogAlgorithmExecution);
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewBoxes->setModel(containerProblemTableModel);
@@ -97,7 +97,7 @@ MainWindow::MainWindow(QWidget *parent) :
             &dialogAlgorithmExecution, &DialogAlgorithmExecution::show);
     connect(worker, &WorkerContainerProblemSolver::workEnds,
             &dialogAlgorithmExecution, &DialogAlgorithmExecution::hide);
-    connect(UiAlgorithmExecution->pushButtonCancel, &QPushButton::clicked, [&]()
+    connect(uiAlgorithmExecution->pushButtonCancel, &QPushButton::clicked, [&]()
     {
         threadWorker.terminate();
         threadWorker.wait();
@@ -166,12 +166,12 @@ void MainWindow::on_actionSolveProblem_triggered()
 
 void MainWindow::on_actionAddBox_triggered()
 {
-    if (dialogAddBox->exec() == QDialog::Accepted)
+    if (dialogAddBox.exec() == QDialog::Accepted)
     {
-        int dimensionX = dialogAddBox->ui->spinBoxDimensionX->value();
-        int dimensionY = dialogAddBox->ui->spinBoxDimensionY->value();
-        int dimensionZ = dialogAddBox->ui->spinBoxDimensionZ->value();
-        int cantidad = dialogAddBox->ui->spinBoxCantidad->value();
+        int dimensionX = uiDialogAddBox.spinBoxDimensionX->value();
+        int dimensionY = uiDialogAddBox.spinBoxDimensionY->value();
+        int dimensionZ = uiDialogAddBox.spinBoxDimensionZ->value();
+        int cantidad = uiDialogAddBox.spinBoxCantidad->value();
 
         for (int i = 0; i < cantidad; ++i)
         {
