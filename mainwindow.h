@@ -28,6 +28,7 @@ public:
 private:
     void generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateProblemFromDialog();
+    void setMaximumDisplayedBoxes(int value);
 
 signals:
     void solveProblemAsync(ContainerProblem *problem, ContainerSolution *solution);

@@ -7,9 +7,9 @@ WorkerContainerProblemSolver::WorkerContainerProblemSolver(QObject *parent)
 
 }
 
-void WorkerContainerProblemSolver::doWork(ContainerProblem *problem, ContainerSolution *solution)
+void WorkerContainerProblemSolver::solveAsync(ContainerProblem *problem, ContainerSolution *solution)
 {
-    emit workStarts();
+    emit executionStart();
     solve(*problem, *solution);
-    emit workEnds();
+    emit executionEnd();
 }

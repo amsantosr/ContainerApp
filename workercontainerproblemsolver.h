@@ -10,11 +10,11 @@ public:
     WorkerContainerProblemSolver(QObject *parent = 0);
 
 public slots:
-    void doWork(ContainerProblem *problem, ContainerSolution *solution);
+    void solveAsync(ContainerProblem *problem, ContainerSolution *solution);
 
 signals:
-    void workStarts();
-    void workEnds();
+    void executionStart();
+    void executionEnd();
 };
 
 #endif // WORKERCONTAINERPROBLEMSOLVER_H

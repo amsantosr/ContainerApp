@@ -45,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     containerSolutionTableModel->setContainerSolution(&containerSolution);
     boxesOrderingTableModel->setContainerSolution(&containerSolution);
 
-    // connect the problem to the spinboxes and back
     connect(&containerProblem, &ContainerProblem::containerLengthX_changed,
             ui->spinBoxContainerDimensionX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue));
     connect(&containerProblem, &ContainerProblem::containerLengthY_changed,
@@ -67,19 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerSolution, &ContainerSolution::setContainerLengthZ);
 
     // connect the slider to the GLContainerWidget
-    connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged, [&](int value)
-    {
-        ui->openGLWidget->setDisplayedBoxesLimit(value);
-        if (value > 0)
-        {
-            int lastBoxIndex = containerSolution.boxOrderIndex(value - 1);
-            ui->labelLastBox->setText(tr("Caja %1").arg(lastBoxIndex));
-        }
-        else
-        {
-            ui->labelLastBox->clear();
-        }
-    });
+    connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged, this, &MainWindow::setMaximumDisplayedBoxes);
 
     connect(&containerSolution, &ContainerSolution::afterDataChange, this, [&]()
     {
@@ -91,10 +78,10 @@ MainWindow::MainWindow(QWidget *parent) :
     WorkerContainerProblemSolver *worker = new WorkerContainerProblemSolver;
     worker->moveToThread(&threadWorker);
     connect(&threadWorker, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &MainWindow::solveProblemAsync, worker, &WorkerContainerProblemSolver::doWork);
-    connect(worker, &WorkerContainerProblemSolver::workStarts,
+    connect(this, &MainWindow::solveProblemAsync, worker, &WorkerContainerProblemSolver::solveAsync);
+    connect(worker, &WorkerContainerProblemSolver::executionStart,
             &dialogAlgorithmExecution, &QDialog::show);
-    connect(worker, &WorkerContainerProblemSolver::workEnds,
+    connect(worker, &WorkerContainerProblemSolver::executionEnd,
             &dialogAlgorithmExecution, &QDialog::hide);
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [&]()
     {
@@ -125,6 +112,20 @@ void MainWindow::generateProblemFromDialog()
     int fillPercentage = uiDialogGenerateProblem.spinBoxFillPercentage->value();
     int maximumDifferentBoxes = uiDialogGenerateProblem.spinBoxDifferentTypes->value();
     generateProblemTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
+}
+
+void MainWindow::setMaximumDisplayedBoxes(int value)
+{
+    ui->openGLWidget->setDisplayedBoxesLimit(value);
+    if (value > 0)
+    {
+        int lastBoxIndex = containerSolution.boxOrderIndex(value - 1);
+        ui->labelLastBox->setText(tr("Caja %1").arg(lastBoxIndex));
+    }
+    else
+    {
+        ui->labelLastBox->clear();
+    }
 }
 
 void MainWindow::on_actionGenerateProblem_triggered()
@@ -331,7 +332,7 @@ void MainWindow::on_actionNewProblem_triggered()
 {
     containerProblem.clear();
     containerSolution.clear();
-    ui->openGLWidget->resetView();
+    //ui->openGLWidget->resetView();
 }
 
 void MainWindow::on_actionDeleteBox_triggered()
