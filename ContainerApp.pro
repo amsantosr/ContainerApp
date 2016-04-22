@@ -19,7 +19,6 @@ SOURCES += main.cpp\
     containerproblemgenerator.cpp \
     containerproblemsolver.cpp \
     glcontainerwidget.cpp \
-    containerproblemform.cpp \
     containersolutiontablemodel.cpp \
     containerproblemtablemodel.cpp \
     containersolution.cpp \
@@ -35,7 +34,6 @@ HEADERS  += mainwindow.h \
     containerproblemsolver.h \
     containersolution.h \
     glcontainerwidget.h \
-    containerproblemform.h \
     containersolutiontablemodel.h \
     containerproblemtablemodel.h \
     boxestableview.h \
@@ -43,7 +41,6 @@ HEADERS  += mainwindow.h \
     workercontainerproblemsolver.h
 
 FORMS    += mainwindow.ui \
-    containerproblemform.ui \
     dialogaddbox.ui \
     dialoggenerateproblem.ui \
     dialogalgorithmexecution.ui \

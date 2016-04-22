@@ -1,14 +1,12 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ui_dialoggenerateproblem.h"
+#include "ui_dialogabout.h"
 #include "Pisinger/testcont.h"
 #include "glcontainerwidget.h"
 #include "containerproblemtablemodel.h"
 #include "containersolutiontablemodel.h"
 #include "boxesorderingtablemodel.h"
-#include "ui_containerproblemform.h"
-#include "ui_dialogabout.h"
-#include "ui_dialogaddbox.h"
 #include "workercontainerproblemsolver.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
