@@ -1,6 +1,5 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "dialoggenerateproblem.h"
 #include "ui_dialoggenerateproblem.h"
 #include "Pisinger/testcont.h"
 #include "glcontainerwidget.h"
@@ -10,7 +9,6 @@
 #include "ui_containerproblemform.h"
 #include "ui_dialogabout.h"
 #include "ui_dialogaddbox.h"
-#include "ui_dialogalgorithmexecution.h"
 #include "workercontainerproblemsolver.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
@@ -23,19 +21,20 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    dialogGenerateProblem(new DialogGenerateProblem(this)),
+    dialogGenerateProblem(this),
     dialogAddBox(this),
+    dialogAlgorithmExecution(this),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
-    boxesOrderingTableModel(new BoxesOrderingTableModel(this)),
-    dialogAlgorithmExecution(this),
-    uiAlgorithmExecution(new Ui::DialogAlgorithmExecution)
+    boxesOrderingTableModel(new BoxesOrderingTableModel(this))
 {
     ui->setupUi(this);
     Ui::DialogAbout uiDialogAbout;
     uiDialogAbout.setupUi(&dialogAbout);
     uiDialogAddBox.setupUi(&dialogAddBox);
-    uiAlgorithmExecution->setupUi(&dialogAlgorithmExecution);
+    uiDialogAlgorithmExecution.setupUi(&dialogAlgorithmExecution);
+    uiDialogGenerateProblem.setupUi(&dialogGenerateProblem);
+
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewBoxes->setModel(containerProblemTableModel);
@@ -94,10 +93,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&threadWorker, &QThread::finished, worker, &QObject::deleteLater);
     connect(this, &MainWindow::solveProblemAsync, worker, &WorkerContainerProblemSolver::doWork);
     connect(worker, &WorkerContainerProblemSolver::workStarts,
-            &dialogAlgorithmExecution, &DialogAlgorithmExecution::show);
+            &dialogAlgorithmExecution, &QDialog::show);
     connect(worker, &WorkerContainerProblemSolver::workEnds,
-            &dialogAlgorithmExecution, &DialogAlgorithmExecution::hide);
-    connect(uiAlgorithmExecution->pushButtonCancel, &QPushButton::clicked, [&]()
+            &dialogAlgorithmExecution, &QDialog::hide);
+    connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [&]()
     {
         threadWorker.terminate();
         threadWorker.wait();
@@ -121,16 +120,16 @@ void MainWindow::generateProblemTableView(int minLength, int maxLength, int fill
 
 void MainWindow::generateProblemFromDialog()
 {
-    int minimumDimension = dialogGenerateProblem->ui->spinBoxMinimumDimension->value();
-    int maximumDimension = dialogGenerateProblem->ui->spinBoxMaximumDimension->value();
-    int fillPercentage = dialogGenerateProblem->ui->spinBoxFillPercentage->value();
-    int maximumDifferentBoxes = dialogGenerateProblem->ui->spinBoxDifferentTypes->value();
+    int minimumDimension = uiDialogGenerateProblem.spinBoxMinimumDimension->value();
+    int maximumDimension = uiDialogGenerateProblem.spinBoxMaximumDimension->value();
+    int fillPercentage = uiDialogGenerateProblem.spinBoxFillPercentage->value();
+    int maximumDifferentBoxes = uiDialogGenerateProblem.spinBoxDifferentTypes->value();
     generateProblemTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
 }
 
 void MainWindow::on_actionGenerateProblem_triggered()
 {
-    if (dialogGenerateProblem->exec() == QDialog::Accepted)
+    if (dialogGenerateProblem.exec() == QDialog::Accepted)
     {
         generateProblemFromDialog();
     }
@@ -139,10 +138,10 @@ void MainWindow::on_actionGenerateProblem_triggered()
 #ifdef DEBUG_ISSUES
 void MainWindow::testGenerateProblem()
 {
-    dialogGenerateProblem->ui->spinBoxMinimumDimension->setValue(25);
-    dialogGenerateProblem->ui->spinBoxMaximumDimension->setValue(115);
-    dialogGenerateProblem->ui->spinBoxFillPercentage->setValue(90);
-    dialogGenerateProblem->ui->spinBoxDifferentTypes->setValue(20);
+    uiDialogGenerateProblem.spinBoxMinimumDimension->setValue(25);
+    uiDialogGenerateProblem.spinBoxMaximumDimension->setValue(115);
+    uiDialogGenerateProblem.spinBoxFillPercentage->setValue(90);
+    uiDialogGenerateProblem.spinBoxDifferentTypes->setValue(20);
     this->generateProblemFromDialog();
 }
 #endif

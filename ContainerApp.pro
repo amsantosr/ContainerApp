@@ -25,7 +25,6 @@ SOURCES += main.cpp\
     containersolution.cpp \
     boxestableview.cpp \
     containerproblem.cpp \
-    dialoggenerateproblem.cpp \
     boxesorderingtablemodel.cpp \
     workercontainerproblemsolver.cpp
 
@@ -40,7 +39,6 @@ HEADERS  += mainwindow.h \
     containersolutiontablemodel.h \
     containerproblemtablemodel.h \
     boxestableview.h \
-    dialoggenerateproblem.h \
     boxesorderingtablemodel.h \
     workercontainerproblemsolver.h
 

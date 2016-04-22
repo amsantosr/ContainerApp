@@ -5,15 +5,14 @@
 #include <QThread>
 #include "containerproblemgenerator.h"
 #include "containerproblemsolver.h"
-#include "dialogalgorithmexecution.h"
 #include "ui_dialogalgorithmexecution.h"
 #include "ui_dialogaddbox.h"
+#include "ui_dialoggenerateproblem.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class DialogGenerateProblem;
 class ContainerProblemTableModel;
 class ContainerSolutionTableModel;
 class BoxesOrderingTableModel;
@@ -59,9 +58,12 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    DialogGenerateProblem *dialogGenerateProblem;
+    QDialog dialogGenerateProblem;
+    Ui::DialogGenerateProblem uiDialogGenerateProblem;
     QDialog dialogAddBox;
     Ui::DialogAddBox uiDialogAddBox;
+    QDialog dialogAlgorithmExecution;
+    Ui::DialogAlgorithmExecution uiDialogAlgorithmExecution;
     ContainerProblemGenerator containerProblemGenerator;
     ContainerProblemSolver containerProblemSolver;
     ContainerProblem containerProblem;
@@ -70,8 +72,6 @@ private:
     ContainerSolutionTableModel *containerSolutionTableModel;
     BoxesOrderingTableModel *boxesOrderingTableModel;
     QThread threadWorker;
-    QDialog dialogAlgorithmExecution;
-    Ui::DialogAlgorithmExecution *uiAlgorithmExecution;
     QDialog dialogAbout;
 };
 

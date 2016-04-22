@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     w.show();
 #ifdef DEBUG_ISSUES
     a.processEvents();
-    //w.testGenerateInstance();
+    w.testGenerateProblem();
 #endif
     return a.exec();
 }
