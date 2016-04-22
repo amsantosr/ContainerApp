@@ -8,10 +8,11 @@
 #include "containersolutiontablemodel.h"
 #include "boxesorderingtablemodel.h"
 #include "ui_containerproblemform.h"
-#include "dialogaddbox.h"
+#include "ui_dialogabout.h"
 #include "ui_dialogaddbox.h"
 #include "ui_dialogalgorithmexecution.h"
 #include "workercontainerproblemsolver.h"
+#include "dialogaddbox.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
 #include <QTableView>
@@ -32,10 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     UiAlgorithmExecution(new Ui::DialogAlgorithmExecution)
 {
     ui->setupUi(this);
+    Ui::DialogAbout uiDialogAbout;
+    uiDialogAbout.setupUi(&dialogAbout);
     UiAlgorithmExecution->setupUi(&dialogAlgorithmExecution);
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
-    ui->tableViewCajas->setModel(containerProblemTableModel);
+    ui->tableViewBoxes->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
     ui->tableViewOrdering->setModel(boxesOrderingTableModel);
     ui->openGLWidget->setContainerSolution(containerSolution);
@@ -65,8 +68,19 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerSolution, &ContainerSolution::setContainerLengthZ);
 
     // connect the slider to the GLContainerWidget
-    connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged,
-            ui->openGLWidget, &GLContainerWidget::setDisplayedBoxesLimit);
+    connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged, [&](int value)
+    {
+        ui->openGLWidget->setDisplayedBoxesLimit(value);
+        if (value > 0)
+        {
+            int lastBoxIndex = containerSolution.boxOrderIndex(value - 1);
+            ui->labelLastBox->setText(tr("Caja %1").arg(lastBoxIndex));
+        }
+        else
+        {
+            ui->labelLastBox->clear();
+        }
+    });
 
     connect(&containerSolution, &ContainerSolution::afterDataChange, this, [&]()
     {
@@ -123,7 +137,7 @@ void MainWindow::on_actionGenerateProblem_triggered()
 }
 
 #ifdef DEBUG_ISSUES
-void MainWindow::testGenerateInstance()
+void MainWindow::testGenerateProblem()
 {
     dialogGenerateProblem->ui->spinBoxMinimumDimension->setValue(25);
     dialogGenerateProblem->ui->spinBoxMaximumDimension->setValue(115);
@@ -323,5 +337,10 @@ void MainWindow::on_actionNewProblem_triggered()
 
 void MainWindow::on_actionDeleteBox_triggered()
 {
-    containerProblem.removeBoxes(ui->tableViewCajas->selectedIndexes());
+    containerProblem.removeBoxes(ui->tableViewBoxes->selectedIndexes());
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    dialogAbout.show();
 }

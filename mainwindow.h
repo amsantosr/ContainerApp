@@ -26,12 +26,16 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private:
+    void generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
+    void generateProblemFromDialog();
+
 signals:
     void solveProblemAsync(ContainerProblem *problem, ContainerSolution *solution);
 
 public:
 #ifdef DEBUG_ISSUES
-    void testGenerateInstance();
+    void testGenerateProblem();
 #endif
 
 private slots:
@@ -51,6 +55,8 @@ private slots:
 
     void on_actionDeleteBox_triggered();
 
+    void on_actionAbout_triggered();
+
 private:
     Ui::MainWindow *ui;
     DialogGenerateProblem *dialogGenerateProblem;
@@ -65,8 +71,7 @@ private:
     QThread threadWorker;
     QDialog dialogAlgorithmExecution;
     Ui::DialogAlgorithmExecution *UiAlgorithmExecution;
-    void generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
-    void generateProblemFromDialog();
+    QDialog dialogAbout;
 };
 
 #endif // MAINWINDOW_H

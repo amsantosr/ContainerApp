@@ -56,9 +56,9 @@ QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation ori
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             switch (section) {
-            case 0: return tr("X");
-            case 1: return tr("Y");
-            case 2: return tr("Z");
+            case 0: return tr("Dim X");
+            case 1: return tr("Dim Y");
+            case 2: return tr("Dim Z");
             }
         }
     }

@@ -42,7 +42,7 @@
               </property>
               <property name="icon">
                <iconset resource="Resources.qrc">
-                <normaloff>:/icons/Add.png</normaloff>:/icons/Add.png</iconset>
+                <normaloff>:/Icons/Add.png</normaloff>:/Icons/Add.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -59,7 +59,7 @@
               </property>
               <property name="icon">
                <iconset resource="Resources.qrc">
-                <normaloff>:/icons/Minus.png</normaloff>:/icons/Minus.png</iconset>
+                <normaloff>:/Icons/Minus.png</normaloff>:/Icons/Minus.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -85,7 +85,7 @@
            </layout>
           </item>
           <item>
-           <widget class="BoxesTableView" name="tableViewCajas">
+           <widget class="BoxesTableView" name="tableViewBoxes">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -231,9 +231,19 @@
        </widget>
       </widget>
       <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,0">
         <item>
          <widget class="GLContainerWidget" name="openGLWidget"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelLastBox">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QSlider" name="sliderDisplayedBoxes">
@@ -257,6 +267,13 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu_Ayuda">
+    <property name="title">
+     <string>&amp;Ayuda</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menu_Ayuda"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -277,16 +294,19 @@
   <action name="actionGenerateProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/Generate-tables-icon.png</normaloff>:/icons/Generate-tables-icon.png</iconset>
+     <normaloff>:/Icons/Generate-tables-icon.png</normaloff>:/Icons/Generate-tables-icon.png</iconset>
    </property>
    <property name="text">
     <string>Generar Instancia de Prueba</string>
+   </property>
+   <property name="toolTip">
+    <string>Generar datos de problema</string>
    </property>
   </action>
   <action name="actionSolveProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/Brown-Container-32.png</normaloff>:/icons/Brown-Container-32.png</iconset>
+     <normaloff>:/Icons/Brown-Container-32.png</normaloff>:/Icons/Brown-Container-32.png</iconset>
    </property>
    <property name="text">
     <string>Resolver problema</string>
@@ -295,7 +315,7 @@
   <action name="actionAddBox">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/Add.png</normaloff>:/icons/Add.png</iconset>
+     <normaloff>:/Icons/Add.png</normaloff>:/Icons/Add.png</iconset>
    </property>
    <property name="text">
     <string>Añadir caja</string>
@@ -304,7 +324,7 @@
   <action name="actionSaveProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/Floppy.png</normaloff>:/icons/Floppy.png</iconset>
+     <normaloff>:/Icons/Floppy.png</normaloff>:/Icons/Floppy.png</iconset>
    </property>
    <property name="text">
     <string>Guardar datos</string>
@@ -316,7 +336,7 @@
   <action name="actionOpenProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/OpenFile.png</normaloff>:/icons/OpenFile.png</iconset>
+     <normaloff>:/Icons/OpenFile.png</normaloff>:/Icons/OpenFile.png</iconset>
    </property>
    <property name="text">
     <string>Abrir problema</string>
@@ -325,7 +345,7 @@
   <action name="actionSaveSolution">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/Drive-Floppy-icon.png</normaloff>:/icons/Drive-Floppy-icon.png</iconset>
+     <normaloff>:/Icons/Drive-Floppy-icon.png</normaloff>:/Icons/Drive-Floppy-icon.png</iconset>
    </property>
    <property name="text">
     <string>Guardar solución</string>
@@ -334,7 +354,7 @@
   <action name="actionNewProblem">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/NewFileIcon.png</normaloff>:/icons/NewFileIcon.png</iconset>
+     <normaloff>:/Icons/NewFileIcon.png</normaloff>:/Icons/NewFileIcon.png</iconset>
    </property>
    <property name="text">
     <string>Nuevo problema</string>
@@ -343,13 +363,21 @@
   <action name="actionDeleteBox">
    <property name="icon">
     <iconset resource="Resources.qrc">
-     <normaloff>:/icons/Minus.png</normaloff>:/icons/Minus.png</iconset>
+     <normaloff>:/Icons/Minus.png</normaloff>:/Icons/Minus.png</iconset>
    </property>
    <property name="text">
     <string>Eliminar caja</string>
    </property>
    <property name="toolTip">
     <string>Eliminar la caja seleccionada</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>&amp;Acerca de...</string>
+   </property>
+   <property name="toolTip">
+    <string>Acerca de...</string>
    </property>
   </action>
  </widget>

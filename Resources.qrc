@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/icons">
+    <qresource prefix="/Icons">
         <file>Brown-Container-32.png</file>
         <file>Generate-tables-icon.png</file>
         <file>3d_modelling.png</file>
@@ -10,5 +10,8 @@
         <file>NewFileIcon.png</file>
         <file>Minus.png</file>
         <file>Add.png</file>
+    </qresource>
+    <qresource prefix="/Images">
+        <file>Container.png</file>
     </qresource>
 </RCC>

@@ -50,7 +50,8 @@ FORMS    += mainwindow.ui \
     containerproblemform.ui \
     dialogaddbox.ui \
     dialoggenerateproblem.ui \
-    dialogalgorithmexecution.ui
+    dialogalgorithmexecution.ui \
+    dialogabout.ui
 
 LIBS += -lglut -lGLU
 
