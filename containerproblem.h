@@ -9,8 +9,6 @@ class ContainerProblem : public QObject
 {
     Q_OBJECT
 public:
-    ContainerProblem() {}
-    ContainerProblem(const ContainerProblem &other);
     int containerLengthX() const { return containerLengthXValue; }
     int containerLengthY() const { return containerLengthYValue; }
     int containerLengthZ() const { return containerLengthZValue; }

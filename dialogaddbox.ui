@@ -34,29 +34,15 @@
     <rect>
      <x>30</x>
      <y>30</y>
-     <width>183</width>
+     <width>193</width>
      <height>95</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>Dimensión en X:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QSpinBox" name="spinBoxDimensionX">
-      <property name="maximum">
-       <number>9999</number>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Dimensión en Y:</string>
+       <string>Alto:</string>
       </property>
      </widget>
     </item>
@@ -67,10 +53,24 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_3">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>Dimensión en Z:</string>
+       <string>Largo:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QSpinBox" name="spinBoxDimensionX">
+      <property name="maximum">
+       <number>9999</number>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Ancho:</string>
       </property>
      </widget>
     </item>
@@ -78,6 +78,27 @@
      <widget class="QSpinBox" name="spinBoxDimensionZ">
       <property name="maximum">
        <number>9999</number>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="labelUnit1">
+      <property name="text">
+       <string>unit</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLabel" name="labelUnit2">
+      <property name="text">
+       <string>unit</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="labelUnit3">
+      <property name="text">
+       <string>unit</string>
       </property>
      </widget>
     </item>

@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogGenerateProblem(this),
     dialogAddBox(this),
     dialogAlgorithmExecution(this),
+    dialogMeasurementSystem(this),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
     boxesOrderingTableModel(new BoxesOrderingTableModel(this))
@@ -32,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     uiDialogAddBox.setupUi(&dialogAddBox);
     uiDialogAlgorithmExecution.setupUi(&dialogAlgorithmExecution);
     uiDialogGenerateProblem.setupUi(&dialogGenerateProblem);
+    uiDialogMeasurementSystem.setupUi(&dialogMeasurementSystem);
 
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
@@ -42,6 +44,12 @@ MainWindow::MainWindow(QWidget *parent) :
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerSolutionTableModel->setContainerSolution(&containerSolution);
     boxesOrderingTableModel->setContainerSolution(&containerSolution);
+    connect(uiDialogMeasurementSystem.buttonBox, &QDialogButtonBox::accepted, [&]
+    {
+        if (uiDialogMeasurementSystem.radioButtonCentimeters->isChecked() ||
+                uiDialogMeasurementSystem.radioButtonInches->isChecked())
+            dialogMeasurementSystem.accept();
+    });
 
     connect(&containerProblem, &ContainerProblem::containerLengthX_changed,
             ui->spinBoxContainerDimensionX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue));
@@ -62,6 +70,16 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerSolution, &ContainerSolution::setContainerLengthY);
     connect(&containerProblem, &ContainerProblem::containerLengthZ_changed,
             &containerSolution, &ContainerSolution::setContainerLengthZ);
+
+    listLabelsUnits << uiDialogAddBox.labelUnit1
+                    << uiDialogAddBox.labelUnit2
+                    << uiDialogAddBox.labelUnit3
+                    << uiDialogGenerateProblem.labelUnit1
+                    << uiDialogGenerateProblem.labelUnit2
+                    << uiDialogGenerateProblem.labelUnit3
+                    << uiDialogGenerateProblem.labelUnit4;
+
+    setMeasurementUnit("cm.");
 
     // connect the slider to the GLContainerWidget
     connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged, this, &MainWindow::setMaximumDisplayedBoxes);
@@ -123,6 +141,14 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     else
     {
         ui->labelLastBox->clear();
+    }
+}
+
+void MainWindow::setMeasurementUnit(QString text)
+{
+    foreach (QLabel *label, listLabelsUnits)
+    {
+        label->setText(text);
     }
 }
 
@@ -330,7 +356,6 @@ void MainWindow::on_actionNewProblem_triggered()
 {
     containerProblem.clear();
     containerSolution.clear();
-    //ui->openGLWidget->resetView();
 }
 
 void MainWindow::on_actionDeleteBox_triggered()
@@ -341,4 +366,19 @@ void MainWindow::on_actionDeleteBox_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     dialogAbout.show();
+}
+
+void MainWindow::on_actionSetMeasurementSystem_triggered()
+{
+    if (dialogMeasurementSystem.exec() == QDialog::Accepted)
+    {
+        if (uiDialogMeasurementSystem.radioButtonCentimeters->isChecked())
+        {
+            setMeasurementUnit("cm.");
+        }
+        else if (uiDialogMeasurementSystem.radioButtonInches->isChecked())
+        {
+            setMeasurementUnit("in.");
+        }
+    }
 }

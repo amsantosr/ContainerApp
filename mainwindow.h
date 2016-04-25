@@ -3,11 +3,13 @@
 
 #include <QMainWindow>
 #include <QThread>
+#include <QList>
 #include "containerproblemgenerator.h"
 #include "containerproblemsolver.h"
 #include "ui_dialogalgorithmexecution.h"
 #include "ui_dialogaddbox.h"
 #include "ui_dialoggenerateproblem.h"
+#include "ui_dialogmeasurementsystem.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +31,7 @@ private:
     void generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateProblemFromDialog();
     void setMaximumDisplayedBoxes(int value);
+    void setMeasurementUnit(QString text);
 
 signals:
     void solveProblemAsync(ContainerProblem *problem, ContainerSolution *solution);
@@ -57,6 +60,8 @@ private slots:
 
     void on_actionAbout_triggered();
 
+    void on_actionSetMeasurementSystem_triggered();
+
 private:
     Ui::MainWindow *ui;
     QDialog dialogGenerateProblem;
@@ -65,6 +70,9 @@ private:
     Ui::DialogAddBox uiDialogAddBox;
     QDialog dialogAlgorithmExecution;
     Ui::DialogAlgorithmExecution uiDialogAlgorithmExecution;
+    QDialog dialogMeasurementSystem;
+    Ui::DialogMeasurementSystem uiDialogMeasurementSystem;
+
     ContainerProblemGenerator containerProblemGenerator;
     ContainerProblemSolver containerProblemSolver;
     ContainerProblem containerProblem;
@@ -72,8 +80,11 @@ private:
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
     BoxesOrderingTableModel *boxesOrderingTableModel;
+
     QThread threadWorker;
     QDialog dialogAbout;
+
+    QList<QLabel*> listLabelsUnits;
 };
 
 #endif // MAINWINDOW_H

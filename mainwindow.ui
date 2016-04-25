@@ -247,6 +247,9 @@
         </item>
         <item>
          <widget class="QSlider" name="sliderDisplayedBoxes">
+          <property name="maximum">
+           <number>0</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -288,6 +291,7 @@
    <addaction name="actionOpenProblem"/>
    <addaction name="actionSaveProblem"/>
    <addaction name="actionSaveSolution"/>
+   <addaction name="actionSetMeasurementSystem"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -378,6 +382,15 @@
    </property>
    <property name="toolTip">
     <string>Acerca de...</string>
+   </property>
+  </action>
+  <action name="actionSetMeasurementSystem">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Icons/Gear.png</normaloff>:/Icons/Gear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Establecer sistema de unidades</string>
    </property>
   </action>
  </widget>

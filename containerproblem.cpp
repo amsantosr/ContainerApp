@@ -1,15 +1,5 @@
 #include "containerproblem.h"
 
-ContainerProblem::ContainerProblem(const ContainerProblem &other)
-{
-    containerLengthXValue = other.containerLengthXValue;
-    containerLengthYValue = other.containerLengthYValue;
-    containerLengthZValue = other.containerLengthZValue;
-    boxLengthXValues = other.boxLengthXValues;
-    boxLengthYValues = other.boxLengthYValues;
-    boxLengthZValues = other.boxLengthZValues;
-}
-
 void ContainerProblem::removeBoxes(QModelIndexList indexes)
 {
     if (!indexes.empty())

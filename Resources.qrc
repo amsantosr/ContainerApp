@@ -10,6 +10,7 @@
         <file>NewFileIcon.png</file>
         <file>Minus.png</file>
         <file>Add.png</file>
+        <file>Gear.png</file>
     </qresource>
     <qresource prefix="/Images">
         <file>Container.png</file>

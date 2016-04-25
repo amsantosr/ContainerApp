@@ -44,7 +44,8 @@ FORMS    += mainwindow.ui \
     dialogaddbox.ui \
     dialoggenerateproblem.ui \
     dialogalgorithmexecution.ui \
-    dialogabout.ui
+    dialogabout.ui \
+    dialogmeasurementsystem.ui
 
 LIBS += -lglut -lGLU
 
