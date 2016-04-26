@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
                     << uiDialogGenerateProblem.labelUnit3
                     << uiDialogGenerateProblem.labelUnit4;
 
-    setMeasurementUnit("cm.");
+    setUnitLabel("cm.");
 
     // connect the slider to the GLContainerWidget
     connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged, this, &MainWindow::setMaximumDisplayedBoxes);
@@ -144,7 +144,7 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     }
 }
 
-void MainWindow::setMeasurementUnit(QString text)
+void MainWindow::setUnitLabel(QString text)
 {
     foreach (QLabel *label, listLabelsUnits)
     {
@@ -206,7 +206,10 @@ void MainWindow::on_actionAddBox_triggered()
 
 void MainWindow::on_actionSaveProblem_triggered()
 {
-    QString filename = QFileDialog::getSaveFileName(this, tr("Guardar archivo"));
+    QString filename = QFileDialog::getSaveFileName(this,
+                                                    tr("Guardar archivo"),
+                                                    QString(),
+                                                    "Problema de planificación de carga (*.xml)");
     if (!filename.isNull())
     {
         QFile file(filename);
@@ -216,6 +219,7 @@ void MainWindow::on_actionSaveProblem_triggered()
             stream.setAutoFormatting(true);
             stream.writeStartDocument();
             stream.writeStartElement("ContainerProblem");
+            stream.writeAttribute("UnitLabel", containerProblem.unitLabel());
 
             stream.writeStartElement("Container");
             QString dimensionX = QString::number(ui->spinBoxContainerDimensionX->value());
@@ -256,7 +260,17 @@ void MainWindow::on_actionOpenProblem_triggered()
             {
                 if (stream.readNextStartElement())
                 {
-                    if (stream.name() == "Container")
+                    if (stream.name() == "ContainerProblem")
+                    {
+                        foreach (QXmlStreamAttribute attribute, stream.attributes())
+                        {
+                            if (attribute.name() == "UnitLabel")
+                            {
+                                setUnitLabel(attribute.value());
+                            }
+                        }
+                    }
+                    else if (stream.name() == "Container")
                     {
                         foreach (QXmlStreamAttribute attribute, stream.attributes())
                         {
@@ -374,11 +388,11 @@ void MainWindow::on_actionSetMeasurementSystem_triggered()
     {
         if (uiDialogMeasurementSystem.radioButtonCentimeters->isChecked())
         {
-            setMeasurementUnit("cm.");
+            setUnitLabel("cm.");
         }
         else if (uiDialogMeasurementSystem.radioButtonInches->isChecked())
         {
-            setMeasurementUnit("in.");
+            setUnitLabel("in.");
         }
     }
 }

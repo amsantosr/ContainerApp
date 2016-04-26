@@ -131,6 +131,12 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>spinBoxDimensionX</tabstop>
+  <tabstop>spinBoxDimensionY</tabstop>
+  <tabstop>spinBoxDimensionZ</tabstop>
+  <tabstop>spinBoxCantidad</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

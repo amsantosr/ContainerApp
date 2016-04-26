@@ -31,7 +31,7 @@ private:
     void generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateProblemFromDialog();
     void setMaximumDisplayedBoxes(int value);
-    void setMeasurementUnit(QString text);
+    void setUnitLabel(QString text);
 
 signals:
     void solveProblemAsync(ContainerProblem *problem, ContainerSolution *solution);
