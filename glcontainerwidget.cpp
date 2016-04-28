@@ -4,7 +4,7 @@
 #include <QMouseEvent>
 
 GLContainerWidget::GLContainerWidget(QWidget *parent)
-    : QOpenGLWidget(parent), containerSolution(0)
+    : QOpenGLWidget(parent), containerProblem(0), containerSolution(0)
 {
     resetView();
     setCursor(Qt::OpenHandCursor);
@@ -14,11 +14,31 @@ GLContainerWidget::~GLContainerWidget()
 {
 }
 
-void GLContainerWidget::setContainerSolution(ContainerSolution &solution)
+void GLContainerWidget::setContainerProblem(ContainerProblem *problem)
 {
-    containerSolution = &solution;
-    connect(containerSolution, &ContainerSolution::afterDataChange,
-            this, static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update));
+    if (containerProblem != problem)
+    {
+        std::swap(containerProblem, problem);
+        if (containerProblem != 0)
+        {
+            auto functionUpdate = static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update);
+            connect(containerProblem, &ContainerProblem::containerLengthX_changed, this, functionUpdate);
+            connect(containerProblem, &ContainerProblem::containerLengthY_changed, this, functionUpdate);
+            connect(containerProblem, &ContainerProblem::containerLengthZ_changed, this, functionUpdate);
+        }
+        if (problem != 0)
+            disconnect(problem, 0, this, 0);
+    }
+}
+
+void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
+{
+    if (containerSolution != solution)
+    {
+        std::swap(containerSolution, solution);
+        connect(containerSolution, &ContainerSolution::afterDataChange,
+                this, static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update));
+    }
 }
 
 void GLContainerWidget::initializeGL()
@@ -50,15 +70,15 @@ void GLContainerWidget::paintGL()
         glRotatef(rotationX, 1.0, 0.0, 0.0);
         glRotatef(rotationY, 0.0, 1.0, 0.0);
 
-        int lengthX = containerSolution->containerLengthX();
-        int lengthY = containerSolution->containerLengthY();
-        int lengthZ = containerSolution->containerLengthZ();
+        int lengthX = containerProblem->containerLengthX();
+        int lengthY = containerProblem->containerLengthY();
+        int lengthZ = containerProblem->containerLengthZ();
 
         if (lengthX > 0 && lengthY > 0 && lengthZ > 0)
         {
-            int midX = containerSolution->containerLengthX() / 2;
-            int midY = containerSolution->containerLengthY() / 2;
-            int midZ = containerSolution->containerLengthZ() / 2;
+            int midX = lengthX / 2;
+            int midY = lengthY / 2;
+            int midZ = lengthZ / 2;
             glTranslatef(-midX, -midY, -midZ);
             drawContainer();
         }
@@ -192,9 +212,9 @@ void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)
 void GLContainerWidget::drawContainer()
 {
     int x1 = 0, y1 = 0, z1 = 0;
-    int x2 = containerSolution->containerLengthX();
-    int y2 = containerSolution->containerLengthY();
-    int z2 = containerSolution->containerLengthZ();
+    int x2 = containerProblem->containerLengthX();
+    int y2 = containerProblem->containerLengthY();
+    int z2 = containerProblem->containerLengthZ();
 
     glColor3i(0, INT_MAX, 0);
     glDisable(GL_LIGHTING);

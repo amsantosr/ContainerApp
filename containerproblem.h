@@ -9,10 +9,11 @@ class ContainerProblem : public QObject
 {
     Q_OBJECT
 public:
+    ContainerProblem(QObject *parent = 0);
     int containerLengthX() const { return containerLengthXValue; }
     int containerLengthY() const { return containerLengthYValue; }
     int containerLengthZ() const { return containerLengthZValue; }
-    QString unitLabel() const { return unitLabelValue; }
+    QString textUnit() const { return textUnitValue; }
     int boxCount() const { return boxLengthXValues.size(); }
     int boxLengthX(int index) const { return boxLengthXValues[index]; }
     int boxLengthY(int index) const { return boxLengthYValues[index]; }
@@ -26,7 +27,7 @@ signals:
     void containerLengthX_changed(int value);
     void containerLengthY_changed(int value);
     void containerLengthZ_changed(int value);
-    void unitLabel_changed(QString value);
+    void textUnit_changed(QString value);
     void beforeAddBox();
     void afterAddBox();
     void beforeBoxCountChanged();
@@ -35,12 +36,10 @@ signals:
 public:
     void addBox(int lengthX, int lengthY, int lengthZ);
     void clear();
-
-public slots:
     void setContainerLengthX(int value);
     void setContainerLengthY(int value);
     void setContainerLengthZ(int value);
-    void unitLabelValue(QString value);
+    void setTextUnit(QString value);
 
 private:
     int containerLengthXValue;
@@ -49,7 +48,7 @@ private:
     QVector<int> boxLengthXValues;
     QVector<int> boxLengthYValues;
     QVector<int> boxLengthZValues;
-    QString unitLabelValue;
+    QString textUnitValue;
 };
 
 #endif // CONTAINERPROBLEM_H

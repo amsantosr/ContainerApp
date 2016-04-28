@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     boxestableview.cpp \
     containerproblem.cpp \
     boxesorderingtablemodel.cpp \
-    workercontainerproblemsolver.cpp
+    containerxmlparser.cpp \
+    containerproblemsolverthread.cpp
 
 HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
@@ -38,7 +39,8 @@ HEADERS  += mainwindow.h \
     containerproblemtablemodel.h \
     boxestableview.h \
     boxesorderingtablemodel.h \
-    workercontainerproblemsolver.h
+    containerxmlparser.h \
+    containerproblemsolverthread.h
 
 FORMS    += mainwindow.ui \
     dialogaddbox.ui \

@@ -1,11 +1,12 @@
 #include "containerproblem.h"
 
-ContainerProblem::ContainerProblem()
+ContainerProblem::ContainerProblem(QObject *parent)
+    : QObject(parent),
+      containerLengthXValue(0),
+      containerLengthYValue(0),
+      containerLengthZValue(0),
+      textUnitValue("cm.")
 {
-    containerLengthXValue = 0;
-    containerLengthYValue = 0;
-    containerLengthZValue = 0;
-    unitLabelValue = "cm.";
 }
 
 void ContainerProblem::removeBoxes(QModelIndexList indexes)
@@ -87,11 +88,11 @@ void ContainerProblem::setContainerLengthZ(int value)
     }
 }
 
-void ContainerProblem::unitLabelValue(QString value)
+void ContainerProblem::setTextUnit(QString value)
 {
-    if (unitLabelValue != value)
+    if (textUnitValue != value)
     {
-        unitLabelValue = value;
-        emit unitLabel_changed(value);
+        textUnitValue = value;
+        emit textUnit_changed(value);
     }
 }

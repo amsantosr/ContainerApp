@@ -5,7 +5,8 @@
 #include <QThread>
 #include <QList>
 #include "containerproblemgenerator.h"
-#include "containerproblemsolver.h"
+#include "containerxmlparser.h"
+#include "containerproblemsolverthread.h"
 #include "ui_dialogalgorithmexecution.h"
 #include "ui_dialogaddbox.h"
 #include "ui_dialoggenerateproblem.h"
@@ -31,10 +32,7 @@ private:
     void generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateProblemFromDialog();
     void setMaximumDisplayedBoxes(int value);
-    void setUnitLabel(QString text);
-
-signals:
-    void solveProblemAsync(ContainerProblem *problem, ContainerSolution *solution);
+    void setTextUnit(QString text);
 
 public:
 #ifdef DEBUG_ISSUES
@@ -72,17 +70,16 @@ private:
     Ui::DialogAlgorithmExecution uiDialogAlgorithmExecution;
     QDialog dialogMeasurementSystem;
     Ui::DialogMeasurementSystem uiDialogMeasurementSystem;
+    QDialog dialogAbout;
 
     ContainerProblemGenerator containerProblemGenerator;
-    ContainerProblemSolver containerProblemSolver;
+    ContainerProblemSolverThread containerProblemSolverThread;
     ContainerProblem containerProblem;
     ContainerSolution containerSolution;
+    ContainerXmlParser containerXmlParser;
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
     BoxesOrderingTableModel *boxesOrderingTableModel;
-
-    QThread threadWorker;
-    QDialog dialogAbout;
 
     QList<QLabel*> listLabelsUnits;
 };

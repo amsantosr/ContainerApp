@@ -1,14 +1,18 @@
 #include "containersolution.h"
 #include <QRect>
 
+ContainerSolution::ContainerSolution(QObject *parent)
+    : QObject(parent),
+      containerProblem(0),
+      packedVolumeValue(0)
+{
+}
+
 void ContainerSolution::clear()
 {
     if (!boxLengthXValues.empty())
     {
         emit beforeDataChange();
-        containerLengthXvalue = 0;
-        containerLengthYvalue = 0;
-        containerLengthZvalue = 0;
         boxLengthXValues.clear();
         boxLengthYValues.clear();
         boxLengthZValues.clear();
@@ -22,40 +26,12 @@ void ContainerSolution::clear()
     packedVolumeValue = 0;
 }
 
-void ContainerSolution::setContainerLengthX(int value)
+void ContainerSolution::setContainerProblem(const ContainerProblem *problem)
 {
-    if (containerLengthXvalue != value)
-    {
-        emit beforeDataChange();
-        containerLengthXvalue = value;
-        emit afterDataChange();
-    }
+    containerProblem = problem;
 }
 
-void ContainerSolution::setContainerLengthY(int value)
-{
-    if (containerLengthYvalue != value)
-    {
-        emit beforeDataChange();
-        containerLengthYvalue = value;
-        emit afterDataChange();
-    }
-}
-
-void ContainerSolution::setContainerLengthZ(int value)
-{
-    if (containerLengthZvalue != value)
-    {
-        emit beforeDataChange();
-        containerLengthZvalue = value;
-        emit afterDataChange();
-    }
-}
-
-void ContainerSolution::setSolution(int containerLengthX,
-                                    int containerLengthY,
-                                    int containerLengthZ,
-                                    QVector<int> boxLengthsX,
+void ContainerSolution::setSolution(QVector<int> boxLengthsX,
                                     QVector<int> boxLengthsY,
                                     QVector<int> boxLengthsZ,
                                     QVector<int> boxCoordinatesX,
@@ -64,9 +40,6 @@ void ContainerSolution::setSolution(int containerLengthX,
                                     QVector<bool> boxPackedFlagsBool, int volume)
 {
     emit beforeDataChange();
-    containerLengthXvalue = containerLengthX;
-    containerLengthYvalue = containerLengthY;
-    containerLengthZvalue = containerLengthZ;
     boxLengthXValues = boxLengthsX;
     boxLengthYValues = boxLengthsY;
     boxLengthZValues = boxLengthsZ;

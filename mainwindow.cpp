@@ -7,7 +7,6 @@
 #include "containerproblemtablemodel.h"
 #include "containersolutiontablemodel.h"
 #include "boxesorderingtablemodel.h"
-#include "workercontainerproblemsolver.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
 #include <QTableView>
@@ -40,7 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableViewBoxes->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
     ui->tableViewOrdering->setModel(boxesOrderingTableModel);
-    ui->openGLWidget->setContainerSolution(containerSolution);
+    ui->openGLWidget->setContainerProblem(&containerProblem);
+    ui->openGLWidget->setContainerSolution(&containerSolution);
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerSolutionTableModel->setContainerSolution(&containerSolution);
     boxesOrderingTableModel->setContainerSolution(&containerSolution);
@@ -51,12 +51,16 @@ MainWindow::MainWindow(QWidget *parent) :
             dialogMeasurementSystem.accept();
     });
 
+    auto spinBoxSetValue = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue);
     connect(&containerProblem, &ContainerProblem::containerLengthX_changed,
-            ui->spinBoxContainerDimensionX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue));
+            ui->spinBoxContainerDimensionX, spinBoxSetValue);
     connect(&containerProblem, &ContainerProblem::containerLengthY_changed,
-            ui->spinBoxContainerDimensionY, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue));
+            ui->spinBoxContainerDimensionY, spinBoxSetValue);
     connect(&containerProblem, &ContainerProblem::containerLengthZ_changed,
-            ui->spinBoxContainerDimensionZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue));
+            ui->spinBoxContainerDimensionZ, spinBoxSetValue);
+    connect(&containerProblem, &ContainerProblem::textUnit_changed,
+            this, &MainWindow::setTextUnit);
+    containerSolution.setContainerProblem(&containerProblem);
 
     connect(ui->spinBoxContainerDimensionX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             &containerProblem, &ContainerProblem::setContainerLengthX);
@@ -64,12 +68,6 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerProblem, &ContainerProblem::setContainerLengthY);
     connect(ui->spinBoxContainerDimensionZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             &containerProblem, &ContainerProblem::setContainerLengthZ);
-    connect(&containerProblem, &ContainerProblem::containerLengthX_changed,
-            &containerSolution, &ContainerSolution::setContainerLengthX);
-    connect(&containerProblem, &ContainerProblem::containerLengthY_changed,
-            &containerSolution, &ContainerSolution::setContainerLengthY);
-    connect(&containerProblem, &ContainerProblem::containerLengthZ_changed,
-            &containerSolution, &ContainerSolution::setContainerLengthZ);
 
     listLabelsUnits << uiDialogAddBox.labelUnit1
                     << uiDialogAddBox.labelUnit2
@@ -77,9 +75,12 @@ MainWindow::MainWindow(QWidget *parent) :
                     << uiDialogGenerateProblem.labelUnit1
                     << uiDialogGenerateProblem.labelUnit2
                     << uiDialogGenerateProblem.labelUnit3
-                    << uiDialogGenerateProblem.labelUnit4;
+                    << uiDialogGenerateProblem.labelUnit4
+                    << ui->labelContainerUnit1
+                    << ui->labelContainerUnit2
+                    << ui->labelContainerUnit3;
 
-    setUnitLabel("cm.");
+    setTextUnit(containerProblem.textUnit());
 
     // connect the slider to the GLContainerWidget
     connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged, this, &MainWindow::setMaximumDisplayedBoxes);
@@ -91,29 +92,23 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->sliderDisplayedBoxes->setValue(containerSolution.packedBoxesCount());
     });
 
-    WorkerContainerProblemSolver *worker = new WorkerContainerProblemSolver;
-    worker->moveToThread(&threadWorker);
-    connect(&threadWorker, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &MainWindow::solveProblemAsync, worker, &WorkerContainerProblemSolver::solveAsync);
-    connect(worker, &WorkerContainerProblemSolver::executionStart,
-            &dialogAlgorithmExecution, &QDialog::show);
-    connect(worker, &WorkerContainerProblemSolver::executionEnd,
+    containerProblemSolverThread.setParameters(&containerProblem, &containerSolution);
+    connect(&containerProblemSolverThread, &ContainerProblemSolverThread::started,
+            &dialogAlgorithmExecution, &QDialog::exec);
+    connect(&containerProblemSolverThread, &ContainerProblemSolverThread::finished,
             &dialogAlgorithmExecution, &QDialog::hide);
-    connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [&]()
+    connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked,
+            this, [&]
     {
-        threadWorker.terminate();
-        threadWorker.wait();
+        containerProblemSolverThread.terminate();
+        containerProblemSolverThread.wait();
         dialogAlgorithmExecution.hide();
-        threadWorker.start();
     });
-    threadWorker.start();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    threadWorker.quit();
-    threadWorker.wait();
 }
 
 void MainWindow::generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
@@ -144,7 +139,7 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     }
 }
 
-void MainWindow::setUnitLabel(QString text)
+void MainWindow::setTextUnit(QString text)
 {
     foreach (QLabel *label, listLabelsUnits)
     {
@@ -185,7 +180,7 @@ void MainWindow::on_actionSolveProblem_triggered()
         QMessageBox::critical(this, tr("Error"), tr("No se han ingresado cajas para procesar."));
         return;
     }
-    emit solveProblemAsync(&containerProblem, &containerSolution);
+    containerProblemSolverThread.start();
 }
 
 void MainWindow::on_actionAddBox_triggered()
@@ -214,35 +209,10 @@ void MainWindow::on_actionSaveProblem_triggered()
     {
         QFile file(filename);
         if (file.open(QFile::WriteOnly))
-        {
-            QXmlStreamWriter stream(&file);
-            stream.setAutoFormatting(true);
-            stream.writeStartDocument();
-            stream.writeStartElement("ContainerProblem");
-            stream.writeAttribute("UnitLabel", containerProblem.unitLabel());
-
-            stream.writeStartElement("Container");
-            QString dimensionX = QString::number(ui->spinBoxContainerDimensionX->value());
-            QString dimensionY = QString::number(ui->spinBoxContainerDimensionY->value());
-            QString dimensionZ = QString::number(ui->spinBoxContainerDimensionZ->value());
-            stream.writeAttribute("DimensionX", dimensionX);
-            stream.writeAttribute("DimensionY", dimensionY);
-            stream.writeAttribute("DimensionZ", dimensionZ);
-            stream.writeEndElement();
-
-            stream.writeStartElement("Boxes");
-            for (int index = 0; index < containerProblem.boxCount(); ++index)
-            {
-                stream.writeEmptyElement("Box");
-                int lengthX = containerProblem.boxLengthX(index);
-                int lengthY = containerProblem.boxLengthY(index);
-                int lengthZ = containerProblem.boxLengthZ(index);
-                stream.writeAttribute("DimensionX", QString::number(lengthX));
-                stream.writeAttribute("DimensionY", QString::number(lengthY));
-                stream.writeAttribute("DimensionZ", QString::number(lengthZ));
-            }
-            stream.writeEndDocument();
-        }
+            containerXmlParser.writeProblem(containerProblem, &file);
+        else
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("No se puede abrir el archivo %1 para escritura").arg(filename));
     }
 }
 
@@ -253,71 +223,10 @@ void MainWindow::on_actionOpenProblem_triggered()
     {
         QFile file(filename);
         if (file.open(QFile::ReadOnly))
-        {
-            containerProblem.clear();
-            QXmlStreamReader stream(&file);
-            while (!stream.atEnd())
-            {
-                if (stream.readNextStartElement())
-                {
-                    if (stream.name() == "ContainerProblem")
-                    {
-                        foreach (QXmlStreamAttribute attribute, stream.attributes())
-                        {
-                            if (attribute.name() == "UnitLabel")
-                            {
-                                setUnitLabel(attribute.value());
-                            }
-                        }
-                    }
-                    else if (stream.name() == "Container")
-                    {
-                        foreach (QXmlStreamAttribute attribute, stream.attributes())
-                        {
-                            if (attribute.name() == "DimensionX")
-                            {
-                                int dimensionX = attribute.value().toInt();
-                                containerProblem.setContainerLengthX(dimensionX);
-                            }
-                            else if (attribute.name() == "DimensionY")
-                            {
-                                int dimensionY = attribute.value().toInt();
-                                containerProblem.setContainerLengthY(dimensionY);
-                            }
-                            else if (attribute.name() == "DimensionZ")
-                            {
-                                int dimensionZ = attribute.value().toInt();
-                                containerProblem.setContainerLengthZ(dimensionZ);
-                            }
-                        }
-                    }
-                    else if (stream.name() == "Box")
-                    {
-                        int boxDimensionX, boxDimensionY, boxDimensionZ;
-                        foreach (QXmlStreamAttribute attribute, stream.attributes())
-                        {
-                            if (attribute.name() == "DimensionX")
-                            {
-                                boxDimensionX = attribute.value().toInt();
-                            }
-                            else if (attribute.name() == "DimensionY")
-                            {
-                                boxDimensionY = attribute.value().toInt();
-                            }
-                            else if (attribute.name() == "DimensionZ")
-                            {
-                                boxDimensionZ = attribute.value().toInt();
-                            }
-                        }
-                        containerProblem.addBox(boxDimensionX, boxDimensionY, boxDimensionZ);
-                    }
-                }
-            }
-            if (stream.hasError())
-            {
-                // process xml errors here
-            }
-        }
+            containerXmlParser.readProblem(&file, containerProblem);
+        else
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("No se pudo abrir el archivo %1 para lectura").arg(filename));
     }
 }
 
@@ -328,41 +237,10 @@ void MainWindow::on_actionSaveSolution_triggered()
     {
         QFile file(filename);
         if (file.open(QFile::WriteOnly))
-        {
-            QXmlStreamWriter stream(&file);
-            stream.setAutoFormatting(true);
-            stream.writeStartDocument();
-            stream.writeStartElement("ContainerSolution");
-
-            stream.writeStartElement("Boxes");
-            for (int index = 0; index < containerSolution.boxCount(); ++index)
-            {
-                if (containerSolution.isBoxPacked(index))
-                {
-                    stream.writeStartElement("Box");
-
-                    stream.writeEmptyElement("Position");
-                    int posX = containerSolution.boxCoordinateX(index);
-                    int posY = containerSolution.boxCoordinateY(index);
-                    int posZ = containerSolution.boxCoordinateZ(index);
-                    stream.writeAttribute("X", QString::number(posX));
-                    stream.writeAttribute("Y", QString::number(posY));
-                    stream.writeAttribute("Z", QString::number(posZ));
-
-                    stream.writeEmptyElement("Dimensions");
-                    int x = containerSolution.boxLengthX(index);
-                    int y = containerSolution.boxLengthZ(index);
-                    int z = containerSolution.boxLengthZ(index);
-                    stream.writeAttribute("X", QString::number(x));
-                    stream.writeAttribute("Y", QString::number(y));
-                    stream.writeAttribute("Z", QString::number(z));
-
-                    stream.writeEndElement();
-                }
-            }
-            stream.writeEndElement();
-            stream.writeEndDocument();
-        }
+            containerXmlParser.writeSolution(containerSolution, &file);
+        else
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("No se puede abrir el archivo %1 para escritura").arg(filename));
     }
 }
 
@@ -388,11 +266,11 @@ void MainWindow::on_actionSetMeasurementSystem_triggered()
     {
         if (uiDialogMeasurementSystem.radioButtonCentimeters->isChecked())
         {
-            setUnitLabel("cm.");
+            setTextUnit("cm.");
         }
         else if (uiDialogMeasurementSystem.radioButtonInches->isChecked())
         {
-            setUnitLabel("in.");
+            setTextUnit("in.");
         }
     }
 }

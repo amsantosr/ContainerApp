@@ -8,15 +8,12 @@
 class ContainerSolution : public QObject
 {
     Q_OBJECT
-signals:
-    void beforeDataChange();
-    void afterDataChange();
 
 public:
+    ContainerSolution(QObject *parent = 0);
     void clear();
-    int containerLengthX() const { return containerLengthXvalue; }
-    int containerLengthY() const { return containerLengthYvalue; }
-    int containerLengthZ() const { return containerLengthZvalue; }
+    void setContainerProblem(const ContainerProblem *problem);
+    QString textUnit() const { return containerProblem ? containerProblem->textUnit() : QString::null; }
     int boxLengthX(int index) const { return boxLengthXValues[index]; }
     int boxLengthY(int index) const { return boxLengthYValues[index]; }
     int boxLengthZ(int index) const { return boxLengthZValues[index]; }
@@ -27,20 +24,18 @@ public:
     int packedVolume() const { return packedVolumeValue; }
     int boxCount() const { return boxPackedFlagValues.size(); }
 
-    void setSolution(int containerLengthX, int containerLengthY, int containerLengthZ,
-                     QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
+    void setSolution(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
                      QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
                      QVector<bool> boxPackedFlagsBool, int volume);
     int packedBoxesCount() const { return boxOrderIndexes.size(); }
     int boxOrderIndex(int i) const { return boxOrderIndexes[i]; }
-    void setContainerLengthX(int value);
-    void setContainerLengthY(int value);
-    void setContainerLengthZ(int value);
+
+signals:
+    void beforeDataChange();
+    void afterDataChange();
 
 private:
-    int containerLengthXvalue;
-    int containerLengthYvalue;
-    int containerLengthZvalue;
+    const ContainerProblem *containerProblem;
     QVector<int> boxLengthXValues;
     QVector<int> boxLengthYValues;
     QVector<int> boxLengthZValues;

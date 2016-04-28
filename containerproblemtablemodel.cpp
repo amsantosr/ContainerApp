@@ -41,21 +41,38 @@ int ContainerProblemTableModel::columnCount(const QModelIndex &) const
 
 QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) const
 {
-    if (role == Qt::DisplayRole) {
-        switch (index.column()) {
-        case 0: return containerProblem->boxLengthX(index.row());
-        case 1: return containerProblem->boxLengthY(index.row());
-        case 2: return containerProblem->boxLengthZ(index.row());
+    if (role == Qt::DisplayRole)
+    {
+        QString string;
+        switch (index.column())
+        {
+        case 0: string = QString::number(containerProblem->boxLengthX(index.row()));
+        case 1: string = QString::number(containerProblem->boxLengthY(index.row()));
+        case 2: string = QString::number(containerProblem->boxLengthZ(index.row()));
         }
+        QString textUnit = containerProblem->textUnit();
+        if (!textUnit.isNull())
+        {
+            string += " ";
+            string += containerProblem->textUnit();
+        }
+        return string;
+    }
+    else if (role == Qt::TextAlignmentRole)
+    {
+        return Qt::AlignRight;
     }
     return QVariant();
 }
 
 QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role == Qt::DisplayRole) {
-        if (orientation == Qt::Horizontal) {
-            switch (section) {
+    if (role == Qt::DisplayRole)
+    {
+        if (orientation == Qt::Horizontal)
+        {
+            switch (section)
+            {
             case 0: return tr("Dim X");
             case 1: return tr("Dim Y");
             case 2: return tr("Dim Z");

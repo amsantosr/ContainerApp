@@ -43,16 +43,21 @@ QVariant BoxesOrderingTableModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole)
     {
         int boxIndex = containerSolution->boxOrderIndex(index.row());
+        QString string;
         switch (index.column())
         {
-        case 0: result = tr("Caja %1").arg(boxIndex + 1); break;
-        case 1: result = containerSolution->boxLengthX(boxIndex); break;
-        case 2: result = containerSolution->boxLengthY(boxIndex); break;
-        case 3: result = containerSolution->boxLengthZ(boxIndex); break;
-        case 4: result = containerSolution->boxCoordinateX(boxIndex); break;
-        case 5: result = containerSolution->boxCoordinateY(boxIndex); break;
-        case 6: result = containerSolution->boxCoordinateZ(boxIndex); break;
+        case 0: string = tr("Caja %1").arg(boxIndex + 1); break;
+        case 1: string = QString::number(containerSolution->boxLengthX(boxIndex)); break;
+        case 2: string = QString::number(containerSolution->boxLengthY(boxIndex)); break;
+        case 3: string = QString::number(containerSolution->boxLengthZ(boxIndex)); break;
+        case 4: string = QString::number(containerSolution->boxCoordinateX(boxIndex)); break;
+        case 5: string = QString::number(containerSolution->boxCoordinateY(boxIndex)); break;
+        case 6: string = QString::number(containerSolution->boxCoordinateZ(boxIndex)); break;
         }
+        QString textUnit = containerSolution->textUnit();
+        if (!textUnit.isNull() && 0 < index.column())
+            string += " " + containerSolution->textUnit();
+        result = string;
     }
     return result;
 }

@@ -6,6 +6,7 @@
 #include <QOpenGLWidget>
 #include <GL/glu.h>
 
+class ContainerProblem;
 class ContainerSolution;
 
 class GLContainerWidget : public QOpenGLWidget
@@ -13,7 +14,8 @@ class GLContainerWidget : public QOpenGLWidget
 public:
     GLContainerWidget(QWidget *parent = 0);
     ~GLContainerWidget();
-    void setContainerSolution(ContainerSolution &solution);
+    void setContainerProblem(ContainerProblem *problem);
+    void setContainerSolution(ContainerSolution *solution);
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
@@ -36,6 +38,7 @@ private:
     float distance;
     int displayedBoxesLimit;
 
+    ContainerProblem *containerProblem;
     ContainerSolution *containerSolution;
 };
 

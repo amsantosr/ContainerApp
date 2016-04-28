@@ -42,16 +42,23 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
     {
         if (containerSolution->isBoxPacked(index.row()))
         {
+            QString text;
             switch (index.column())
             {
-            case 0: result = containerSolution->boxLengthX(index.row()); break;
-            case 1: result = containerSolution->boxLengthY(index.row()); break;
-            case 2: result = containerSolution->boxLengthZ(index.row()); break;
-            case 3: result = containerSolution->boxCoordinateX(index.row()); break;
-            case 4: result = containerSolution->boxCoordinateY(index.row()); break;
-            case 5: result = containerSolution->boxCoordinateZ(index.row()); break;
-            case 6: result = tr("Si"); break;
+            case 0: text = QString::number(containerSolution->boxLengthX(index.row())); break;
+            case 1: text = QString::number(containerSolution->boxLengthY(index.row())); break;
+            case 2: text = QString::number(containerSolution->boxLengthZ(index.row())); break;
+            case 3: text = QString::number(containerSolution->boxCoordinateX(index.row())); break;
+            case 4: text = QString::number(containerSolution->boxCoordinateY(index.row())); break;
+            case 5: text = QString::number(containerSolution->boxCoordinateZ(index.row())); break;
+            case 6: text = tr("Si"); break;
             }
+            QString textUnit = containerSolution->textUnit();
+            if (!textUnit.isNull() && index.column() < 6)
+            {
+                text.append(" ").append(textUnit);
+            }
+            result = QVariant(text);
         }
         else
         {
@@ -60,6 +67,13 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
             case 6: result = tr("No"); break;
             }
         }
+    }
+    else if (role == Qt::TextAlignmentRole)
+    {
+        if (index.column() < 6)
+            return Qt::AlignRight;
+        else
+            return Qt::AlignCenter;
     }
     return result;
 }
