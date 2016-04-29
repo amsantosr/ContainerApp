@@ -62,11 +62,12 @@ MainWindow::MainWindow(QWidget *parent) :
             this, &MainWindow::setTextUnit);
     containerSolution.setContainerProblem(&containerProblem);
 
-    connect(ui->spinBoxContainerDimensionX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+    auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    connect(ui->spinBoxContainerDimensionX, spinBoxValueChanged,
             &containerProblem, &ContainerProblem::setContainerLengthX);
-    connect(ui->spinBoxContainerDimensionY, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+    connect(ui->spinBoxContainerDimensionY, spinBoxValueChanged,
             &containerProblem, &ContainerProblem::setContainerLengthY);
-    connect(ui->spinBoxContainerDimensionZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+    connect(ui->spinBoxContainerDimensionZ, spinBoxValueChanged,
             &containerProblem, &ContainerProblem::setContainerLengthZ);
 
     listLabelsUnits << uiDialogAddBox.labelUnit1
@@ -100,9 +101,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked,
             this, [&]
     {
+        uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(false);
+        QApplication::processEvents();
         containerProblemSolverThread.terminate();
         containerProblemSolverThread.wait();
         dialogAlgorithmExecution.hide();
+        uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(true);
     });
 }
 

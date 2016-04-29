@@ -36,8 +36,13 @@ void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
     if (containerSolution != solution)
     {
         std::swap(containerSolution, solution);
-        connect(containerSolution, &ContainerSolution::afterDataChange,
-                this, static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update));
+        if (containerSolution != 0)
+        {
+            connect(containerSolution, &ContainerSolution::afterDataChange,
+                    this, static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update));
+        }
+        if (solution != 0)
+            disconnect(solution, 0, this, 0);
     }
 }
 
