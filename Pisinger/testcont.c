@@ -385,5 +385,3 @@ int main_new(int argc, char *argv[])
   fclose(trace);
   return 0; /* correct termination */
 }
-
-

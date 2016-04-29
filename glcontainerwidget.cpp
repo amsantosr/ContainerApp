@@ -158,7 +158,8 @@ void GLContainerWidget::wheelEvent(QWheelEvent *event)
 void GLContainerWidget::resetView()
 {
     distance = -1000.0f;
-    rotationX = rotationY = rotationZ = 0;
+    rotationX = rotationZ = 0;
+    rotationY = 90;
     update();
 }
 
