@@ -110,14 +110,14 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Dimensión en X:</string>
+             <string>Ancho:</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Dimensión en Y:</string>
+             <string>Alto:</string>
             </property>
            </widget>
           </item>
@@ -145,7 +145,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Dimensión en Z:</string>
+             <string>Largo:</string>
             </property>
            </widget>
           </item>
@@ -428,6 +428,19 @@
    <header>boxestableview.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tabWidgetBottomLeft</tabstop>
+  <tabstop>toolButtonAddBox</tabstop>
+  <tabstop>toolButtonDeleteBox</tabstop>
+  <tabstop>tableViewBoxes</tabstop>
+  <tabstop>spinBoxContainerDimensionX</tabstop>
+  <tabstop>spinBoxContainerDimensionY</tabstop>
+  <tabstop>spinBoxContainerDimensionZ</tabstop>
+  <tabstop>tabWidgetTopLeft</tabstop>
+  <tabstop>tableViewSolution</tabstop>
+  <tabstop>tableViewOrdering</tabstop>
+  <tabstop>sliderDisplayedBoxes</tabstop>
+ </tabstops>
  <resources>
   <include location="Resources.qrc"/>
  </resources>

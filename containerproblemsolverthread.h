@@ -2,24 +2,27 @@
 #define CONTAINERPROBLEMSOLVERTHREAD_H
 
 #include <QThread>
-#include "containerproblemsolver.h"
+#include "containerproblem.h"
 
 class ContainerProblemSolverThread : public QThread
 {
     Q_OBJECT
 public:
     explicit ContainerProblemSolverThread(QObject *parent = 0);
-    void setParameters(ContainerProblem *problem, ContainerSolution *solution);
+    void setContainerProblem(ContainerProblem *problem);
     void run();
 
 signals:
-
-public slots:
+    void solutionReady(QVector<int> boxLengthsX,
+                       QVector<int> boxLengthsY,
+                       QVector<int> boxLengthsZ,
+                       QVector<int> boxCoordinatesX,
+                       QVector<int> boxCoordinatesY,
+                       QVector<int> boxCoordinatesZ,
+                       QVector<bool> boxPackedFlagsBool, int volume);
 
 private:
-    ContainerProblemSolver containerProblemSolver;
     ContainerProblem *containerProblem;
-    ContainerSolution *containerSolution;
 };
 
 #endif // CONTAINERPROBLEMSOLVERTHREAD_H

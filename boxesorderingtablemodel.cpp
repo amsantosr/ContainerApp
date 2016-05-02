@@ -59,6 +59,11 @@ QVariant BoxesOrderingTableModel::data(const QModelIndex &index, int role) const
             string += " " + containerSolution->textUnit();
         result = string;
     }
+    else if (role == Qt::TextAlignmentRole)
+    {
+        if (0 < index.column())
+            return Qt::AlignRight;
+    }
     return result;
 }
 

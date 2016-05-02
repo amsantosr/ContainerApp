@@ -93,11 +93,13 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->sliderDisplayedBoxes->setValue(containerSolution.packedBoxesCount());
     });
 
-    containerProblemSolverThread.setParameters(&containerProblem, &containerSolution);
+    containerProblemSolverThread.setContainerProblem(&containerProblem);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::started,
-            &dialogAlgorithmExecution, &QDialog::exec);
+            &dialogAlgorithmExecution, &QDialog::show, Qt::BlockingQueuedConnection);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::finished,
-            &dialogAlgorithmExecution, &QDialog::hide);
+            &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
+    connect(&containerProblemSolverThread, &ContainerProblemSolverThread::solutionReady,
+            &containerSolution, &ContainerSolution::setSolution, Qt::BlockingQueuedConnection);
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked,
             this, [&]
     {

@@ -38,8 +38,9 @@ void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
         std::swap(containerSolution, solution);
         if (containerSolution != 0)
         {
+            auto glContainerWidgetUpdate = static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update);
             connect(containerSolution, &ContainerSolution::afterDataChange,
-                    this, static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update));
+                    this, glContainerWidgetUpdate);
         }
         if (solution != 0)
             disconnect(solution, 0, this, 0);
@@ -159,7 +160,7 @@ void GLContainerWidget::resetView()
 {
     distance = -1000.0f;
     rotationX = rotationZ = 0;
-    rotationY = 90;
+    rotationY = 270;
     update();
 }
 
