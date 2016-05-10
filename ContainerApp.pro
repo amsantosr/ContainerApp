@@ -53,3 +53,5 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     Resources.qrc
+
+win32:LIBS += -lopengl32

@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QGLWidget>
 #include <QOpenGLWidget>
-#include <GL/glu.h>
 
 class ContainerProblem;
 class ContainerSolution;
