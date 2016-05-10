@@ -3,7 +3,7 @@
 
 extern "C" {
 
-typedef short         boolean; /* logical variable       */
+typedef short         Boolean; /* logical variable       */
 typedef short         ntype;   /* number of states,bins  */
 typedef short         itype;   /* can hold up to W,H,D   */
 typedef long          stype;   /* can hold up to W*H*D   */
@@ -19,7 +19,7 @@ typedef struct irec {
   itype    x;     /* optimal x-position */
   itype    y;     /* optimal y-position */
   itype    z;     /* optimal z-position */
-  boolean  k;     /* knapsack solution */
+  Boolean  k;     /* knapsack solution */
 } item;
 
 void maketest(item *f, item **l, int *mx, int *my, int *mz,
