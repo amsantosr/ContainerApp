@@ -311,6 +311,7 @@
    <addaction name="actionSolveProblem"/>
    <addaction name="actionOpenProblem"/>
    <addaction name="actionSaveProblem"/>
+   <addaction name="actionOpenSolution"/>
    <addaction name="actionSaveSolution"/>
    <addaction name="actionSetMeasurementSystem"/>
    <addaction name="separator"/>
@@ -412,6 +413,15 @@
    </property>
    <property name="text">
     <string>Establecer sistema de unidades</string>
+   </property>
+  </action>
+  <action name="actionOpenSolution">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Icons/OpenSolution.png</normaloff>:/Icons/OpenSolution.png</iconset>
+   </property>
+   <property name="text">
+    <string>Abrir solución</string>
    </property>
   </action>
  </widget>

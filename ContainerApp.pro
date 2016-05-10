@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     containerproblem.cpp \
     boxesorderingtablemodel.cpp \
     containerxmlparser.cpp \
-    containerproblemsolverthread.cpp
+    containerproblemsolverthread.cpp \
+    containerxmlparserexception.cpp
 
 HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     boxestableview.h \
     boxesorderingtablemodel.h \
     containerxmlparser.h \
-    containerproblemsolverthread.h
+    containerproblemsolverthread.h \
+    containerxmlparserexception.h
 
 FORMS    += mainwindow.ui \
     dialogaddbox.ui \
@@ -48,8 +50,6 @@ FORMS    += mainwindow.ui \
     dialogalgorithmexecution.ui \
     dialogabout.ui \
     dialogmeasurementsystem.ui
-
-LIBS += -lglut -lGLU
 
 RESOURCES += \
     Resources.qrc

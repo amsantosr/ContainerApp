@@ -32,10 +32,13 @@ signals:
     void afterAddBox();
     void beforeBoxCountChanged();
     void afterBoxCountChanged();
+    void boxDimensionsChanged(int index);
 
 public:
     void addBox(int lengthX, int lengthY, int lengthZ);
     void clear();
+    void setBoxCount(int count);
+    void setBoxDimensions(int boxIndex, int lengthX, int lengthY, int lengthZ);
     void setContainerLengthX(int value);
     void setContainerLengthY(int value);
     void setContainerLengthZ(int value);

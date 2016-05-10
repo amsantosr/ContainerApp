@@ -60,6 +60,8 @@ private slots:
 
     void on_actionSetMeasurementSystem_triggered();
 
+    void on_actionOpenSolution_triggered();
+
 private:
     Ui::MainWindow *ui;
     QDialog dialogGenerateProblem;

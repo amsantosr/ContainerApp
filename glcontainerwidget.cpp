@@ -14,23 +14,6 @@ GLContainerWidget::~GLContainerWidget()
 {
 }
 
-void GLContainerWidget::setContainerProblem(ContainerProblem *problem)
-{
-    if (containerProblem != problem)
-    {
-        std::swap(containerProblem, problem);
-        if (containerProblem != 0)
-        {
-            auto functionUpdate = static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update);
-            connect(containerProblem, &ContainerProblem::containerLengthX_changed, this, functionUpdate);
-            connect(containerProblem, &ContainerProblem::containerLengthY_changed, this, functionUpdate);
-            connect(containerProblem, &ContainerProblem::containerLengthZ_changed, this, functionUpdate);
-        }
-        if (problem != 0)
-            disconnect(problem, 0, this, 0);
-    }
-}
-
 void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
 {
     if (containerSolution != solution)
@@ -44,6 +27,21 @@ void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
         }
         if (solution != 0)
             disconnect(solution, 0, this, 0);
+    }
+    ContainerProblem *problem = containerSolution->getContainerProblem();
+    if (containerProblem != problem)
+    {
+        std::swap(containerProblem, problem);
+        containerProblem = containerSolution->getContainerProblem();
+        if (containerProblem != 0)
+        {
+            auto functionUpdate = static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update);
+            connect(containerProblem, &ContainerProblem::containerLengthX_changed, this, functionUpdate);
+            connect(containerProblem, &ContainerProblem::containerLengthY_changed, this, functionUpdate);
+            connect(containerProblem, &ContainerProblem::containerLengthZ_changed, this, functionUpdate);
+        }
+        if (problem != 0)
+            disconnect(problem, 0, this, 0);
     }
 }
 
@@ -175,8 +173,8 @@ void GLContainerWidget::setDisplayedBoxesLimit(int value)
 
 void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)
 {
-    GLint color[] = { rand(), rand(), rand(), INT_MAX };
-    glMaterialiv(GL_FRONT, GL_DIFFUSE, color);
+    GLint color[] = { rand(), rand(), rand(), 0 };
+    glMaterialiv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
     glBegin(GL_QUADS);
     glNormal3b(0, 0, -1);
     glVertex3f(x1, y1, z1);

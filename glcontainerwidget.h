@@ -14,7 +14,6 @@ class GLContainerWidget : public QOpenGLWidget
 public:
     GLContainerWidget(QWidget *parent = 0);
     ~GLContainerWidget();
-    void setContainerProblem(ContainerProblem *problem);
     void setContainerSolution(ContainerSolution *solution);
     void initializeGL();
     void paintGL();

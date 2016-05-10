@@ -7,6 +7,7 @@
 #include "containerproblemtablemodel.h"
 #include "containersolutiontablemodel.h"
 #include "boxesorderingtablemodel.h"
+#include "containerxmlparserexception.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
 #include <QTableView>
@@ -39,8 +40,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableViewBoxes->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
     ui->tableViewOrdering->setModel(boxesOrderingTableModel);
-    ui->openGLWidget->setContainerProblem(&containerProblem);
-    ui->openGLWidget->setContainerSolution(&containerSolution);
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerSolutionTableModel->setContainerSolution(&containerSolution);
     boxesOrderingTableModel->setContainerSolution(&containerSolution);
@@ -61,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&containerProblem, &ContainerProblem::textUnit_changed,
             this, &MainWindow::setTextUnit);
     containerSolution.setContainerProblem(&containerProblem);
+    ui->openGLWidget->setContainerSolution(&containerSolution);
 
     auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->spinBoxContainerDimensionX, spinBoxValueChanged,
@@ -229,7 +229,16 @@ void MainWindow::on_actionOpenProblem_triggered()
     {
         QFile file(filename);
         if (file.open(QFile::ReadOnly))
-            containerXmlParser.readProblem(&file, containerProblem);
+        {
+            try
+            {
+                containerXmlParser.readProblem(&file, containerProblem);
+            }
+            catch (ContainerXmlParserException &exception)
+            {
+                QMessageBox::critical(this, tr("Error"), exception.message());
+            }
+        }
         else
             QMessageBox::critical(this, tr("Error"),
                                   tr("No se pudo abrir el archivo %1 para lectura").arg(filename));
@@ -277,6 +286,33 @@ void MainWindow::on_actionSetMeasurementSystem_triggered()
         else if (uiDialogMeasurementSystem.radioButtonInches->isChecked())
         {
             setTextUnit("in.");
+        }
+    }
+}
+
+void MainWindow::on_actionOpenSolution_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Abrir solución"));
+    if (!filename.isNull())
+    {
+        QFile file(filename);
+        if (file.open(QFile::ReadOnly))
+        {
+            try
+            {
+                containerXmlParser.readSolution(&file, containerSolution);
+            }
+            catch (ContainerXmlParserException &exception)
+            {
+                QMessageBox::critical(this, tr("Error"), exception.message());
+            }
+        }
+        else
+        {
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("No se pudo abrir el archivo %1 para lectura\n%1")
+                                  .arg(filename)
+                                  .arg(file.errorString()));
         }
     }
 }

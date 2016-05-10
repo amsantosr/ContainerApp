@@ -61,6 +61,23 @@ void ContainerProblem::clear()
     setContainerLengthZ(0);
 }
 
+void ContainerProblem::setBoxCount(int count)
+{
+    emit beforeBoxCountChanged();
+    boxLengthXValues.resize(count);
+    boxLengthYValues.resize(count);
+    boxLengthZValues.resize(count);
+    emit afterBoxCountChanged();
+}
+
+void ContainerProblem::setBoxDimensions(int boxIndex, int lengthX, int lengthY, int lengthZ)
+{
+    boxLengthXValues[boxIndex] = lengthX;
+    boxLengthYValues[boxIndex] = lengthY;
+    boxLengthZValues[boxIndex] = lengthZ;
+    emit boxDimensionsChanged(boxIndex);
+}
+
 void ContainerProblem::setContainerLengthX(int value)
 {
     if (containerLengthXValue != value)

@@ -11,6 +11,7 @@
         <file>Minus.png</file>
         <file>Add.png</file>
         <file>Gear.png</file>
+        <file>OpenSolution.png</file>
     </qresource>
     <qresource prefix="/Images">
         <file>Container.png</file>

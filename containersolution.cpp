@@ -26,7 +26,7 @@ void ContainerSolution::clear()
     packedVolumeValue = 0;
 }
 
-void ContainerSolution::setContainerProblem(const ContainerProblem *problem)
+void ContainerSolution::setContainerProblem(ContainerProblem *problem)
 {
     containerProblem = problem;
 }
@@ -86,5 +86,31 @@ void ContainerSolution::setSolution(QVector<int> boxLengthsX,
             }
         }
     }
+    emit afterDataChange();
+}
+
+void ContainerSolution::setPackedBoxes(QVector<int> boxLengthsX,
+                                       QVector<int> boxLengthsY,
+                                       QVector<int> boxLengthsZ,
+                                       QVector<int> boxCoordinatesX,
+                                       QVector<int> boxCoordinatesY,
+                                       QVector<int> boxCoordinatesZ,
+                                       QVector<int> packedBoxesIndexes)
+{
+    emit beforeDataChange();
+    boxPackedFlagValues.fill(false, containerProblem->boxCount());
+    boxLengthXValues = boxLengthsX;
+    boxLengthYValues = boxLengthsY;
+    boxLengthZValues = boxLengthsZ;
+    boxCoordinateXValues = boxCoordinatesX;
+    boxCoordinateYValues = boxCoordinatesY;
+    boxCoordinateZValues = boxCoordinatesZ;
+    for (int i = 0; i < packedBoxesIndexes.size(); ++i)
+    {
+        int boxIndex = packedBoxesIndexes[i];
+        boxPackedFlagValues[boxIndex] = true;
+    }
+    //packedVolumeValue = volume;
+    boxOrderIndexes = packedBoxesIndexes;
     emit afterDataChange();
 }

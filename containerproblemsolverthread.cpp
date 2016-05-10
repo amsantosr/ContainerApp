@@ -46,5 +46,6 @@ void ContainerProblemSolverThread::run()
     emit solutionReady(boxLengthsX, boxLengthsY, boxLengthsZ,
                        boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ,
                        boxPackedFlagsBool, volume);
+    // TODO tratar de eliminar esta linea de codigo
     sleep(1);
 }
