@@ -47,17 +47,52 @@ void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
 
 void GLContainerWidget::initializeGL()
 {
-    glShadeModel(GL_SMOOTH);
-    glFrontFace(GL_CCW);
-    glEnable(GL_CULL_FACE);
-
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    GLfloat lightpos[] = {.5, 1., 1., 0.};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+    //glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearDepth(1.0f);
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_NORMALIZE);
+    glDepthFunc(GL_LEQUAL);
+
+    glShadeModel(GL_SMOOTH);
+
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
+
+    // Enable light and set up 2 light sources (GL_LIGHT0 and GL_LIGHT1)
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+
+    // We're setting up two light sources. One of them is located
+    // on the left side of the model (x = -1.5f) and emits white light. The
+    // second light source is located on the right side of the model (x = 1.5f)
+    // emitting red light.
+
+    // GL_LIGHT0: the white light emitting light source
+    // Create light components for GL_LIGHT0
+    float ambientLight0[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+    float diffuseLight0[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+    float specularLight0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+    float position0[] = { -1500, 1.0f, -4.0f, 1.0f };
+    // Assign created components to GL_LIGHT0
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight0);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight0);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight0);
+    glLightfv(GL_LIGHT0, GL_POSITION, position0);
+
+    // GL_LIGHT1: the red light emitting light source
+    // Create light components for GL_LIGHT1
+    float ambientLight1[] = { 1.0f, 0.5f, 0.5f, 1.0f };
+    float diffuseLight1[] = { 1.0f, 0.5f, 0.5f, 1.0f };
+    float specularLight1[] = { 1.0f, 0.5f, 0.5f, 1.0f };
+    float position1[] = { 1500, 1.0f, -4.0f, 1.0f };
+    // Assign created components to GL_LIGHT1
+    glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight1);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight1);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight1);
+    glLightfv(GL_LIGHT1, GL_POSITION, position1);
+
+    //glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_NORMALIZE);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
@@ -71,8 +106,9 @@ void GLContainerWidget::paintGL()
     glTranslatef(0.0f, 0.0f, distance);
     if (containerSolution != 0)
     {
-        glRotatef(rotationX, 1.0, 0.0, 0.0);
-        glRotatef(rotationY, 0.0, 1.0, 0.0);
+        glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
+        glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
+        glRotatef(rotationZ, 0.0f, 0.0f, 1.0f);
 
         int lengthX = containerProblem->containerLengthX();
         int lengthY = containerProblem->containerLengthY();
@@ -84,7 +120,7 @@ void GLContainerWidget::paintGL()
             int midY = lengthY / 2;
             int midZ = lengthZ / 2;
             glTranslatef(-midX, -midY, -midZ);
-            drawContainer();
+            //drawContainer();
         }
 
         srand(0);
@@ -173,8 +209,8 @@ void GLContainerWidget::setDisplayedBoxesLimit(int value)
 
 void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)
 {
-    GLint color[] = { rand(), rand(), rand(), 0 };
-    glMaterialiv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
+    GLint color[] = { rand(), rand(), rand(), INT_MAX };
+    glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
     glBegin(GL_QUADS);
     glNormal3b(0, 0, -1);
     glVertex3f(x1, y1, z1);
