@@ -9,6 +9,8 @@ int main(int argc, char *argv[])
 #ifdef DEBUG_ISSUES
     a.processEvents();
     w.testGenerateProblem();
+    a.processEvents();
+    w.on_actionSolveProblem_triggered();
 #endif
     return a.exec();
 }

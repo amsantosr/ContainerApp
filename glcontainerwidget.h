@@ -25,7 +25,7 @@ public:
     void setDisplayedBoxesLimit(int value);
 
 private:
-    void drawCube(int x1, int y1, int z1, int x2, int y2, int z2);
+    void drawBox(int x1, int y1, int z1, int x2, int y2, int z2);
     void drawContainer();
 
 private:

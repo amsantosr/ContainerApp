@@ -60,7 +60,7 @@ void GLContainerWidget::initializeGL()
     // Enable light and set up 2 light sources (GL_LIGHT0 and GL_LIGHT1)
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
+    //glEnable(GL_LIGHT1);
 
     // We're setting up two light sources. One of them is located
     // on the left side of the model (x = -1.5f) and emits white light. The
@@ -69,10 +69,10 @@ void GLContainerWidget::initializeGL()
 
     // GL_LIGHT0: the white light emitting light source
     // Create light components for GL_LIGHT0
-    float ambientLight0[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+    float ambientLight0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
     float diffuseLight0[] = { 0.8f, 0.8f, 0.8f, 1.0f };
     float specularLight0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-    float position0[] = { -1500, 1.0f, -4.0f, 1.0f };
+    float position0[] = { -1.5f, 1.0f, -4.0f, 1.0f };
     // Assign created components to GL_LIGHT0
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight0);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight0);
@@ -91,8 +91,6 @@ void GLContainerWidget::initializeGL()
     glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight1);
     glLightfv(GL_LIGHT1, GL_POSITION, position1);
 
-    //glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_NORMALIZE);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
@@ -120,7 +118,7 @@ void GLContainerWidget::paintGL()
             int midY = lengthY / 2;
             int midZ = lengthZ / 2;
             glTranslatef(-midX, -midY, -midZ);
-            //drawContainer();
+            drawContainer();
         }
 
         srand(0);
@@ -134,7 +132,7 @@ void GLContainerWidget::paintGL()
             int x2 = x1 + containerSolution->boxLengthX(boxIndex);
             int y2 = y1 + containerSolution->boxLengthY(boxIndex);
             int z2 = z1 + containerSolution->boxLengthZ(boxIndex);
-            drawCube(x1, y1, z1, x2, y2, z2);
+            drawBox(x1, y1, z1, x2, y2, z2);
         }
     }
 
@@ -207,10 +205,10 @@ void GLContainerWidget::setDisplayedBoxesLimit(int value)
     }
 }
 
-void GLContainerWidget::drawCube(int x1, int y1, int z1, int x2, int y2, int z2)
+void GLContainerWidget::drawBox(int x1, int y1, int z1, int x2, int y2, int z2)
 {
     GLint color[] = { rand(), rand(), rand(), INT_MAX };
-    glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
+    glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
     glBegin(GL_QUADS);
     glNormal3b(0, 0, -1);
     glVertex3f(x1, y1, z1);
@@ -257,8 +255,10 @@ void GLContainerWidget::drawContainer()
     int y2 = containerProblem->containerLengthY();
     int z2 = containerProblem->containerLengthZ();
 
-    glColor3i(0, INT_MAX, 0);
-    glDisable(GL_LIGHTING);
+    //glColor3i(0, INT_MAX, 0);
+    //glDisable(GL_LIGHTING);
+    GLint color[] = { 0, INT_MAX, 0, INT_MAX };
+    glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
     glBegin(GL_LINE_LOOP);
     glVertex3i(x1, y1, z1);
     glVertex3i(x1, y2, z1);

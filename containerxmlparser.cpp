@@ -40,7 +40,6 @@ void ContainerXmlParser::writeSolution(const ContainerSolution &containerSolutio
         streamWriter.writeAttribute("X", QString::number(posX));
         streamWriter.writeAttribute("Y", QString::number(posY));
         streamWriter.writeAttribute("Z", QString::number(posZ));
-
         streamWriter.writeEmptyElement("Dimensions");
         int x = containerSolution.boxLengthX(index);
         int y = containerSolution.boxLengthY(index);
@@ -48,12 +47,72 @@ void ContainerXmlParser::writeSolution(const ContainerSolution &containerSolutio
         streamWriter.writeAttribute("X", QString::number(x));
         streamWriter.writeAttribute("Y", QString::number(y));
         streamWriter.writeAttribute("Z", QString::number(z));
-
-        streamWriter.writeEndElement();
+        streamWriter.writeEndElement(); // Box
     }
     streamWriter.writeEndElement(); // PackedBoxes
     streamWriter.writeEndElement(); // ContainerSolution
     streamWriter.writeEndDocument();
+}
+
+void ContainerXmlParser::parsePackedBoxAttributes(int &boxIndex)
+{
+    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
+    {
+        if (attribute.name() == "Index")
+        {
+            boxIndex = attribute.value().toInt();
+        }
+        else
+        {
+            invalidAttribute(attribute);
+        }
+    }
+}
+
+void ContainerXmlParser::parseBoxPositionAttributes(int &positionX, int &positionY, int &positionZ)
+{
+    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
+    {
+        if (attribute.name() == "X")
+        {
+            positionX = attribute.value().toInt();
+        }
+        else if (attribute.name() == "Y")
+        {
+            positionY = attribute.value().toInt();
+        }
+        else if (attribute.name() == "Z")
+        {
+            positionZ = attribute.value().toInt();
+        }
+        else
+        {
+            invalidAttribute(attribute);
+        }
+    }
+}
+
+void ContainerXmlParser::parseBoxDimensionsAttributes(int &dimensionX, int &dimensionY, int &dimensionZ)
+{
+    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
+    {
+        if (attribute.name() == "X")
+        {
+            dimensionX = attribute.value().toInt();
+        }
+        else if (attribute.name() == "Y")
+        {
+            dimensionY = attribute.value().toInt();
+        }
+        else if (attribute.name() == "Z")
+        {
+            dimensionZ = attribute.value().toInt();
+        }
+        else
+        {
+            invalidAttribute(attribute);
+        }
+    }
 }
 
 void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerSolution)
@@ -76,64 +135,17 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
 
     while (streamReader.readNextStartElement())
     {
-        checkCurrentElement("Box");
         int boxIndex;
         int positionX, positionY, positionZ;
         int dimensionX, dimensionY, dimensionZ;
-        foreach (QXmlStreamAttribute attribute, streamReader.attributes())
-        {
-            if (attribute.name() == "Index")
-            {
-                boxIndex = attribute.value().toInt();
-            }
-            else
-            {
-                invalidAttribute(attribute);
-            }
-        }
 
+        checkCurrentElement("Box");
+        parsePackedBoxAttributes(boxIndex);
         checkNextElement("Position");
-        foreach (QXmlStreamAttribute attribute, streamReader.attributes())
-        {
-            if (attribute.name() == "X")
-            {
-                positionX = attribute.value().toInt();
-            }
-            else if (attribute.name() == "Y")
-            {
-                positionY = attribute.value().toInt();
-            }
-            else if (attribute.name() == "Z")
-            {
-                positionZ = attribute.value().toInt();
-            }
-            else
-            {
-                invalidAttribute(attribute);
-            }
-        }
+        parseBoxPositionAttributes(positionX, positionY, positionZ);
         streamReader.skipCurrentElement();
-
         checkNextElement("Dimensions");
-        foreach (QXmlStreamAttribute attribute, streamReader.attributes())
-        {
-            if (attribute.name() == "X")
-            {
-                dimensionX = attribute.value().toInt();
-            }
-            else if (attribute.name() == "Y")
-            {
-                dimensionY = attribute.value().toInt();
-            }
-            else if (attribute.name() == "Z")
-            {
-                dimensionZ = attribute.value().toInt();
-            }
-            else
-            {
-                invalidAttribute(attribute);
-            }
-        }
+        parseBoxDimensionsAttributes(dimensionX, dimensionY, dimensionZ);
         streamReader.skipCurrentElement();
 
         vectorPositionX.append(positionX);
@@ -180,10 +192,8 @@ void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerPr
     streamWriter.writeEndElement(); // ContainerProblem
 }
 
-void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
+void ContainerXmlParser::parseContainerProblemAttributes(ContainerProblem &containerProblem)
 {
-    containerProblem.clear();
-    checkNextElement("ContainerProblem");
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {
         if (attribute.name() == "UnitLabel")
@@ -195,8 +205,10 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
             invalidAttribute(attribute);
         }
     }
+}
 
-    checkNextElement("Container");
+void ContainerXmlParser::parseContainerAttributes(ContainerProblem &containerProblem)
+{
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {
         if (attribute.name() == "LengthX")
@@ -219,9 +231,10 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
             invalidAttribute(attribute);
         }
     }
-    streamReader.skipCurrentElement();
+}
 
-    checkNextElement("Boxes");
+void ContainerXmlParser::parseBoxesAttributes(ContainerProblem &containerProblem)
+{
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {
         if (attribute.name() == "BoxCount")
@@ -234,40 +247,54 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
             invalidAttribute(attribute);
         }
     }
+}
+
+void ContainerXmlParser::parseBoxAttributes(int &boxIndex, int &boxDimensionX, int &boxDimensionY, int &boxDimensionZ)
+{
+    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
+    {
+        if (attribute.name() == "Index")
+        {
+            boxIndex = attribute.value().toInt();
+        }
+        else if (attribute.name() == "LengthX")
+        {
+            boxDimensionX = attribute.value().toInt();
+        }
+        else if (attribute.name() == "LengthY")
+        {
+            boxDimensionY = attribute.value().toInt();
+        }
+        else if (attribute.name() == "LengthZ")
+        {
+            boxDimensionZ = attribute.value().toInt();
+        }
+        else
+        {
+            invalidAttribute(attribute);
+        }
+    }
+}
+
+void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
+{
+    containerProblem.clear();
+
+    checkNextElement("ContainerProblem");
+    parseContainerProblemAttributes(containerProblem);
+    checkNextElement("Container");
+    parseContainerAttributes(containerProblem);
+    streamReader.skipCurrentElement();
+    checkNextElement("Boxes");
+    parseBoxesAttributes(containerProblem);
+
     while (streamReader.readNextStartElement())
     {
         checkCurrentElement("Box");
         int boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ;
-        foreach (QXmlStreamAttribute attribute, streamReader.attributes())
-        {
-            if (attribute.name() == "Index")
-            {
-                boxIndex = attribute.value().toInt();
-            }
-            else if (attribute.name() == "LengthX")
-            {
-                boxDimensionX = attribute.value().toInt();
-            }
-            else if (attribute.name() == "LengthY")
-            {
-                boxDimensionY = attribute.value().toInt();
-            }
-            else if (attribute.name() == "LengthZ")
-            {
-                boxDimensionZ = attribute.value().toInt();
-            }
-            else
-            {
-                invalidAttribute(attribute);
-            }
-        }
-        //containerProblem.addBox(boxDimensionX, boxDimensionY, boxDimensionZ);
+        parseBoxAttributes(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
         containerProblem.setBoxDimensions(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
         streamReader.skipCurrentElement();
-    }
-    if (streamReader.hasError())
-    {
-        throw ContainerXmlParserException(streamReader.errorString());
     }
 }
 

@@ -39,7 +39,7 @@ public:
     void testGenerateProblem();
 #endif
 
-private slots:
+public slots:
     void on_actionGenerateProblem_triggered();
 
     void on_actionSolveProblem_triggered();
