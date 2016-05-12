@@ -48,7 +48,7 @@
    <item row="1" column="1" colspan="2">
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Algoritmo implementado por David Pisinger y usado con fines académicos&lt;/p&gt;&lt;p&gt;Software desarrollado por Abraham Max Santos Ramos&lt;/p&gt;&lt;p&gt;Se permite el uso del código únicamente para fines académicos y/o no comerciales.&lt;/p&gt;&lt;p&gt;Este programa se provee COMO ES sin garantía alguna de cualquier tipo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Algoritmo implementado por David Pisinger y usado con fines académicos&lt;/p&gt;&lt;p&gt;Desarrollado por Abraham Max Santos Ramos &lt;a href=&quot;amsantosr@gmail.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;amsantosr@gmail.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Se permite el uso del código únicamente para fines académicos y/o no comerciales.&lt;/p&gt;&lt;p&gt;Este programa se provee COMO ES sin garantía alguna de cualquier tipo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
