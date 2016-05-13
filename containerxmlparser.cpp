@@ -250,13 +250,14 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
     checkNextElement("Boxes");
     int boxCount;
     parseBoxesAttributes(boxCount);
+    containerProblem.setBoxCount(boxCount);
 
-    for (int index = 0; streamReader.readNextStartElement(); ++index)
+    for (int boxIndex = 0; boxIndex < boxCount; ++boxIndex)
     {
-        checkCurrentElement("Box");
+        checkNextElement("Box");
         int boxDimensionX, boxDimensionY, boxDimensionZ;
-        parseBoxAttributes(index, boxDimensionX, boxDimensionY, boxDimensionZ);
-        containerProblem.setBoxDimensions(index, boxDimensionX, boxDimensionY, boxDimensionZ);
+        parseBoxAttributes(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
+        containerProblem.setBoxDimensions(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
         streamReader.skipCurrentElement();
     }
 }
