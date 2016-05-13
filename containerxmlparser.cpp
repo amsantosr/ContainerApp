@@ -4,6 +4,10 @@
 #include <QXmlStreamWriter>
 #include <QFile>
 
+ContainerXmlParser::ContainerXmlParser()
+{
+}
+
 void ContainerXmlParser::writeProblem(const ContainerProblem &containerProblem, QFile *file)
 {
     streamWriter.setDevice(file);
@@ -52,67 +56,6 @@ void ContainerXmlParser::writeSolution(const ContainerSolution &containerSolutio
     streamWriter.writeEndElement(); // PackedBoxes
     streamWriter.writeEndElement(); // ContainerSolution
     streamWriter.writeEndDocument();
-}
-
-void ContainerXmlParser::parsePackedBoxAttributes(int &boxIndex)
-{
-    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
-    {
-        if (attribute.name() == "Index")
-        {
-            boxIndex = attribute.value().toInt();
-        }
-        else
-        {
-            invalidAttribute(attribute);
-        }
-    }
-}
-
-void ContainerXmlParser::parseBoxPositionAttributes(int &positionX, int &positionY, int &positionZ)
-{
-    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
-    {
-        if (attribute.name() == "X")
-        {
-            positionX = attribute.value().toInt();
-        }
-        else if (attribute.name() == "Y")
-        {
-            positionY = attribute.value().toInt();
-        }
-        else if (attribute.name() == "Z")
-        {
-            positionZ = attribute.value().toInt();
-        }
-        else
-        {
-            invalidAttribute(attribute);
-        }
-    }
-}
-
-void ContainerXmlParser::parseBoxDimensionsAttributes(int &dimensionX, int &dimensionY, int &dimensionZ)
-{
-    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
-    {
-        if (attribute.name() == "X")
-        {
-            dimensionX = attribute.value().toInt();
-        }
-        else if (attribute.name() == "Y")
-        {
-            dimensionY = attribute.value().toInt();
-        }
-        else if (attribute.name() == "Z")
-        {
-            dimensionZ = attribute.value().toInt();
-        }
-        else
-        {
-            invalidAttribute(attribute);
-        }
-    }
 }
 
 void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerSolution)
@@ -233,46 +176,65 @@ void ContainerXmlParser::parseContainerAttributes(ContainerProblem &containerPro
     }
 }
 
-void ContainerXmlParser::parseBoxesAttributes(ContainerProblem &containerProblem)
+void ContainerXmlParser::parseBoxesAttributes(int &boxCount)
 {
+    bool flag = false;
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {
         if (attribute.name() == "BoxCount")
         {
-            int boxCount = checkIntAttribute(attribute, 1, 1000);
-            containerProblem.setBoxCount(boxCount);
+            boxCount = checkIntegerAttribute(attribute, 1, 1000);
+            flag = true;
         }
         else
         {
             invalidAttribute(attribute);
         }
     }
+    checkBoxAttributePresent(flag, "BoxCount");
 }
 
-void ContainerXmlParser::parseBoxAttributes(int &boxIndex, int &boxDimensionX, int &boxDimensionY, int &boxDimensionZ)
+void ContainerXmlParser::parseBoxAttributes(int boxIndex, int &boxDimensionX, int &boxDimensionY, int &boxDimensionZ)
 {
+    bool flags[4] = { 0 };
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {
         if (attribute.name() == "Index")
         {
-            boxIndex = attribute.value().toInt();
+            checkIntegerAttribute(attribute, boxIndex);
+            flags[0] = true;
         }
         else if (attribute.name() == "LengthX")
         {
-            boxDimensionX = attribute.value().toInt();
+            boxDimensionX = checkIntegerAttribute(attribute, 1, 9999);
+            flags[1] = true;
         }
         else if (attribute.name() == "LengthY")
         {
-            boxDimensionY = attribute.value().toInt();
+            boxDimensionY = checkIntegerAttribute(attribute, 1, 9999);
+            flags[2] = true;
         }
         else if (attribute.name() == "LengthZ")
         {
-            boxDimensionZ = attribute.value().toInt();
+            boxDimensionZ = checkIntegerAttribute(attribute, 1, 9999);
+            flags[3] = true;
         }
         else
         {
             invalidAttribute(attribute);
         }
+    }
+    checkBoxAttributePresent(flags[0], "Index");
+    checkBoxAttributePresent(flags[1], "LengthX");
+    checkBoxAttributePresent(flags[2], "LengthY");
+    checkBoxAttributePresent(flags[3], "LengthZ");
+}
+
+void ContainerXmlParser::checkBoxAttributePresent(bool present, QString attributeName)
+{
+    if (!present)
+    {
+        throwException(QString("Missing attribute '%2'").arg(attributeName));
     }
 }
 
@@ -286,14 +248,15 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
     parseContainerAttributes(containerProblem);
     streamReader.skipCurrentElement();
     checkNextElement("Boxes");
-    parseBoxesAttributes(containerProblem);
+    int boxCount;
+    parseBoxesAttributes(boxCount);
 
-    while (streamReader.readNextStartElement())
+    for (int index = 0; streamReader.readNextStartElement(); ++index)
     {
         checkCurrentElement("Box");
-        int boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ;
-        parseBoxAttributes(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
-        containerProblem.setBoxDimensions(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
+        int boxDimensionX, boxDimensionY, boxDimensionZ;
+        parseBoxAttributes(index, boxDimensionX, boxDimensionY, boxDimensionZ);
+        containerProblem.setBoxDimensions(index, boxDimensionX, boxDimensionY, boxDimensionZ);
         streamReader.skipCurrentElement();
     }
 }
@@ -302,9 +265,7 @@ void ContainerXmlParser::checkNextElement(QString name)
 {
     if (!streamReader.readNextStartElement())
     {
-        throw ContainerXmlParserException(QString("Element '%1' expected at line %2")
-                                          .arg(name)
-                                          .arg(streamReader.lineNumber()));
+        throwException(QString("Element '%1' expected").arg(name));
     }
     checkCurrentElement(name);
 }
@@ -313,33 +274,110 @@ void ContainerXmlParser::checkCurrentElement(QString name)
 {
     if (streamReader.name() != name)
     {
-        throw ContainerXmlParserException(QString("Unknown element '%1' at line %2")
-                                          .arg(streamReader.name().toString())
-                                          .arg(streamReader.lineNumber()));
+        throwException(QString("Unknown element '%1'").arg(streamReader.name().toString()));
     }
 }
 
 void ContainerXmlParser::invalidAttribute(QXmlStreamAttribute &attribute)
 {
-    throw ContainerXmlParserException(QString("Unknown attribute '%1' for element '%2' at line %3")
-                                      .arg(attribute.name().toString())
-                                      .arg(streamReader.name().toString())
-                                      .arg(streamReader.lineNumber()));
+    throwException(QString("Unknown attribute '%1' for element '%2'")
+                   .arg(attribute.name().toString())
+                   .arg(streamReader.name().toString()));
 }
 
-int ContainerXmlParser::checkIntAttribute(QXmlStreamAttribute &attribute, int minValue, int maxValue)
+int ContainerXmlParser::parseIntegerAttribute(QXmlStreamAttribute &attribute)
 {
     bool ok;
-    int value = attribute.value().toInt(&ok);
+    int integer = attribute.value().toInt(&ok);
     if (!ok)
-        throw ContainerXmlParserException(QString("Integer value required in attribute '%1' at line '%2'")
-                                          .arg(attribute.name().toString())
-                                          .arg(streamReader.lineNumber()));
+        throwException(QString("Unable to parse integer value required in attribute '%1'").arg(attribute.name().toString()));
+    return integer;
+}
+
+void ContainerXmlParser::checkIntegerAttribute(QXmlStreamAttribute &attribute, int value)
+{
+    int integer = parseIntegerAttribute(attribute);
+    if (integer != value)
+        throwException(QString("Invalid value at attribute '%1' (expected '%2')")
+                       .arg(attribute.name().toString())
+                       .arg(value));
+}
+
+int ContainerXmlParser::checkIntegerAttribute(QXmlStreamAttribute &attribute, int minValue, int maxValue)
+{
+    int value = parseIntegerAttribute(attribute);
     if (!(minValue <= value && value <= maxValue))
-        throw ContainerXmlParserException(QString("Value at attribute '%1' at line '%2'. Range allowed is [%3 %4]")
-                                          .arg(attribute.name().toString())
-                                          .arg(streamReader.lineNumber())
-                                          .arg(minValue)
-                                          .arg(maxValue));
+        throwException(QString("Invalid value at attribute '%1' (range allowed is [%2 %3])")
+                       .arg(attribute.name().toString())
+                       .arg(minValue)
+                       .arg(maxValue));
     return value;
+}
+
+void ContainerXmlParser::parsePackedBoxAttributes(int &boxIndex)
+{
+    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
+    {
+        if (attribute.name() == "Index")
+        {
+            boxIndex = attribute.value().toInt();
+        }
+        else
+        {
+            invalidAttribute(attribute);
+        }
+    }
+}
+
+void ContainerXmlParser::parseBoxPositionAttributes(int &positionX, int &positionY, int &positionZ)
+{
+    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
+    {
+        if (attribute.name() == "X")
+        {
+            positionX = attribute.value().toInt();
+        }
+        else if (attribute.name() == "Y")
+        {
+            positionY = attribute.value().toInt();
+        }
+        else if (attribute.name() == "Z")
+        {
+            positionZ = attribute.value().toInt();
+        }
+        else
+        {
+            invalidAttribute(attribute);
+        }
+    }
+}
+
+void ContainerXmlParser::parseBoxDimensionsAttributes(int &dimensionX, int &dimensionY, int &dimensionZ)
+{
+    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
+    {
+        if (attribute.name() == "X")
+        {
+            dimensionX = attribute.value().toInt();
+        }
+        else if (attribute.name() == "Y")
+        {
+            dimensionY = attribute.value().toInt();
+        }
+        else if (attribute.name() == "Z")
+        {
+            dimensionZ = attribute.value().toInt();
+        }
+        else
+        {
+            invalidAttribute(attribute);
+        }
+    }
+}
+
+void ContainerXmlParser::throwException(QString message)
+{
+    throw ContainerXmlParserException(QString("Line %1: %2")
+                                      .arg(streamReader.lineNumber())
+                                      .arg(message));
 }

@@ -224,7 +224,9 @@ void MainWindow::on_actionSaveProblem_triggered()
 
 void MainWindow::on_actionOpenProblem_triggered()
 {
-    QString filename = QFileDialog::getOpenFileName(this, tr("Abrir archivo"));
+    QString filename = QFileDialog::getOpenFileName(this, tr("Abrir archivo"),
+                                                    QString(),
+                                                    "Problema de planificación de carga (*.xml)");
     if (!filename.isNull())
     {
         QFile file(filename);
