@@ -20,11 +20,12 @@ private:
     void writeProblemElement(const ContainerProblem &containerProblem);
     void readProblemElement(ContainerProblem &containerProblem);
     void checkNextElement(QString name);
+    void checkEndElement(QString name);
     void checkCurrentElement(QString name);
     void invalidAttribute(QXmlStreamAttribute &attribute);
     int parseIntegerAttribute(QXmlStreamAttribute &attribute);
     void checkIntegerAttribute(QXmlStreamAttribute &attribute, int value);
-    int checkIntegerAttribute(QXmlStreamAttribute &attribute, int minValue, int maxValue);
+    int checkIntegerRangeAttribute(QXmlStreamAttribute &attribute, int minValue, int maxValue);
     void parseContainerProblemAttributes(ContainerProblem &containerProblem);
     void parseContainerAttributes(ContainerProblem &containerProblem);
     void parseBoxesAttributes(int &boxCount);

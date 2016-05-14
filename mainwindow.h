@@ -52,6 +52,8 @@ public slots:
     
     void on_actionSaveSolution_triggered();
 
+    void on_actionOpenSolution_triggered();
+
     void on_actionNewProblem_triggered();
 
     void on_actionDeleteBox_triggered();
@@ -60,7 +62,6 @@ public slots:
 
     void on_actionSetMeasurementSystem_triggered();
 
-    void on_actionOpenSolution_triggered();
 
 private:
     Ui::MainWindow *ui;

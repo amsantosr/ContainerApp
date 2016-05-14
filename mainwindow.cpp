@@ -249,7 +249,8 @@ void MainWindow::on_actionOpenProblem_triggered()
 
 void MainWindow::on_actionSaveSolution_triggered()
 {
-    QString filename = QFileDialog::getSaveFileName(this, tr("Guardar solución"));
+    QString filename = QFileDialog::getSaveFileName(this, tr("Guardar solución"), QString(),
+                                                    "Solución de planificación de carga (*.xml)");
     if (!filename.isNull())
     {
         QFile file(filename);
@@ -258,6 +259,34 @@ void MainWindow::on_actionSaveSolution_triggered()
         else
             QMessageBox::critical(this, tr("Error"),
                                   tr("No se puede abrir el archivo %1 para escritura").arg(filename));
+    }
+}
+
+void MainWindow::on_actionOpenSolution_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Abrir solución"), QString(),
+                                                    "Solución de planificación de carga (*.xml)");
+    if (!filename.isNull())
+    {
+        QFile file(filename);
+        if (file.open(QFile::ReadOnly))
+        {
+            try
+            {
+                containerXmlParser.readSolution(&file, containerSolution);
+            }
+            catch (ContainerXmlParserException &exception)
+            {
+                QMessageBox::critical(this, tr("Error"), exception.message());
+            }
+        }
+        else
+        {
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("No se pudo abrir el archivo %1 para lectura\n%1")
+                                  .arg(filename)
+                                  .arg(file.errorString()));
+        }
     }
 }
 
@@ -288,33 +317,6 @@ void MainWindow::on_actionSetMeasurementSystem_triggered()
         else if (uiDialogMeasurementSystem.radioButtonInches->isChecked())
         {
             setTextUnit("in.");
-        }
-    }
-}
-
-void MainWindow::on_actionOpenSolution_triggered()
-{
-    QString filename = QFileDialog::getOpenFileName(this, tr("Abrir solución"));
-    if (!filename.isNull())
-    {
-        QFile file(filename);
-        if (file.open(QFile::ReadOnly))
-        {
-            try
-            {
-                containerXmlParser.readSolution(&file, containerSolution);
-            }
-            catch (ContainerXmlParserException &exception)
-            {
-                QMessageBox::critical(this, tr("Error"), exception.message());
-            }
-        }
-        else
-        {
-            QMessageBox::critical(this, tr("Error"),
-                                  tr("No se pudo abrir el archivo %1 para lectura\n%1")
-                                  .arg(filename)
-                                  .arg(file.errorString()));
         }
     }
 }

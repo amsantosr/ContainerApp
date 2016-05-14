@@ -65,7 +65,6 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
 
     checkNextElement("ContainerSolution");
     readProblemElement(*containerSolution.getContainerProblem());
-    streamReader.skipCurrentElement();
 
     checkNextElement("PackedBoxes");
     QVector<int> packedBoxesIndexes;
@@ -183,7 +182,7 @@ void ContainerXmlParser::parseBoxesAttributes(int &boxCount)
     {
         if (attribute.name() == "BoxCount")
         {
-            boxCount = checkIntegerAttribute(attribute, 1, 1000);
+            boxCount = checkIntegerRangeAttribute(attribute, 1, 1000);
             flag = true;
         }
         else
@@ -206,17 +205,17 @@ void ContainerXmlParser::parseBoxAttributes(int boxIndex, int &boxDimensionX, in
         }
         else if (attribute.name() == "LengthX")
         {
-            boxDimensionX = checkIntegerAttribute(attribute, 1, 9999);
+            boxDimensionX = checkIntegerRangeAttribute(attribute, 1, 9999);
             flags[1] = true;
         }
         else if (attribute.name() == "LengthY")
         {
-            boxDimensionY = checkIntegerAttribute(attribute, 1, 9999);
+            boxDimensionY = checkIntegerRangeAttribute(attribute, 1, 9999);
             flags[2] = true;
         }
         else if (attribute.name() == "LengthZ")
         {
-            boxDimensionZ = checkIntegerAttribute(attribute, 1, 9999);
+            boxDimensionZ = checkIntegerRangeAttribute(attribute, 1, 9999);
             flags[3] = true;
         }
         else
@@ -234,7 +233,7 @@ void ContainerXmlParser::checkBoxAttributePresent(bool present, QString attribut
 {
     if (!present)
     {
-        throwException(QString("Missing attribute '%2'").arg(attributeName));
+        throwException(QString("Falta el atributo '%2'").arg(attributeName));
     }
 }
 
@@ -260,28 +259,41 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
         containerProblem.setBoxDimensions(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
         streamReader.skipCurrentElement();
     }
+    checkEndElement("Boxes");
+    checkEndElement("ContainerProblem");
 }
 
 void ContainerXmlParser::checkNextElement(QString name)
 {
     if (!streamReader.readNextStartElement())
     {
-        throwException(QString("Element '%1' expected").arg(name));
+        if (streamReader.hasError())
+            throwException(streamReader.errorString());
+        else
+            throwException(QString("Falta el elemento '%1'.").arg(name));
     }
     checkCurrentElement(name);
+}
+
+void ContainerXmlParser::checkEndElement(QString name)
+{
+    if (streamReader.readNextStartElement())
+        throwException(QString("Se esperaba el elemento de cierre </%1>.").arg(name));
+    if (streamReader.hasError())
+        throwException(streamReader.errorString());
 }
 
 void ContainerXmlParser::checkCurrentElement(QString name)
 {
     if (streamReader.name() != name)
     {
-        throwException(QString("Unknown element '%1'").arg(streamReader.name().toString()));
+        throwException(QString("Element desconocido '%1'.").arg(streamReader.name().toString()));
     }
 }
 
 void ContainerXmlParser::invalidAttribute(QXmlStreamAttribute &attribute)
 {
-    throwException(QString("Unknown attribute '%1' for element '%2'")
+    throwException(QString("Atributo '%1' inválido para el elemento '%2'.")
                    .arg(attribute.name().toString())
                    .arg(streamReader.name().toString()));
 }
@@ -291,7 +303,7 @@ int ContainerXmlParser::parseIntegerAttribute(QXmlStreamAttribute &attribute)
     bool ok;
     int integer = attribute.value().toInt(&ok);
     if (!ok)
-        throwException(QString("Unable to parse integer value required in attribute '%1'").arg(attribute.name().toString()));
+        throwException(QString("No se puede leer un valor entero en el atributo '%1'.").arg(attribute.name().toString()));
     return integer;
 }
 
@@ -299,16 +311,16 @@ void ContainerXmlParser::checkIntegerAttribute(QXmlStreamAttribute &attribute, i
 {
     int integer = parseIntegerAttribute(attribute);
     if (integer != value)
-        throwException(QString("Invalid value at attribute '%1' (expected '%2')")
+        throwException(QString("Valor inválido para el atributo '%1' (valor esperado '%2')")
                        .arg(attribute.name().toString())
                        .arg(value));
 }
 
-int ContainerXmlParser::checkIntegerAttribute(QXmlStreamAttribute &attribute, int minValue, int maxValue)
+int ContainerXmlParser::checkIntegerRangeAttribute(QXmlStreamAttribute &attribute, int minValue, int maxValue)
 {
     int value = parseIntegerAttribute(attribute);
     if (!(minValue <= value && value <= maxValue))
-        throwException(QString("Invalid value at attribute '%1' (range allowed is [%2 %3])")
+        throwException(QString("Valor inválido para el atributo '%1' (rango permitido [%2 %3])")
                        .arg(attribute.name().toString())
                        .arg(minValue)
                        .arg(maxValue));
@@ -378,7 +390,8 @@ void ContainerXmlParser::parseBoxDimensionsAttributes(int &dimensionX, int &dime
 
 void ContainerXmlParser::throwException(QString message)
 {
-    throw ContainerXmlParserException(QString("Line %1: %2")
+    throw ContainerXmlParserException(QString("Línea %1, columna %2: %3")
                                       .arg(streamReader.lineNumber())
+                                      .arg(streamReader.columnNumber())
                                       .arg(message));
 }
