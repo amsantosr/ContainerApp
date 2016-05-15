@@ -50,9 +50,9 @@ QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) co
         QString string;
         switch (index.column())
         {
-        case 0: string = QString::number(containerProblem->boxLengthX(index.row()));
-        case 1: string = QString::number(containerProblem->boxLengthY(index.row()));
-        case 2: string = QString::number(containerProblem->boxLengthZ(index.row()));
+        case 0: string = QString::number(containerProblem->boxLengthX(index.row())); break;
+        case 1: string = QString::number(containerProblem->boxLengthY(index.row())); break;
+        case 2: string = QString::number(containerProblem->boxLengthZ(index.row())); break;
         }
         QString textUnit = containerProblem->textUnit();
         if (!textUnit.isNull())

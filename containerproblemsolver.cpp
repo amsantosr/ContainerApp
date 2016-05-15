@@ -31,7 +31,7 @@ void ContainerProblemSolver::solve(const ContainerProblem &problem, ContainerSol
         boxPackedFlagsBool[index] = (boxPackedFlagsInt[index] != 0);
     }
 
-    solution.setSolution(boxLengthsX, boxLengthsY, boxLengthsZ,
-                         boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ,
-                         boxPackedFlagsBool, volume);
+//    solution.setSolution(boxLengthsX, boxLengthsY, boxLengthsZ,
+//                         boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ,
+//                         boxPackedFlagsBool, volume);
 }

@@ -27,7 +27,7 @@ void ContainerProblemSolverThread::run()
     QVector<int> boxCoordinatesY(containerProblem->boxCount());
     QVector<int> boxCoordinatesZ(containerProblem->boxCount());
     QVector<int> boxPackedFlagsInt(containerProblem->boxCount());
-    QVector<bool> boxPackedFlagsBool(containerProblem->boxCount());
+    QVector<int> packedBoxesIndexes;
 
     // llamar al procedimiento en C
     contload(containerProblem->boxCount(),
@@ -38,14 +38,32 @@ void ContainerProblemSolverThread::run()
              boxCoordinatesX.data(), boxCoordinatesY.data(), boxCoordinatesZ.data(),
              boxPackedFlagsInt.data(), &volume);
 
+    int packedBoxesCount = 0;
     for (int index = 0; index < boxPackedFlagsInt.size(); ++index)
     {
-        boxPackedFlagsBool[index] = (boxPackedFlagsInt[index] != 0);
+        if (boxPackedFlagsInt[index])
+        {
+            boxLengthsX[packedBoxesCount] = boxLengthsX[index];
+            boxLengthsY[packedBoxesCount] = boxLengthsY[index];
+            boxLengthsZ[packedBoxesCount] = boxLengthsZ[index];
+            boxCoordinatesX[packedBoxesCount] = boxCoordinatesX[index];
+            boxCoordinatesY[packedBoxesCount] = boxCoordinatesY[index];
+            boxCoordinatesZ[packedBoxesCount] = boxCoordinatesZ[index];
+            packedBoxesIndexes.append(index);
+            ++packedBoxesCount;
+        }
     }
+    boxLengthsX.resize(packedBoxesCount);
+    boxLengthsY.resize(packedBoxesCount);
+    boxLengthsZ.resize(packedBoxesCount);
+    boxCoordinatesX.resize(packedBoxesCount);
+    boxCoordinatesY.resize(packedBoxesCount);
+    boxCoordinatesZ.resize(packedBoxesCount);
 
     emit solutionReady(boxLengthsX, boxLengthsY, boxLengthsZ,
                        boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ,
-                       boxPackedFlagsBool, volume);
+                       packedBoxesIndexes);
+
     // TODO tratar de eliminar esta linea de codigo
     msleep(10);
 }

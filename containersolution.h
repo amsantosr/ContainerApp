@@ -16,24 +16,20 @@ public:
     const ContainerProblem *getContainerProblem() const { return containerProblem; }
     ContainerProblem *getContainerProblem() { return containerProblem; }
     QString textUnit() const { return containerProblem ? containerProblem->textUnit() : QString::null; }
-    int boxLengthX(int index) const { return boxLengthXValues[index]; }
-    int boxLengthY(int index) const { return boxLengthYValues[index]; }
-    int boxLengthZ(int index) const { return boxLengthZValues[index]; }
-    int boxCoordinateX(int index) const { return boxCoordinateXValues[index]; }
-    int boxCoordinateY(int index) const { return boxCoordinateYValues[index]; }
-    int boxCoordinateZ(int index) const { return boxCoordinateZValues[index]; }
+    int packedBoxLengthX(int index) const { return boxLengthXValues[index]; }
+    int packedBoxLengthY(int index) const { return boxLengthYValues[index]; }
+    int packedBoxLengthZ(int index) const { return boxLengthZValues[index]; }
+    int packedBoxCoordinateX(int index) const { return boxCoordinateXValues[index]; }
+    int packedBoxCoordinateY(int index) const { return boxCoordinateYValues[index]; }
+    int packedBoxCoordinateZ(int index) const { return boxCoordinateZValues[index]; }
     bool isBoxPacked(int index) const { return boxPackedFlagValues[index]; }
-    int packedVolume() const { return packedVolumeValue; }
-    int boxCount() const { return boxPackedFlagValues.size(); }
-
-    void setSolution(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
-                     QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
-                     QVector<bool> boxPackedFlagsBool, int volume);
     void setPackedBoxes(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
                         QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
                         QVector<int> packedBoxesIndexes);
-    int packedBoxesCount() const { return boxOrderIndexes.size(); }
-    int boxOrderIndex(int i) const { return boxOrderIndexes[i]; }
+    int packedBoxesCount() const { return packedBoxesIndexes.size(); }
+    int packedBoxIndex(int i) const { return packedBoxesIndexes[i]; }
+    int sortedBoxIndex(int i) const { return sortedBoxesIndexes[i]; }
+    void sortBoxOrderIndexes();
 
 signals:
     void beforeDataChange();
@@ -48,8 +44,8 @@ private:
     QVector<int> boxCoordinateYValues;
     QVector<int> boxCoordinateZValues;
     QVector<bool> boxPackedFlagValues;
-    QVector<int> boxOrderIndexes;
-    int packedVolumeValue;
+    QVector<int> packedBoxesIndexes;
+    QVector<int> sortedBoxesIndexes;
 };
 
 #endif // CONTAINERSOLUTION_H

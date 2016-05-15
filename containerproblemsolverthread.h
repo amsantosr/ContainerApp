@@ -13,13 +13,9 @@ public:
     void run();
 
 signals:
-    void solutionReady(QVector<int> boxLengthsX,
-                       QVector<int> boxLengthsY,
-                       QVector<int> boxLengthsZ,
-                       QVector<int> boxCoordinatesX,
-                       QVector<int> boxCoordinatesY,
-                       QVector<int> boxCoordinatesZ,
-                       QVector<bool> boxPackedFlagsBool, int volume);
+    void solutionReady(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
+                       QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
+                       QVector<int> packedBoxesIndexes);
 
 private:
     ContainerProblem *containerProblem;

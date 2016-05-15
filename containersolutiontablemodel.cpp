@@ -27,7 +27,7 @@ void ContainerSolutionTableModel::setContainerSolution(ContainerSolution *soluti
 
 int ContainerSolutionTableModel::rowCount(const QModelIndex &) const
 {
-    return containerSolution != 0 ? containerSolution->boxCount() : 0;
+    return containerSolution != 0 ? containerSolution->getContainerProblem()->boxCount() : 0;
 }
 
 int ContainerSolutionTableModel::columnCount(const QModelIndex &) const
@@ -45,12 +45,12 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
             QString text;
             switch (index.column())
             {
-            case 0: text = QString::number(containerSolution->boxLengthX(index.row())); break;
-            case 1: text = QString::number(containerSolution->boxLengthY(index.row())); break;
-            case 2: text = QString::number(containerSolution->boxLengthZ(index.row())); break;
-            case 3: text = QString::number(containerSolution->boxCoordinateX(index.row())); break;
-            case 4: text = QString::number(containerSolution->boxCoordinateY(index.row())); break;
-            case 5: text = QString::number(containerSolution->boxCoordinateZ(index.row())); break;
+            case 0: text = QString::number(containerSolution->packedBoxLengthX(index.row())); break;
+            case 1: text = QString::number(containerSolution->packedBoxLengthY(index.row())); break;
+            case 2: text = QString::number(containerSolution->packedBoxLengthZ(index.row())); break;
+            case 3: text = QString::number(containerSolution->packedBoxCoordinateX(index.row())); break;
+            case 4: text = QString::number(containerSolution->packedBoxCoordinateY(index.row())); break;
+            case 5: text = QString::number(containerSolution->packedBoxCoordinateZ(index.row())); break;
             case 6: text = tr("Si"); break;
             }
             QString textUnit = containerSolution->textUnit();

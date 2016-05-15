@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::finished,
             &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::solutionReady,
-            &containerSolution, &ContainerSolution::setSolution, Qt::BlockingQueuedConnection);
+            &containerSolution, &ContainerSolution::setPackedBoxes, Qt::BlockingQueuedConnection);
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked,
             this, [&]
     {
@@ -136,7 +136,7 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     ui->openGLWidget->setDisplayedBoxesLimit(value);
     if (value > 0)
     {
-        int lastBoxIndex = containerSolution.boxOrderIndex(value - 1);
+        int lastBoxIndex = containerSolution.sortedBoxIndex(value - 1) + 1;
         ui->labelLastBox->setText(tr("Caja %1").arg(lastBoxIndex));
     }
     else
@@ -235,6 +235,7 @@ void MainWindow::on_actionOpenProblem_triggered()
             try
             {
                 containerXmlParser.readProblem(&file, containerProblem);
+                containerSolution.clear();
             }
             catch (ContainerXmlParserException &exception)
             {

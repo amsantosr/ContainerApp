@@ -60,7 +60,7 @@ void GLContainerWidget::initializeGL()
     // Enable light and set up 2 light sources (GL_LIGHT0 and GL_LIGHT1)
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    //glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT1);
 
     // We're setting up two light sources. One of them is located
     // on the left side of the model (x = -1.5f) and emits white light. The
@@ -72,7 +72,7 @@ void GLContainerWidget::initializeGL()
     float ambientLight0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
     float diffuseLight0[] = { 0.8f, 0.8f, 0.8f, 1.0f };
     float specularLight0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-    float position0[] = { -1.5f, 1.0f, -4.0f, 1.0f };
+    float position0[] = { -1500.0f, 1.0f, -4.0f, 1.0f };
     // Assign created components to GL_LIGHT0
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight0);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight0);
@@ -125,13 +125,13 @@ void GLContainerWidget::paintGL()
         int displayedBoxes = std::min(displayedBoxesLimit, containerSolution->packedBoxesCount());
         for (int count = 0; count < displayedBoxes; ++count)
         {
-            int boxIndex = containerSolution->boxOrderIndex(count);
-            int x1 = containerSolution->boxCoordinateX(boxIndex);
-            int y1 = containerSolution->boxCoordinateY(boxIndex);
-            int z1 = containerSolution->boxCoordinateZ(boxIndex);
-            int x2 = x1 + containerSolution->boxLengthX(boxIndex);
-            int y2 = y1 + containerSolution->boxLengthY(boxIndex);
-            int z2 = z1 + containerSolution->boxLengthZ(boxIndex);
+            int sortedBoxIndex = containerSolution->sortedBoxIndex(count);
+            int x1 = containerSolution->packedBoxCoordinateX(sortedBoxIndex);
+            int y1 = containerSolution->packedBoxCoordinateY(sortedBoxIndex);
+            int z1 = containerSolution->packedBoxCoordinateZ(sortedBoxIndex);
+            int x2 = x1 + containerSolution->packedBoxLengthX(sortedBoxIndex);
+            int y2 = y1 + containerSolution->packedBoxLengthY(sortedBoxIndex);
+            int z2 = z1 + containerSolution->packedBoxLengthZ(sortedBoxIndex);
             drawBox(x1, y1, z1, x2, y2, z2);
         }
     }
@@ -192,7 +192,7 @@ void GLContainerWidget::resetView()
 {
     distance = -1000.0f;
     rotationX = rotationZ = 0;
-    rotationY = 270;
+    rotationY = 0;
     update();
 }
 
@@ -207,8 +207,8 @@ void GLContainerWidget::setDisplayedBoxesLimit(int value)
 
 void GLContainerWidget::drawBox(int x1, int y1, int z1, int x2, int y2, int z2)
 {
-    GLint color[] = { rand(), rand(), rand(), INT_MAX };
-    glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
+    GLint faceColor[] = { rand(), rand(), rand(), INT_MAX };
+    glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, faceColor);
     glBegin(GL_QUADS);
     glNormal3b(0, 0, -1);
     glVertex3f(x1, y1, z1);
@@ -245,6 +245,33 @@ void GLContainerWidget::drawBox(int x1, int y1, int z1, int x2, int y2, int z2)
     glVertex3f(x1, y2, z2);
     glVertex3f(x2, y2, z2);
     glVertex3f(x2, y2, z1);
+    glEnd();
+
+    GLint lineColor[] = { 0, 0, 0, INT_MAX };
+    glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lineColor);
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(x1, y1, z1);
+    glVertex3f(x1, y2, z1);
+    glVertex3f(x2, y2, z1);
+    glVertex3f(x2, y1, z1);
+    glEnd();
+
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(x1, y1, z2);
+    glVertex3f(x1, y2, z2);
+    glVertex3f(x2, y2, z2);
+    glVertex3f(x2, y1, z2);
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex3f(x1, y1, z1);
+    glVertex3f(x1, y1, z2);
+    glVertex3f(x1, y2, z1);
+    glVertex3f(x1, y2, z2);
+    glVertex3f(x2, y2, z1);
+    glVertex3f(x2, y2, z2);
+    glVertex3f(x2, y1, z1);
+    glVertex3f(x2, y1, z2);
     glEnd();
 }
 
