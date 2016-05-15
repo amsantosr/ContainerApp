@@ -28,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
     boxesOrderingTableModel(new BoxesOrderingTableModel(this))
 {
     ui->setupUi(this);
-    Ui::DialogAbout uiDialogAbout;
     uiDialogAbout.setupUi(&dialogAbout);
     uiDialogAddBox.setupUi(&dialogAddBox);
     uiDialogAlgorithmExecution.setupUi(&dialogAlgorithmExecution);

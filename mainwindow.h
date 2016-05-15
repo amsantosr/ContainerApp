@@ -11,6 +11,7 @@
 #include "ui_dialogaddbox.h"
 #include "ui_dialoggenerateproblem.h"
 #include "ui_dialogmeasurementsystem.h"
+#include "ui_dialogabout.h"
 
 namespace Ui {
 class MainWindow;
@@ -74,6 +75,7 @@ private:
     QDialog dialogMeasurementSystem;
     Ui::DialogMeasurementSystem uiDialogMeasurementSystem;
     QDialog dialogAbout;
+    Ui::DialogAbout uiDialogAbout;
 
     ContainerProblemGenerator containerProblemGenerator;
     ContainerProblemSolverThread containerProblemSolverThread;

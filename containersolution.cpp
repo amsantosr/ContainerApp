@@ -65,9 +65,9 @@ void ContainerSolution::sortBoxOrderIndexes()
     {
         if (packedBoxCoordinateZ(a) != packedBoxCoordinateZ(b))
             return packedBoxCoordinateZ(a) < packedBoxCoordinateZ(b);
-        if (packedBoxCoordinateY(a) != packedBoxCoordinateY(b))
-            return packedBoxCoordinateY(a) < packedBoxCoordinateY(b);
-        return packedBoxCoordinateX(a) < packedBoxCoordinateX(b);
+        if (packedBoxCoordinateX(a) != packedBoxCoordinateX(b))
+            return packedBoxCoordinateX(a) < packedBoxCoordinateX(b);
+        return packedBoxCoordinateY(a) < packedBoxCoordinateY(b);
     });
     for (int j = 1; j < sortedBoxesIndexes.size(); ++j)
     {
