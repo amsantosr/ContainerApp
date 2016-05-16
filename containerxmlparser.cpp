@@ -35,20 +35,20 @@ void ContainerXmlParser::writeSolution(const ContainerSolution &containerSolutio
     streamWriter.writeStartElement("PackedBoxes");
     for (int index = 0; index < containerSolution.packedBoxesCount(); ++index)
     {
-        int boxIndex = containerSolution.packedBoxIndex(boxIndex);
+        int boxIndex = containerSolution.packedBoxIndex(index);
         streamWriter.writeStartElement("Box");
         streamWriter.writeAttribute("Index", QString::number(boxIndex));
         streamWriter.writeEmptyElement("Position");
-        int posX = containerSolution.packedBoxCoordinateX(boxIndex);
-        int posY = containerSolution.packedBoxCoordinateY(boxIndex);
-        int posZ = containerSolution.packedBoxCoordinateZ(boxIndex);
+        int posX = containerSolution.packedBoxCoordinateX(index);
+        int posY = containerSolution.packedBoxCoordinateY(index);
+        int posZ = containerSolution.packedBoxCoordinateZ(index);
         streamWriter.writeAttribute("X", QString::number(posX));
         streamWriter.writeAttribute("Y", QString::number(posY));
         streamWriter.writeAttribute("Z", QString::number(posZ));
         streamWriter.writeEmptyElement("Dimensions");
-        int x = containerSolution.packedBoxLengthX(boxIndex);
-        int y = containerSolution.packedBoxLengthY(boxIndex);
-        int z = containerSolution.packedBoxLengthZ(boxIndex);
+        int x = containerSolution.packedBoxLengthX(index);
+        int y = containerSolution.packedBoxLengthY(index);
+        int z = containerSolution.packedBoxLengthZ(index);
         streamWriter.writeAttribute("X", QString::number(x));
         streamWriter.writeAttribute("Y", QString::number(y));
         streamWriter.writeAttribute("Z", QString::number(z));
