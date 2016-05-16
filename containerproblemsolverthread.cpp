@@ -1,4 +1,5 @@
 #include "containerproblemsolverthread.h"
+#include <QRect>
 
 extern "C" {
 void contload(int n, int W, int H, int D,
@@ -38,32 +39,62 @@ void ContainerProblemSolverThread::run()
              boxCoordinatesX.data(), boxCoordinatesY.data(), boxCoordinatesZ.data(),
              boxPackedFlagsInt.data(), &volume);
 
-    int packedBoxesCount = 0;
     for (int index = 0; index < boxPackedFlagsInt.size(); ++index)
     {
         if (boxPackedFlagsInt[index])
         {
-            boxLengthsX[packedBoxesCount] = boxLengthsX[index];
-            boxLengthsY[packedBoxesCount] = boxLengthsY[index];
-            boxLengthsZ[packedBoxesCount] = boxLengthsZ[index];
-            boxCoordinatesX[packedBoxesCount] = boxCoordinatesX[index];
-            boxCoordinatesY[packedBoxesCount] = boxCoordinatesY[index];
-            boxCoordinatesZ[packedBoxesCount] = boxCoordinatesZ[index];
             packedBoxesIndexes.append(index);
-            ++packedBoxesCount;
         }
     }
-    boxLengthsX.resize(packedBoxesCount);
-    boxLengthsY.resize(packedBoxesCount);
-    boxLengthsZ.resize(packedBoxesCount);
-    boxCoordinatesX.resize(packedBoxesCount);
-    boxCoordinatesY.resize(packedBoxesCount);
-    boxCoordinatesZ.resize(packedBoxesCount);
 
-    emit solutionReady(boxLengthsX, boxLengthsY, boxLengthsZ,
-                       boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ,
-                       packedBoxesIndexes);
+    // ordering of the boxes according to the explained algorithm
+    std::sort(packedBoxesIndexes.begin(), packedBoxesIndexes.end(), [&](int a, int b) -> bool
+    {
+        if (boxCoordinatesZ[a] != boxCoordinatesZ[b])
+            return boxCoordinatesZ[a] < boxCoordinatesZ[b];
+        if (boxCoordinatesX[a] != boxCoordinatesX[b])
+            return boxCoordinatesX[a] < boxCoordinatesX[b];
+        return boxCoordinatesY[a] < boxCoordinatesY[b];
+    });
+
+    for (int j = 1; j < packedBoxesIndexes.size(); ++j)
+    {
+        int b = packedBoxesIndexes[j];
+        for (int i = 0; i < j; ++i)
+        {
+            int a = packedBoxesIndexes[i];
+            QRect rectBoxA(boxCoordinatesX[a], boxCoordinatesZ[a], boxLengthsX[a], boxLengthsZ[a]);
+            QRect rectBoxB(boxCoordinatesX[b], boxCoordinatesZ[b], boxLengthsX[b], boxLengthsZ[b]);
+            if (rectBoxA.intersects(rectBoxB) && boxCoordinatesY[b] < boxCoordinatesY[a])
+            {
+                packedBoxesIndexes.remove(j);
+                packedBoxesIndexes.insert(i, b);
+                break;
+            }
+        }
+    }
+
+    int packedBoxesCount = packedBoxesIndexes.size();
+    QVector<int> newBoxLengthsX(packedBoxesCount);
+    QVector<int> newBoxLengthsY(packedBoxesCount);
+    QVector<int> newBoxLengthsZ(packedBoxesCount);
+    QVector<int> newBoxCoordinatesX(packedBoxesCount);
+    QVector<int> newBoxCoordinatesY(packedBoxesCount);
+    QVector<int> newBoxCoordinatesZ(packedBoxesCount);
+    for (int i = 0; i < packedBoxesIndexes.size(); ++i)
+    {
+        int boxIndex = packedBoxesIndexes[i];
+        newBoxLengthsX[i] = boxLengthsX[boxIndex];
+        newBoxLengthsY[i] = boxLengthsY[boxIndex];
+        newBoxLengthsZ[i] = boxLengthsZ[boxIndex];
+        newBoxCoordinatesX[i] = boxCoordinatesX[boxIndex];
+        newBoxCoordinatesY[i] = boxCoordinatesY[boxIndex];
+        newBoxCoordinatesZ[i] = boxCoordinatesZ[boxIndex];
+    }
 
     // TODO tratar de eliminar esta linea de codigo
     msleep(10);
+    emit solutionReady(newBoxLengthsX, newBoxLengthsY, newBoxLengthsZ,
+                       newBoxCoordinatesX, newBoxCoordinatesY, newBoxCoordinatesZ,
+                       packedBoxesIndexes);
 }

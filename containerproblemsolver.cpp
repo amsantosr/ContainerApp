@@ -17,7 +17,7 @@ void ContainerProblemSolver::solve(const ContainerProblem &problem, ContainerSol
     QVector<int> boxCoordinatesY(problem.boxCount());
     QVector<int> boxCoordinatesZ(problem.boxCount());
     QVector<int> boxPackedFlagsInt(problem.boxCount());
-    QVector<bool> boxPackedFlagsBool(problem.boxCount());
+    QVector<int> packedBoxesIndexes;
 
     // llamar al procedimiento en C
     contload(problem.boxCount(),
@@ -26,12 +26,29 @@ void ContainerProblemSolver::solve(const ContainerProblem &problem, ContainerSol
              boxCoordinatesX.data(), boxCoordinatesY.data(), boxCoordinatesZ.data(),
              boxPackedFlagsInt.data(), &volume);
 
+    int packedBoxesCount = 0;
     for (int index = 0; index < boxPackedFlagsInt.size(); ++index)
     {
-        boxPackedFlagsBool[index] = (boxPackedFlagsInt[index] != 0);
+        if (boxPackedFlagsInt[index])
+        {
+            boxLengthsX[packedBoxesCount] = boxLengthsX[index];
+            boxLengthsY[packedBoxesCount] = boxLengthsY[index];
+            boxLengthsZ[packedBoxesCount] = boxLengthsZ[index];
+            boxCoordinatesX[packedBoxesCount] = boxCoordinatesX[index];
+            boxCoordinatesY[packedBoxesCount] = boxCoordinatesY[index];
+            boxCoordinatesZ[packedBoxesCount] = boxCoordinatesZ[index];
+            packedBoxesIndexes.append(index);
+            ++packedBoxesCount;
+        }
     }
+    boxLengthsX.resize(packedBoxesCount);
+    boxLengthsY.resize(packedBoxesCount);
+    boxLengthsZ.resize(packedBoxesCount);
+    boxCoordinatesX.resize(packedBoxesCount);
+    boxCoordinatesY.resize(packedBoxesCount);
+    boxCoordinatesZ.resize(packedBoxesCount);
 
-//    solution.setSolution(boxLengthsX, boxLengthsY, boxLengthsZ,
-//                         boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ,
-//                         boxPackedFlagsBool, volume);
+    solution.setPackedBoxes(boxLengthsX, boxLengthsY, boxLengthsZ,
+                            boxCoordinatesX, boxCoordinatesY, boxCoordinatesZ,
+                            packedBoxesIndexes);
 }

@@ -6,7 +6,7 @@
 #include "glcontainerwidget.h"
 #include "containerproblemtablemodel.h"
 #include "containersolutiontablemodel.h"
-#include "boxesorderingtablemodel.h"
+#include "containersolutiontablemodel.h"
 #include "containerxmlparserexception.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogMeasurementSystem(this),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
     containerSolutionTableModel(new ContainerSolutionTableModel(this)),
-    boxesOrderingTableModel(new BoxesOrderingTableModel(this))
+    boxesOrderingTableModel(new ContainerSolutionTableModel(this))
 {
     ui->setupUi(this);
     uiDialogAbout.setupUi(&dialogAbout);
@@ -38,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewBoxes->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
-    ui->tableViewOrdering->setModel(boxesOrderingTableModel);
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerSolutionTableModel->setContainerSolution(&containerSolution);
     boxesOrderingTableModel->setContainerSolution(&containerSolution);
@@ -135,7 +134,7 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     ui->openGLWidget->setDisplayedBoxesLimit(value);
     if (value > 0)
     {
-        int lastBoxIndex = containerSolution.sortedBoxIndex(value - 1) + 1;
+        int lastBoxIndex = containerSolution.packedBoxIndex(value - 1) + 1;
         ui->labelLastBox->setText(tr("Caja %1").arg(lastBoxIndex));
     }
     else

@@ -28,8 +28,6 @@ public:
                         QVector<int> packedBoxesIndexes);
     int packedBoxesCount() const { return packedBoxesIndexes.size(); }
     int packedBoxIndex(int i) const { return packedBoxesIndexes[i]; }
-    int sortedBoxIndex(int i) const { return sortedBoxesIndexes[i]; }
-    void sortBoxOrderIndexes();
 
 signals:
     void beforeDataChange();
@@ -45,7 +43,6 @@ private:
     QVector<int> boxCoordinateZValues;
     QVector<bool> boxPackedFlagValues;
     QVector<int> packedBoxesIndexes;
-    QVector<int> sortedBoxesIndexes;
 };
 
 #endif // CONTAINERSOLUTION_H

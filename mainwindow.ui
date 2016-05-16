@@ -229,26 +229,6 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab_2">
-         <attribute name="title">
-          <string>Ordenación</string>
-         </attribute>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QTableView" name="tableViewOrdering">
-            <property name="verticalScrollMode">
-             <enum>QAbstractItemView::ScrollPerPixel</enum>
-            </property>
-            <property name="horizontalScrollMode">
-             <enum>QAbstractItemView::ScrollPerPixel</enum>
-            </property>
-            <attribute name="verticalHeaderVisible">
-             <bool>false</bool>
-            </attribute>
-           </widget>
-          </item>
-         </layout>
-        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="layoutWidget">
@@ -448,7 +428,6 @@
   <tabstop>spinBoxContainerDimensionZ</tabstop>
   <tabstop>tabWidgetTopLeft</tabstop>
   <tabstop>tableViewSolution</tabstop>
-  <tabstop>tableViewOrdering</tabstop>
   <tabstop>sliderDisplayedBoxes</tabstop>
  </tabstops>
  <resources>

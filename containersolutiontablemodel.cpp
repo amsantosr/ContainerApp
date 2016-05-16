@@ -1,7 +1,9 @@
 #include "containersolutiontablemodel.h"
+#include "containersolution.h"
 
 ContainerSolutionTableModel::ContainerSolutionTableModel(QObject *parent)
-    : QAbstractTableModel(parent), containerSolution(0)
+    : QAbstractTableModel(parent),
+      containerSolution(0)
 {
 
 }
@@ -27,7 +29,7 @@ void ContainerSolutionTableModel::setContainerSolution(ContainerSolution *soluti
 
 int ContainerSolutionTableModel::rowCount(const QModelIndex &) const
 {
-    return containerSolution != 0 ? containerSolution->getContainerProblem()->boxCount() : 0;
+    return containerSolution != 0 ? containerSolution->packedBoxesCount() : 0;
 }
 
 int ContainerSolutionTableModel::columnCount(const QModelIndex &) const
@@ -40,40 +42,27 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
     QVariant result;
     if (role == Qt::DisplayRole)
     {
-        if (containerSolution->isBoxPacked(index.row()))
+        int boxIndex = containerSolution->packedBoxIndex(index.row());
+        QString string;
+        switch (index.column())
         {
-            QString text;
-            switch (index.column())
-            {
-            case 0: text = QString::number(containerSolution->packedBoxLengthX(index.row())); break;
-            case 1: text = QString::number(containerSolution->packedBoxLengthY(index.row())); break;
-            case 2: text = QString::number(containerSolution->packedBoxLengthZ(index.row())); break;
-            case 3: text = QString::number(containerSolution->packedBoxCoordinateX(index.row())); break;
-            case 4: text = QString::number(containerSolution->packedBoxCoordinateY(index.row())); break;
-            case 5: text = QString::number(containerSolution->packedBoxCoordinateZ(index.row())); break;
-            case 6: text = tr("Si"); break;
-            }
-            QString textUnit = containerSolution->textUnit();
-            if (!textUnit.isNull() && index.column() < 6)
-            {
-                text.append(" ").append(textUnit);
-            }
-            result = QVariant(text);
+        case 0: string = tr("Caja %1").arg(boxIndex + 1); break;
+        case 1: string = QString::number(containerSolution->packedBoxLengthX(index.row())); break;
+        case 2: string = QString::number(containerSolution->packedBoxLengthY(index.row())); break;
+        case 3: string = QString::number(containerSolution->packedBoxLengthZ(index.row())); break;
+        case 4: string = QString::number(containerSolution->packedBoxCoordinateX(index.row())); break;
+        case 5: string = QString::number(containerSolution->packedBoxCoordinateY(index.row())); break;
+        case 6: string = QString::number(containerSolution->packedBoxCoordinateZ(index.row())); break;
         }
-        else
-        {
-            switch (index.column())
-            {
-            case 6: result = tr("No"); break;
-            }
-        }
+        QString textUnit = containerSolution->textUnit();
+        if (!textUnit.isNull() && 0 < index.column())
+            string += " " + containerSolution->textUnit();
+        result = string;
     }
     else if (role == Qt::TextAlignmentRole)
     {
-        if (index.column() < 6)
+        if (0 < index.column())
             return Qt::AlignRight;
-        else
-            return Qt::AlignCenter;
     }
     return result;
 }
@@ -86,13 +75,13 @@ QVariant ContainerSolutionTableModel::headerData(int section, Qt::Orientation or
         {
             switch (section)
             {
-            case 0: return tr("Dim X"); break;
-            case 1: return tr("Dim Y"); break;
-            case 2: return tr("Dim Z"); break;
-            case 3: return tr("Pos X"); break;
-            case 4: return tr("Pos Y"); break;
-            case 5: return tr("Pos Z"); break;
-            case 6: return tr("Colocada"); break;
+            case 0: return tr("ID"); break;
+            case 1: return tr("Dim X"); break;
+            case 2: return tr("Dim Y"); break;
+            case 3: return tr("Dim Z"); break;
+            case 4: return tr("Pos X"); break;
+            case 5: return tr("Pos Y"); break;
+            case 6: return tr("Pos Z"); break;
             }
         }
     }

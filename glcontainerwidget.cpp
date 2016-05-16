@@ -125,13 +125,12 @@ void GLContainerWidget::paintGL()
         int displayedBoxes = std::min(displayedBoxesLimit, containerSolution->packedBoxesCount());
         for (int count = 0; count < displayedBoxes; ++count)
         {
-            int sortedBoxIndex = containerSolution->sortedBoxIndex(count);
-            int x1 = containerSolution->packedBoxCoordinateX(sortedBoxIndex);
-            int y1 = containerSolution->packedBoxCoordinateY(sortedBoxIndex);
-            int z1 = containerSolution->packedBoxCoordinateZ(sortedBoxIndex);
-            int x2 = x1 + containerSolution->packedBoxLengthX(sortedBoxIndex);
-            int y2 = y1 + containerSolution->packedBoxLengthY(sortedBoxIndex);
-            int z2 = z1 + containerSolution->packedBoxLengthZ(sortedBoxIndex);
+            int x1 = containerSolution->packedBoxCoordinateX(count);
+            int y1 = containerSolution->packedBoxCoordinateY(count);
+            int z1 = containerSolution->packedBoxCoordinateZ(count);
+            int x2 = x1 + containerSolution->packedBoxLengthX(count);
+            int y2 = y1 + containerSolution->packedBoxLengthY(count);
+            int z2 = z1 + containerSolution->packedBoxLengthZ(count);
             drawBox(x1, y1, z1, x2, y2, z2);
         }
     }

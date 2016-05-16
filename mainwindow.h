@@ -19,7 +19,7 @@ class MainWindow;
 
 class ContainerProblemTableModel;
 class ContainerSolutionTableModel;
-class BoxesOrderingTableModel;
+class ContainerSolutionTableModel;
 
 class MainWindow : public QMainWindow
 {
@@ -84,7 +84,7 @@ private:
     ContainerXmlParser containerXmlParser;
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
-    BoxesOrderingTableModel *boxesOrderingTableModel;
+    ContainerSolutionTableModel *boxesOrderingTableModel;
 
     QList<QLabel*> listLabelsUnits;
 };

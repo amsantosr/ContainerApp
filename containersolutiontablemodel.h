@@ -2,8 +2,8 @@
 #define CONTAINERSOLUTIONTABLEMODEL_H
 
 #include <QAbstractTableModel>
-#include <QVector>
-#include "containersolution.h"
+
+class ContainerSolution;
 
 class ContainerSolutionTableModel : public QAbstractTableModel
 {

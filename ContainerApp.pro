@@ -19,15 +19,14 @@ SOURCES += main.cpp\
     containerproblemgenerator.cpp \
     containerproblemsolver.cpp \
     glcontainerwidget.cpp \
-    containersolutiontablemodel.cpp \
     containerproblemtablemodel.cpp \
     containersolution.cpp \
     boxestableview.cpp \
     containerproblem.cpp \
-    boxesorderingtablemodel.cpp \
     containerxmlparser.cpp \
     containerproblemsolverthread.cpp \
-    containerxmlparserexception.cpp
+    containerxmlparserexception.cpp \
+    containersolutiontablemodel.cpp
 
 HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
@@ -36,13 +35,12 @@ HEADERS  += mainwindow.h \
     containerproblemsolver.h \
     containersolution.h \
     glcontainerwidget.h \
-    containersolutiontablemodel.h \
     containerproblemtablemodel.h \
     boxestableview.h \
-    boxesorderingtablemodel.h \
     containerxmlparser.h \
     containerproblemsolverthread.h \
-    containerxmlparserexception.h
+    containerxmlparserexception.h \
+    containersolutiontablemodel.h
 
 FORMS    += mainwindow.ui \
     dialogaddbox.ui \
