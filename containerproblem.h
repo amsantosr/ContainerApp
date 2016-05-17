@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <QModelIndexList>
+#include <QColor>
 
 class ContainerProblem : public QObject
 {
@@ -18,6 +19,8 @@ public:
     int boxLengthX(int index) const { return boxLengthXValues[index]; }
     int boxLengthY(int index) const { return boxLengthYValues[index]; }
     int boxLengthZ(int index) const { return boxLengthZValues[index]; }
+    QColor boxColor(int index) const { return boxColorValues[index]; }
+    QString boxDescription(int index) const { return boxDescriptionValues[index]; }
     const QVector<int> &boxLengthsX() const { return boxLengthXValues; }
     const QVector<int> &boxLengthsY() const { return boxLengthYValues; }
     const QVector<int> &boxLengthsZ() const { return boxLengthZValues; }
@@ -35,10 +38,10 @@ signals:
     void boxDimensionsChanged(int index);
 
 public:
-    void addBox(int lengthX, int lengthY, int lengthZ);
+    void addBox(int lengthX, int lengthY, int lengthZ, QColor color, QString description);
     void clear();
     void setBoxCount(int count);
-    void setBoxDimensions(int boxIndex, int lengthX, int lengthY, int lengthZ);
+    void setBox(int boxIndex, int lengthX, int lengthY, int lengthZ);
     void setContainerLengthX(int value);
     void setContainerLengthY(int value);
     void setContainerLengthZ(int value);
@@ -51,6 +54,8 @@ private:
     QVector<int> boxLengthXValues;
     QVector<int> boxLengthYValues;
     QVector<int> boxLengthZValues;
+    QVector<QColor> boxColorValues;
+    QVector<QString> boxDescriptionValues;
     QString textUnitValue;
 };
 

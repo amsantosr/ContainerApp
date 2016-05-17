@@ -35,13 +35,15 @@ void ContainerProblem::removeBoxes(QModelIndexList indexes)
     }
 }
 
-void ContainerProblem::addBox(int lengthX, int lengthY, int lengthZ)
+void ContainerProblem::addBox(int lengthX, int lengthY, int lengthZ, QColor color, QString description)
 {
     emit beforeAddBox();
     emit beforeBoxCountChanged();
     boxLengthXValues.append(lengthX);
     boxLengthYValues.append(lengthY);
     boxLengthZValues.append(lengthZ);
+    boxColorValues.append(color);
+    boxDescriptionValues.append(description);
     emit afterBoxCountChanged();
     emit afterAddBox();
 }
@@ -70,7 +72,7 @@ void ContainerProblem::setBoxCount(int count)
     emit afterBoxCountChanged();
 }
 
-void ContainerProblem::setBoxDimensions(int boxIndex, int lengthX, int lengthY, int lengthZ)
+void ContainerProblem::setBox(int boxIndex, int lengthX, int lengthY, int lengthZ)
 {
     boxLengthXValues[boxIndex] = lengthX;
     boxLengthYValues[boxIndex] = lengthY;

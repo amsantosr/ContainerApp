@@ -257,7 +257,7 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
         checkNextElement("Box");
         int boxDimensionX, boxDimensionY, boxDimensionZ;
         parseBoxAttributes(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
-        containerProblem.setBoxDimensions(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
+        containerProblem.setBox(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
         streamReader.skipCurrentElement();
     }
     checkEndElement("Boxes");

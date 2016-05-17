@@ -22,6 +22,7 @@ void ContainerProblemGenerator::generate(int minimumLength, int maximumLength, i
 
     for (int index = 0; index < itemCount; ++index)
     {
-        problem.addBox(items[index].dx, items[index].dy, items[index].dz);
+        QColor randomColor(rand() % 256, rand() % 256, rand() % 256);
+        problem.addBox(items[index].dx, items[index].dy, items[index].dz, randomColor, QString("Caja %"));
     }
 }

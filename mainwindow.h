@@ -30,7 +30,6 @@ public:
     ~MainWindow();
 
 private:
-    void generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes);
     void generateProblemFromDialog();
     void setMaximumDisplayedBoxes(int value);
     void setTextUnit(QString text);
@@ -84,7 +83,6 @@ private:
     ContainerXmlParser containerXmlParser;
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerSolutionTableModel *containerSolutionTableModel;
-    ContainerSolutionTableModel *boxesOrderingTableModel;
 
     QList<QLabel*> listLabelsUnits;
 };

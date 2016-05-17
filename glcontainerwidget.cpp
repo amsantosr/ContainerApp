@@ -125,13 +125,15 @@ void GLContainerWidget::paintGL()
         int displayedBoxes = std::min(displayedBoxesLimit, containerSolution->packedBoxesCount());
         for (int count = 0; count < displayedBoxes; ++count)
         {
+            int boxIndex = containerSolution->packedBoxIndex(count);
             int x1 = containerSolution->packedBoxCoordinateX(count);
             int y1 = containerSolution->packedBoxCoordinateY(count);
             int z1 = containerSolution->packedBoxCoordinateZ(count);
             int x2 = x1 + containerSolution->packedBoxLengthX(count);
             int y2 = y1 + containerSolution->packedBoxLengthY(count);
             int z2 = z1 + containerSolution->packedBoxLengthZ(count);
-            drawBox(x1, y1, z1, x2, y2, z2);
+            QColor color = containerProblem->boxColor(boxIndex);
+            drawBox(x1, y1, z1, x2, y2, z2, color);
         }
     }
 
@@ -204,10 +206,10 @@ void GLContainerWidget::setDisplayedBoxesLimit(int value)
     }
 }
 
-void GLContainerWidget::drawBox(int x1, int y1, int z1, int x2, int y2, int z2)
+void GLContainerWidget::drawBox(int x1, int y1, int z1, int x2, int y2, int z2, QColor color)
 {
-    GLint faceColor[] = { rand(), rand(), rand(), INT_MAX };
-    glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, faceColor);
+    GLfloat faceColor[] = { float(color.redF()), float(color.greenF()), float(color.blueF()), 1.0f };
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, faceColor);
     glBegin(GL_QUADS);
     glNormal3b(0, 0, -1);
     glVertex3f(x1, y1, z1);

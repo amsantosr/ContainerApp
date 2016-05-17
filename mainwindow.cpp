@@ -15,6 +15,7 @@
 #include <QXmlStreamWriter>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QColorDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,8 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogAlgorithmExecution(this),
     dialogMeasurementSystem(this),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
-    containerSolutionTableModel(new ContainerSolutionTableModel(this)),
-    boxesOrderingTableModel(new ContainerSolutionTableModel(this))
+    containerSolutionTableModel(new ContainerSolutionTableModel(this))
 {
     ui->setupUi(this);
     uiDialogAbout.setupUi(&dialogAbout);
@@ -34,13 +34,26 @@ MainWindow::MainWindow(QWidget *parent) :
     uiDialogGenerateProblem.setupUi(&dialogGenerateProblem);
     uiDialogMeasurementSystem.setupUi(&dialogMeasurementSystem);
 
+    connect(uiDialogAddBox.pushButtonPickColor, &QPushButton::clicked, [&]
+    {
+        QColor color = QColorDialog::getColor(Qt::red, &dialogAddBox, tr("Elegir color"));
+        if (color.isValid())
+        {
+            QPalette palette = uiDialogAddBox.labelColor->palette();
+            palette.setColor(uiDialogAddBox.labelColor->backgroundRole(), color);
+            uiDialogAddBox.labelColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);")
+                                                     .arg(color.red())
+                                                     .arg(color.green())
+                                                     .arg(color.blue()));
+        }
+    });
+
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewBoxes->setModel(containerProblemTableModel);
     ui->tableViewSolution->setModel(containerSolutionTableModel);
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerSolutionTableModel->setContainerSolution(&containerSolution);
-    boxesOrderingTableModel->setContainerSolution(&containerSolution);
     connect(uiDialogMeasurementSystem.buttonBox, &QDialogButtonBox::accepted, [&]
     {
         if (uiDialogMeasurementSystem.radioButtonCentimeters->isChecked() ||
@@ -115,18 +128,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::generateProblemTableView(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes)
-{
-    containerProblemGenerator.generate(minLength, maxLength, fillPercentage, maxDifferentBoxes, containerProblem);
-}
-
 void MainWindow::generateProblemFromDialog()
 {
     int minimumDimension = uiDialogGenerateProblem.spinBoxMinimumDimension->value();
     int maximumDimension = uiDialogGenerateProblem.spinBoxMaximumDimension->value();
     int fillPercentage = uiDialogGenerateProblem.spinBoxFillPercentage->value();
     int maximumDifferentBoxes = uiDialogGenerateProblem.spinBoxDifferentTypes->value();
-    generateProblemTableView(minimumDimension, maximumDimension, fillPercentage, maximumDifferentBoxes);
+    containerProblemGenerator.generate(minimumDimension,
+                                       maximumDimension,
+                                       fillPercentage,
+                                       maximumDifferentBoxes,
+                                       containerProblem);
 }
 
 void MainWindow::setMaximumDisplayedBoxes(int value)
@@ -195,10 +207,12 @@ void MainWindow::on_actionAddBox_triggered()
         int dimensionY = uiDialogAddBox.spinBoxDimensionY->value();
         int dimensionZ = uiDialogAddBox.spinBoxDimensionZ->value();
         int cantidad = uiDialogAddBox.spinBoxCantidad->value();
+        QColor color = uiDialogAddBox.labelColor->palette().background().color();
+        QString description = uiDialogAddBox.lineEditDescription->text();
 
         for (int i = 0; i < cantidad; ++i)
         {
-            containerProblem.addBox(dimensionX, dimensionY, dimensionZ);
+            containerProblem.addBox(dimensionX, dimensionY, dimensionZ, color, description);
         }
     }
 }
