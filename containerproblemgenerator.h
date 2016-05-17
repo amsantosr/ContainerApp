@@ -6,7 +6,7 @@
 class ContainerProblemGenerator
 {
 public:
-    void generate(int minimumLength, int maximumLength, int fillPercentage, int maximumDifferentBoxes, ContainerProblem &problem);
+    void generate(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes, ContainerProblem &problem);
 };
 
 #endif // CONTAINERPROBLEMGENERATOR_H

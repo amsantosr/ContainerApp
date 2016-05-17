@@ -40,25 +40,22 @@ int ContainerProblemTableModel::rowCount(const QModelIndex &) const
 
 int ContainerProblemTableModel::columnCount(const QModelIndex &) const
 {
-    return 3;
+    return 4;
 }
 
 QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) const
 {
     if (role == Qt::DisplayRole)
     {
+        int row = index.row();
+        QString textUnit = containerProblem->textUnit();
         QString string;
         switch (index.column())
         {
-        case 0: string = QString::number(containerProblem->boxLengthX(index.row())); break;
-        case 1: string = QString::number(containerProblem->boxLengthY(index.row())); break;
-        case 2: string = QString::number(containerProblem->boxLengthZ(index.row())); break;
-        }
-        QString textUnit = containerProblem->textUnit();
-        if (!textUnit.isNull())
-        {
-            string += " ";
-            string += containerProblem->textUnit();
+        case 0: string = QString("%1 %2").arg(containerProblem->boxLengthX(row)).arg(textUnit); break;
+        case 1: string = QString("%1 %2").arg(containerProblem->boxLengthY(row)).arg(textUnit); break;
+        case 2: string = QString("%1 %2").arg(containerProblem->boxLengthZ(row)).arg(textUnit); break;
+        case 3: string = containerProblem->boxDescription(index.row()); break;
         }
         return string;
     }
@@ -77,9 +74,10 @@ QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation ori
         {
             switch (section)
             {
-            case 0: return tr("Dim X");
-            case 1: return tr("Dim Y");
-            case 2: return tr("Dim Z");
+            case 0: return QString("Dim X");
+            case 1: return QString("Dim Y");
+            case 2: return QString("Dim Z");
+            case 3: return QString("Descripción");
             }
         }
     }

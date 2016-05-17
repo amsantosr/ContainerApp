@@ -1,7 +1,7 @@
 #include "containerproblemgenerator.h"
 #include "Pisinger/testcont.h"
 
-void ContainerProblemGenerator::generate(int minimumLength, int maximumLength, int fillPercentage, int maximumDifferentBoxes, ContainerProblem &problem)
+void ContainerProblemGenerator::generate(int minLength, int maxLength, int fillPercentage, int maxDifferentBoxes, ContainerProblem &problem)
 {
     const int MaxItems = 1000;
     item items[MaxItems];
@@ -10,7 +10,7 @@ void ContainerProblemGenerator::generate(int minimumLength, int maximumLength, i
     // call the function to generate the test
     int containerLengthX, containerLengthY, containerLengthZ;
     maketest(firstItemPointer, &lastItemPointer, &containerLengthX, &containerLengthY, &containerLengthZ,
-             minimumLength, maximumLength, fillPercentage, maximumDifferentBoxes);
+             minLength, maxLength, fillPercentage, maxDifferentBoxes);
 
     //prepareitems(firstItem, lastItem, Widths, Heights, Depths);
 
