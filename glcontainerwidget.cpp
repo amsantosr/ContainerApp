@@ -16,14 +16,13 @@ GLContainerWidget::~GLContainerWidget()
 
 void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
 {
+    auto functionUpdate = static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update);
     if (containerSolution != solution)
     {
         std::swap(containerSolution, solution);
         if (containerSolution != 0)
         {
-            auto glContainerWidgetUpdate = static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update);
-            connect(containerSolution, &ContainerSolution::afterDataChange,
-                    this, glContainerWidgetUpdate);
+            connect(containerSolution, &ContainerSolution::afterDataChange, this, functionUpdate);
         }
         if (solution != 0)
             disconnect(solution, 0, this, 0);
@@ -35,7 +34,6 @@ void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
         containerProblem = containerSolution->getContainerProblem();
         if (containerProblem != 0)
         {
-            auto functionUpdate = static_cast<void (GLContainerWidget::*)()>(&GLContainerWidget::update);
             connect(containerProblem, &ContainerProblem::containerLengthX_changed, this, functionUpdate);
             connect(containerProblem, &ContainerProblem::containerLengthY_changed, this, functionUpdate);
             connect(containerProblem, &ContainerProblem::containerLengthZ_changed, this, functionUpdate);
@@ -125,14 +123,14 @@ void GLContainerWidget::paintGL()
         int displayedBoxes = std::min(displayedBoxesLimit, containerSolution->packedBoxesCount());
         for (int count = 0; count < displayedBoxes; ++count)
         {
-            int boxIndex = containerSolution->packedBoxIndex(count);
+            int groupIndex = containerSolution->packedBoxGroupIndex(count);
             int x1 = containerSolution->packedBoxCoordinateX(count);
             int y1 = containerSolution->packedBoxCoordinateY(count);
             int z1 = containerSolution->packedBoxCoordinateZ(count);
             int x2 = x1 + containerSolution->packedBoxLengthX(count);
             int y2 = y1 + containerSolution->packedBoxLengthY(count);
             int z2 = z1 + containerSolution->packedBoxLengthZ(count);
-            QColor color = containerProblem->boxColor(boxIndex);
+            QColor color = containerProblem->boxColor(groupIndex);
             drawBox(x1, y1, z1, x2, y2, z2, color);
         }
     }

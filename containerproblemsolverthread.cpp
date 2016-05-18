@@ -21,17 +21,35 @@ void ContainerProblemSolverThread::setContainerProblem(ContainerProblem *problem
 void ContainerProblemSolverThread::run()
 {
     int volume = 0;
-    QVector<int> boxLengthsX = containerProblem->boxLengthsX();
-    QVector<int> boxLengthsY = containerProblem->boxLengthsY();
-    QVector<int> boxLengthsZ = containerProblem->boxLengthsZ();
-    QVector<int> boxCoordinatesX(containerProblem->boxCount());
-    QVector<int> boxCoordinatesY(containerProblem->boxCount());
-    QVector<int> boxCoordinatesZ(containerProblem->boxCount());
-    QVector<int> boxPackedFlagsInt(containerProblem->boxCount());
+    int allBoxesQuantity = containerProblem->allBoxesQuantity();
+    QVector<int> boxLengthsX(allBoxesQuantity);
+    QVector<int> boxLengthsY(allBoxesQuantity);
+    QVector<int> boxLengthsZ(allBoxesQuantity);
+    QVector<int> boxGroups(allBoxesQuantity);
+    int currentGroupIndex = 0;
+    int currentBoxCount = 0;
+    for (int index = 0; index < allBoxesQuantity; ++index)
+    {
+        boxLengthsX[index] = containerProblem->boxLengthX(currentGroupIndex);
+        boxLengthsY[index] = containerProblem->boxLengthY(currentGroupIndex);
+        boxLengthsZ[index] = containerProblem->boxLengthZ(currentGroupIndex);
+        boxGroups[index] = currentGroupIndex;
+        ++currentBoxCount;
+        if (currentBoxCount == containerProblem->boxQuantity(currentGroupIndex))
+        {
+            ++currentGroupIndex;
+            currentBoxCount = 0;
+        }
+    }
+
+    QVector<int> boxCoordinatesX(allBoxesQuantity);
+    QVector<int> boxCoordinatesY(allBoxesQuantity);
+    QVector<int> boxCoordinatesZ(allBoxesQuantity);
+    QVector<int> boxPackedFlagsInt(allBoxesQuantity);
     QVector<int> packedBoxesIndexes;
 
     // llamar al procedimiento en C
-    contload(containerProblem->boxCount(),
+    contload(allBoxesQuantity,
              containerProblem->containerLengthX(),
              containerProblem->containerLengthY(),
              containerProblem->containerLengthZ(),
@@ -81,6 +99,8 @@ void ContainerProblemSolverThread::run()
     QVector<int> newBoxCoordinatesX(packedBoxesCount);
     QVector<int> newBoxCoordinatesY(packedBoxesCount);
     QVector<int> newBoxCoordinatesZ(packedBoxesCount);
+    QVector<int> packedBoxesGroupIndexes(packedBoxesCount);
+
     for (int i = 0; i < packedBoxesIndexes.size(); ++i)
     {
         int boxIndex = packedBoxesIndexes[i];
@@ -90,11 +110,12 @@ void ContainerProblemSolverThread::run()
         newBoxCoordinatesX[i] = boxCoordinatesX[boxIndex];
         newBoxCoordinatesY[i] = boxCoordinatesY[boxIndex];
         newBoxCoordinatesZ[i] = boxCoordinatesZ[boxIndex];
+        packedBoxesGroupIndexes[i] = boxGroups[boxIndex];
     }
 
     // TODO tratar de eliminar esta linea de codigo
     msleep(10);
     emit solutionReady(newBoxLengthsX, newBoxLengthsY, newBoxLengthsZ,
                        newBoxCoordinatesX, newBoxCoordinatesY, newBoxCoordinatesZ,
-                       packedBoxesIndexes);
+                       packedBoxesGroupIndexes);
 }

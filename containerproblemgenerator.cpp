@@ -20,9 +20,24 @@ void ContainerProblemGenerator::generate(int minLength, int maxLength, int fillP
     problem.setContainerLengthZ(containerLengthZ);
     int itemCount = lastItemPointer - firstItemPointer + 1;
 
-    for (int index = 0; index < itemCount; ++index)
+    for (int i = 0; i < itemCount; ++i)
     {
-        QColor randomColor(rand() % 256, rand() % 256, rand() % 256);
-        problem.addBox(items[index].dx, items[index].dy, items[index].dz, randomColor, QString("Caja %"));
+        int index;
+        for (index = 0; index < problem.boxCount(); ++index)
+        {
+            if (problem.boxLengthX(index) == items[i].dx &&
+                problem.boxLengthY(index) == items[i].dy &&
+                problem.boxLengthZ(index) == items[i].dz)
+            {
+                // increment the counter
+                problem.setBoxQuantity(index, problem.boxQuantity(index) + 1);
+                break;
+            }
+        }
+        if (index == problem.boxCount())
+        {
+            QColor randomColor(rand() % 256, rand() % 256, rand() % 256);
+            problem.addBox(items[i].dx, items[i].dy, items[i].dz, 1, randomColor, QString("Caja tipo %1").arg(index + 1));
+        }
     }
 }

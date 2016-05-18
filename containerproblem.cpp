@@ -30,18 +30,23 @@ void ContainerProblem::removeBoxes(QModelIndexList indexes)
             boxLengthXValues.remove(index);
             boxLengthYValues.remove(index);
             boxLengthZValues.remove(index);
+            boxQuantityValues.remove(index);
+            boxColorValues.remove(index);
+            boxDescriptionValues.remove(index);
         }
         emit afterBoxCountChanged();
     }
 }
 
-void ContainerProblem::addBox(int lengthX, int lengthY, int lengthZ, QColor color, QString description)
+void ContainerProblem::addBox(int lengthX, int lengthY, int lengthZ,
+                              int quantity, QColor color, QString description)
 {
     emit beforeAddBox();
     emit beforeBoxCountChanged();
     boxLengthXValues.append(lengthX);
     boxLengthYValues.append(lengthY);
     boxLengthZValues.append(lengthZ);
+    boxQuantityValues.append(quantity);
     boxColorValues.append(color);
     boxDescriptionValues.append(description);
     emit afterBoxCountChanged();
@@ -56,6 +61,9 @@ void ContainerProblem::clear()
         boxLengthXValues.clear();
         boxLengthYValues.clear();
         boxLengthZValues.clear();
+        boxQuantityValues.clear();
+        boxColorValues.clear();
+        boxDescriptionValues.clear();
         emit afterBoxCountChanged();
     }
     setContainerLengthX(0);
@@ -69,15 +77,30 @@ void ContainerProblem::setBoxCount(int count)
     boxLengthXValues.resize(count);
     boxLengthYValues.resize(count);
     boxLengthZValues.resize(count);
+    boxColorValues.resize(count);
+    boxDescriptionValues.resize(count);
     emit afterBoxCountChanged();
 }
 
-void ContainerProblem::setBox(int boxIndex, int lengthX, int lengthY, int lengthZ)
+void ContainerProblem::setBox(int boxIndex, int lengthX, int lengthY, int lengthZ,
+                              int quantity, QColor color, QString description)
 {
     boxLengthXValues[boxIndex] = lengthX;
     boxLengthYValues[boxIndex] = lengthY;
     boxLengthZValues[boxIndex] = lengthZ;
-    emit boxDimensionsChanged(boxIndex);
+    boxQuantityValues[boxIndex] = quantity;
+    boxColorValues[boxIndex] = color;
+    boxDescriptionValues[boxIndex] = description;
+    emit boxValuesChanged(boxIndex);
+}
+
+void ContainerProblem::setBoxQuantity(int boxIndex, int quantity)
+{
+    if (boxQuantityValues[boxIndex] != quantity)
+    {
+        boxQuantityValues[boxIndex] = quantity;
+        emit boxValuesChanged(boxIndex);
+    }
 }
 
 void ContainerProblem::setContainerLengthX(int value)

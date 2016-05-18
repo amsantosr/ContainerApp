@@ -36,7 +36,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <widget class="QToolButton" name="toolButtonAddBox">
+             <widget class="QToolButton" name="toolButtonAddBoxes">
               <property name="text">
                <string>...</string>
               </property>
@@ -53,7 +53,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QToolButton" name="toolButtonDeleteBox">
+             <widget class="QToolButton" name="toolButtonDeleteBoxes">
               <property name="text">
                <string>...</string>
               </property>
@@ -66,6 +66,13 @@
                 <width>16</width>
                 <height>16</height>
                </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="toolButtonEditBoxes">
+              <property name="text">
+               <string>...</string>
               </property>
              </widget>
             </item>
@@ -91,6 +98,9 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
             </property>
             <property name="verticalScrollMode">
              <enum>QAbstractItemView::ScrollPerPixel</enum>
@@ -318,7 +328,7 @@
     <string>Resolver problema</string>
    </property>
   </action>
-  <action name="actionAddBox">
+  <action name="actionAddBoxes">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/Icons/Add.png</normaloff>:/Icons/Add.png</iconset>
@@ -366,7 +376,7 @@
     <string>Nuevo problema</string>
    </property>
   </action>
-  <action name="actionDeleteBox">
+  <action name="actionDeleteBoxes">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/Icons/Minus.png</normaloff>:/Icons/Minus.png</iconset>
@@ -404,6 +414,11 @@
     <string>Abrir solución</string>
    </property>
   </action>
+  <action name="actionEditBoxes">
+   <property name="text">
+    <string>Editar cajas</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -420,8 +435,8 @@
  </customwidgets>
  <tabstops>
   <tabstop>tabWidgetBottomLeft</tabstop>
-  <tabstop>toolButtonAddBox</tabstop>
-  <tabstop>toolButtonDeleteBox</tabstop>
+  <tabstop>toolButtonAddBoxes</tabstop>
+  <tabstop>toolButtonDeleteBoxes</tabstop>
   <tabstop>tableViewBoxes</tabstop>
   <tabstop>spinBoxContainerDimensionX</tabstop>
   <tabstop>spinBoxContainerDimensionY</tabstop>
@@ -435,9 +450,9 @@
  </resources>
  <connections>
   <connection>
-   <sender>toolButtonAddBox</sender>
+   <sender>toolButtonAddBoxes</sender>
    <signal>clicked()</signal>
-   <receiver>actionAddBox</receiver>
+   <receiver>actionAddBoxes</receiver>
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -451,14 +466,30 @@
    </hints>
   </connection>
   <connection>
-   <sender>toolButtonDeleteBox</sender>
+   <sender>toolButtonDeleteBoxes</sender>
    <signal>clicked()</signal>
-   <receiver>actionDeleteBox</receiver>
+   <receiver>actionDeleteBoxes</receiver>
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>59</x>
      <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButtonEditBoxes</sender>
+   <signal>clicked()</signal>
+   <receiver>actionEditBoxes</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>88</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

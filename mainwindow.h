@@ -8,7 +8,7 @@
 #include "containerxmlparser.h"
 #include "containerproblemsolverthread.h"
 #include "ui_dialogalgorithmexecution.h"
-#include "ui_dialogaddbox.h"
+#include "ui_dialogaddboxes.h"
 #include "ui_dialoggenerateproblem.h"
 #include "ui_dialogmeasurementsystem.h"
 #include "ui_dialogabout.h"
@@ -44,7 +44,7 @@ public slots:
 
     void on_actionSolveProblem_triggered();
 
-    void on_actionAddBox_triggered();
+    void on_actionAddBoxes_triggered();
 
     void on_actionSaveProblem_triggered();
 
@@ -56,19 +56,24 @@ public slots:
 
     void on_actionNewProblem_triggered();
 
-    void on_actionDeleteBox_triggered();
+    void on_actionDeleteBoxes_triggered();
 
     void on_actionAbout_triggered();
 
     void on_actionSetMeasurementSystem_triggered();
 
 
+private slots:
+    void on_actionEditBoxes_triggered();
+
 private:
     Ui::MainWindow *ui;
     QDialog dialogGenerateProblem;
     Ui::DialogGenerateProblem uiDialogGenerateProblem;
-    QDialog dialogAddBox;
-    Ui::DialogAddBox uiDialogAddBox;
+    QDialog dialogAddBoxes;
+    Ui::DialogAddBox uiDialogAddBoxes;
+    QDialog dialogEditBoxes;
+    Ui::DialogAddBox uiDialogEditBoxes;
     QDialog dialogAlgorithmExecution;
     Ui::DialogAlgorithmExecution uiDialogAlgorithmExecution;
     QDialog dialogMeasurementSystem;

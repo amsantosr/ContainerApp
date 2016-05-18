@@ -22,12 +22,11 @@ public:
     int packedBoxCoordinateX(int index) const { return boxCoordinateXValues[index]; }
     int packedBoxCoordinateY(int index) const { return boxCoordinateYValues[index]; }
     int packedBoxCoordinateZ(int index) const { return boxCoordinateZValues[index]; }
-    bool isBoxPacked(int index) const { return boxPackedFlagValues[index]; }
     void setPackedBoxes(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
                         QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
-                        QVector<int> packedBoxesIndexes);
-    int packedBoxesCount() const { return packedBoxesIndexes.size(); }
-    int packedBoxIndex(int i) const { return packedBoxesIndexes[i]; }
+                        QVector<int> packedBoxesTypes);
+    int packedBoxesCount() const { return packedBoxesTypesIndexes.size(); }
+    int packedBoxGroupIndex(int i) const { return packedBoxesTypesIndexes[i]; }
 
 signals:
     void beforeDataChange();
@@ -41,8 +40,7 @@ private:
     QVector<int> boxCoordinateXValues;
     QVector<int> boxCoordinateYValues;
     QVector<int> boxCoordinateZValues;
-    QVector<bool> boxPackedFlagValues;
-    QVector<int> packedBoxesIndexes;
+    QVector<int> packedBoxesTypesIndexes;
 };
 
 #endif // CONTAINERSOLUTION_H

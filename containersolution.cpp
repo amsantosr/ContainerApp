@@ -18,8 +18,7 @@ void ContainerSolution::clear()
         boxCoordinateXValues.clear();
         boxCoordinateYValues.clear();
         boxCoordinateZValues.clear();
-        boxPackedFlagValues.clear();
-        packedBoxesIndexes.clear();
+        packedBoxesTypesIndexes.clear();
         emit afterDataChange();
     }
 }
@@ -35,21 +34,15 @@ void ContainerSolution::setPackedBoxes(QVector<int> boxLengthsX,
                                        QVector<int> boxCoordinatesX,
                                        QVector<int> boxCoordinatesY,
                                        QVector<int> boxCoordinatesZ,
-                                       QVector<int> packedBoxesIndexes)
+                                       QVector<int> packedBoxesTypes)
 {
     emit beforeDataChange();
-    boxPackedFlagValues.fill(false, containerProblem->boxCount());
     boxLengthXValues = boxLengthsX;
     boxLengthYValues = boxLengthsY;
     boxLengthZValues = boxLengthsZ;
     boxCoordinateXValues = boxCoordinatesX;
     boxCoordinateYValues = boxCoordinatesY;
     boxCoordinateZValues = boxCoordinatesZ;
-    for (int i = 0; i < packedBoxesIndexes.size(); ++i)
-    {
-        int boxIndex = packedBoxesIndexes[i];
-        boxPackedFlagValues[boxIndex] = true;
-    }
-    this->packedBoxesIndexes = packedBoxesIndexes;
+    packedBoxesTypesIndexes = packedBoxesTypes;
     emit afterDataChange();
 }

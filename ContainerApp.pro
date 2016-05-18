@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     Pisinger/container.c \
     Pisinger/testcont.c \
     containerproblemgenerator.cpp \
-    containerproblemsolver.cpp \
     glcontainerwidget.cpp \
     containerproblemtablemodel.cpp \
     containersolution.cpp \
@@ -32,7 +31,6 @@ HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
     containerproblem.h \
     containerproblemgenerator.h \
-    containerproblemsolver.h \
     containersolution.h \
     glcontainerwidget.h \
     containerproblemtablemodel.h \
@@ -43,11 +41,11 @@ HEADERS  += mainwindow.h \
     containersolutiontablemodel.h
 
 FORMS    += mainwindow.ui \
-    dialogaddbox.ui \
     dialoggenerateproblem.ui \
     dialogalgorithmexecution.ui \
     dialogabout.ui \
-    dialogmeasurementsystem.ui
+    dialogmeasurementsystem.ui \
+    dialogaddboxes.ui
 
 RESOURCES += \
     Resources.qrc

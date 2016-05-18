@@ -11,6 +11,7 @@ public:
     {
         return QTableView::selectedIndexes();
     }
+    QVector<int> selectedRows() const;
 };
 
 #endif // BOXESTABLEVIEW_H

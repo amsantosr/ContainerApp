@@ -24,7 +24,7 @@ void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
                 this, &ContainerProblemTableModel::beginResetModel);
         connect(containerProblem, &ContainerProblem::afterBoxCountChanged,
                 this, &ContainerProblemTableModel::endResetModel);
-        connect(containerProblem, &ContainerProblem::boxDimensionsChanged, this, [&](int boxIndex)
+        connect(containerProblem, &ContainerProblem::boxValuesChanged, this, [&](int boxIndex)
         {
             emit dataChanged(this->index(boxIndex, 0), this->index(boxIndex, columnCount()));
         });
@@ -40,7 +40,7 @@ int ContainerProblemTableModel::rowCount(const QModelIndex &) const
 
 int ContainerProblemTableModel::columnCount(const QModelIndex &) const
 {
-    return 4;
+    return 5;
 }
 
 QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) const
@@ -55,7 +55,8 @@ QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) co
         case 0: string = QString("%1 %2").arg(containerProblem->boxLengthX(row)).arg(textUnit); break;
         case 1: string = QString("%1 %2").arg(containerProblem->boxLengthY(row)).arg(textUnit); break;
         case 2: string = QString("%1 %2").arg(containerProblem->boxLengthZ(row)).arg(textUnit); break;
-        case 3: string = containerProblem->boxDescription(index.row()); break;
+        case 3: string = QString::number(containerProblem->boxQuantity(row)); break;
+        case 4: string = containerProblem->boxDescription(index.row()); break;
         }
         return string;
     }
@@ -77,7 +78,8 @@ QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation ori
             case 0: return QString("Dim X");
             case 1: return QString("Dim Y");
             case 2: return QString("Dim Z");
-            case 3: return QString("Descripción");
+            case 3: return QString("Cantidad");
+            case 4: return QString("Descripción");
             }
         }
     }

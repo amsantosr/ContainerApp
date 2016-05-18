@@ -35,9 +35,9 @@ void ContainerXmlParser::writeSolution(const ContainerSolution &containerSolutio
     streamWriter.writeStartElement("PackedBoxes");
     for (int index = 0; index < containerSolution.packedBoxesCount(); ++index)
     {
-        int boxIndex = containerSolution.packedBoxIndex(index);
+        int boxIndex = containerSolution.packedBoxGroupIndex(index);
         streamWriter.writeStartElement("Box");
-        streamWriter.writeAttribute("Index", QString::number(boxIndex));
+        streamWriter.writeAttribute("GroupIndex", QString::number(boxIndex));
         streamWriter.writeEmptyElement("Position");
         int posX = containerSolution.packedBoxCoordinateX(index);
         int posY = containerSolution.packedBoxCoordinateY(index);
@@ -45,7 +45,7 @@ void ContainerXmlParser::writeSolution(const ContainerSolution &containerSolutio
         streamWriter.writeAttribute("X", QString::number(posX));
         streamWriter.writeAttribute("Y", QString::number(posY));
         streamWriter.writeAttribute("Z", QString::number(posZ));
-        streamWriter.writeEmptyElement("Dimensions");
+        streamWriter.writeEmptyElement("Orientation");
         int x = containerSolution.packedBoxLengthX(index);
         int y = containerSolution.packedBoxLengthY(index);
         int z = containerSolution.packedBoxLengthZ(index);
@@ -78,17 +78,17 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
 
     while (streamReader.readNextStartElement())
     {
-        int boxIndex;
+        int boxGroupIndex;
         int positionX, positionY, positionZ;
         int dimensionX, dimensionY, dimensionZ;
 
         checkCurrentElement("Box");
-        parsePackedBoxAttributes(boxIndex);
+        parsePackedBoxAttributes(boxGroupIndex);
         checkNextElement("Position");
         parseBoxPositionAttributes(positionX, positionY, positionZ);
         streamReader.skipCurrentElement();
-        checkNextElement("Dimensions");
-        parseBoxDimensionsAttributes(dimensionX, dimensionY, dimensionZ);
+        checkNextElement("Orientation");
+        parseBoxOrientationAttributes(dimensionX, dimensionY, dimensionZ);
         streamReader.skipCurrentElement();
 
         vectorPositionX.append(positionX);
@@ -97,7 +97,7 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
         vectorDimensionX.append(dimensionX);
         vectorDimensionY.append(dimensionY);
         vectorDimensionZ.append(dimensionZ);
-        packedBoxesIndexes.append(boxIndex);
+        packedBoxesIndexes.append(boxGroupIndex);
         streamReader.skipCurrentElement();
     }
     containerSolution.setPackedBoxes(vectorDimensionX, vectorDimensionY, vectorDimensionZ,
@@ -118,11 +118,11 @@ void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerPr
     streamWriter.writeAttribute("LengthY", dimensionY);
     streamWriter.writeAttribute("LengthZ", dimensionZ);
 
-    streamWriter.writeStartElement("Boxes");
-    streamWriter.writeAttribute("BoxCount", QString::number(containerProblem.boxCount()));
+    streamWriter.writeStartElement("Groups");
+    streamWriter.writeAttribute("Count", QString::number(containerProblem.boxCount()));
     for (int index = 0; index < containerProblem.boxCount(); ++index)
     {
-        streamWriter.writeEmptyElement("Box");
+        streamWriter.writeEmptyElement("Group");
         int lengthX = containerProblem.boxLengthX(index);
         int lengthY = containerProblem.boxLengthY(index);
         int lengthZ = containerProblem.boxLengthZ(index);
@@ -130,8 +130,10 @@ void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerPr
         streamWriter.writeAttribute("LengthX", QString::number(lengthX));
         streamWriter.writeAttribute("LengthY", QString::number(lengthY));
         streamWriter.writeAttribute("LengthZ", QString::number(lengthZ));
+        streamWriter.writeAttribute("Color", containerProblem.boxColor(index).name());
+        streamWriter.writeAttribute("Description", containerProblem.boxDescription(index));
     }
-    streamWriter.writeEndElement(); // Boxes
+    streamWriter.writeEndElement(); // Groups
     streamWriter.writeEndElement(); // ContainerProblem
 }
 
@@ -181,7 +183,7 @@ void ContainerXmlParser::parseBoxesAttributes(int &boxCount)
     bool flag = false;
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {
-        if (attribute.name() == "BoxCount")
+        if (attribute.name() == "Count")
         {
             boxCount = checkIntegerRangeAttribute(attribute, 1, 1000);
             flag = true;
@@ -191,7 +193,7 @@ void ContainerXmlParser::parseBoxesAttributes(int &boxCount)
             invalidAttribute(attribute);
         }
     }
-    checkBoxAttributePresent(flag, "BoxCount");
+    checkBoxAttributePresent(flag, "Count");
 }
 
 void ContainerXmlParser::parseBoxAttributes(int boxIndex, int &boxDimensionX, int &boxDimensionY, int &boxDimensionZ)
@@ -219,7 +221,6 @@ void ContainerXmlParser::parseBoxAttributes(int boxIndex, int &boxDimensionX, in
             boxDimensionZ = checkIntegerRangeAttribute(attribute, 1, 9999);
             flags[3] = true;
         }
-        else
         {
             invalidAttribute(attribute);
         }
@@ -247,7 +248,7 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
     checkNextElement("Container");
     parseContainerAttributes(containerProblem);
     streamReader.skipCurrentElement();
-    checkNextElement("Boxes");
+    checkNextElement("Groups");
     int boxCount;
     parseBoxesAttributes(boxCount);
     containerProblem.setBoxCount(boxCount);
@@ -257,10 +258,10 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
         checkNextElement("Box");
         int boxDimensionX, boxDimensionY, boxDimensionZ;
         parseBoxAttributes(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
-        containerProblem.setBox(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
+        containerProblem.setBox(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ, 1, Qt::blue, QString());
         streamReader.skipCurrentElement();
     }
-    checkEndElement("Boxes");
+    checkEndElement("Groups");
     checkEndElement("ContainerProblem");
 }
 
@@ -332,7 +333,7 @@ void ContainerXmlParser::parsePackedBoxAttributes(int &boxIndex)
 {
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {
-        if (attribute.name() == "Index")
+        if (attribute.name() == "GroupIndex")
         {
             boxIndex = attribute.value().toInt();
         }
@@ -366,7 +367,7 @@ void ContainerXmlParser::parseBoxPositionAttributes(int &positionX, int &positio
     }
 }
 
-void ContainerXmlParser::parseBoxDimensionsAttributes(int &dimensionX, int &dimensionY, int &dimensionZ)
+void ContainerXmlParser::parseBoxOrientationAttributes(int &dimensionX, int &dimensionY, int &dimensionZ)
 {
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {

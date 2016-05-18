@@ -33,7 +33,7 @@ private:
     void checkBoxAttributePresent(bool present, QString attributeName);
     void parsePackedBoxAttributes(int &boxIndex);
     void parseBoxPositionAttributes(int &positionX, int &positionY, int &positionZ);
-    void parseBoxDimensionsAttributes(int &dimensionX, int &dimensionY, int &dimensionZ);
+    void parseBoxOrientationAttributes(int &dimensionX, int &dimensionY, int &dimensionZ);
     void throwException(QString message);
 
 private:
