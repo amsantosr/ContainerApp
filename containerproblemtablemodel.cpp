@@ -14,8 +14,8 @@ void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
         if (containerProblem != 0)
             disconnect(containerProblem, 0, this, 0);
         containerProblem = pointer;
-        connect(containerProblem, &ContainerProblem::beforeAddGroup,
-                this, [=]() {
+        connect(containerProblem, &ContainerProblem::beforeAddGroup, [this]()
+        {
             beginInsertRows(QModelIndex(), rowCount(), rowCount());
         });
         connect(containerProblem, &ContainerProblem::afterAddGroup,
@@ -24,7 +24,7 @@ void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
                 this, &ContainerProblemTableModel::beginResetModel);
         connect(containerProblem, &ContainerProblem::afterGroupsCounterChanged,
                 this, &ContainerProblemTableModel::endResetModel);
-        connect(containerProblem, &ContainerProblem::groupChanged, this, [&](int boxIndex)
+        connect(containerProblem, &ContainerProblem::groupChanged, this, [this](int boxIndex)
         {
             emit dataChanged(this->index(boxIndex, 0), this->index(boxIndex, columnCount()));
         });

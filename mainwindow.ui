@@ -331,13 +331,16 @@
     <string>Resolver problema</string>
    </property>
   </action>
-  <action name="actionAddBoxes">
+  <action name="actionAddGroup">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/Icons/Add.png</normaloff>:/Icons/Add.png</iconset>
    </property>
    <property name="text">
-    <string>Añadir caja</string>
+    <string>Añadir grupo</string>
+   </property>
+   <property name="toolTip">
+    <string>Añadir grupo</string>
    </property>
   </action>
   <action name="actionSaveProblem">
@@ -379,16 +382,16 @@
     <string>Nuevo problema</string>
    </property>
   </action>
-  <action name="actionDeleteBoxes">
+  <action name="actionDeleteGroup">
    <property name="icon">
     <iconset resource="Resources.qrc">
      <normaloff>:/Icons/Minus.png</normaloff>:/Icons/Minus.png</iconset>
    </property>
    <property name="text">
-    <string>Eliminar caja</string>
+    <string>Eliminar grupo</string>
    </property>
    <property name="toolTip">
-    <string>Eliminar la caja seleccionada</string>
+    <string>Eliminar el grupo seleccionado</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -417,9 +420,12 @@
     <string>Abrir solución</string>
    </property>
   </action>
-  <action name="actionEditBoxes">
+  <action name="actionEditGroup">
    <property name="text">
-    <string>Editar cajas</string>
+    <string>Editar grupo</string>
+   </property>
+   <property name="toolTip">
+    <string>Editar grupo</string>
    </property>
   </action>
  </widget>
@@ -455,7 +461,7 @@
   <connection>
    <sender>toolButtonAddBoxes</sender>
    <signal>clicked()</signal>
-   <receiver>actionAddBoxes</receiver>
+   <receiver>actionAddGroup</receiver>
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -471,7 +477,7 @@
   <connection>
    <sender>toolButtonDeleteBoxes</sender>
    <signal>clicked()</signal>
-   <receiver>actionDeleteBoxes</receiver>
+   <receiver>actionDeleteGroup</receiver>
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -487,7 +493,7 @@
   <connection>
    <sender>toolButtonEditBoxes</sender>
    <signal>clicked()</signal>
-   <receiver>actionEditBoxes</receiver>
+   <receiver>actionEditGroup</receiver>
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -45,7 +45,7 @@ FORMS    += mainwindow.ui \
     dialogalgorithmexecution.ui \
     dialogabout.ui \
     dialogmeasurementsystem.ui \
-    dialogaddboxes.ui
+    dialogaddgroup.ui
 
 RESOURCES += \
     Resources.qrc
