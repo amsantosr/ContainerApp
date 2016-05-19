@@ -58,7 +58,7 @@ void GLContainerWidget::initializeGL()
     // Enable light and set up 2 light sources (GL_LIGHT0 and GL_LIGHT1)
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
+    //glEnable(GL_LIGHT1);
 
     // We're setting up two light sources. One of them is located
     // on the left side of the model (x = -1.5f) and emits white light. The
@@ -67,9 +67,9 @@ void GLContainerWidget::initializeGL()
 
     // GL_LIGHT0: the white light emitting light source
     // Create light components for GL_LIGHT0
-    float ambientLight0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+    float ambientLight0[] = { 0.8f, 0.8f, 0.8f, 1.0f };
     float diffuseLight0[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-    float specularLight0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+    float specularLight0[] = { 0.8f, 0.8f, 0.8f, 1.0f };
     float position0[] = { -1500.0f, 1.0f, -4.0f, 1.0f };
     // Assign created components to GL_LIGHT0
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight0);

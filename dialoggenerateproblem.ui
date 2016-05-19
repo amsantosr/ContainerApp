@@ -86,7 +86,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Number de diferentes tipos de cajas:</string>
+        <string>Number de diferentes grupos de cajas:</string>
        </property>
       </widget>
      </item>
