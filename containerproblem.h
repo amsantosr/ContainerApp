@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QModelIndexList>
 #include <QColor>
+#include <algorithm>
 
 class ContainerProblem : public QObject
 {
@@ -15,36 +16,33 @@ public:
     int containerLengthY() const { return containerLengthYValue; }
     int containerLengthZ() const { return containerLengthZValue; }
     QString textUnit() const { return textUnitValue; }
-    int boxCount() const { return boxLengthXValues.size(); }
-    int boxLengthX(int index) const { return boxLengthXValues[index]; }
-    int boxLengthY(int index) const { return boxLengthYValues[index]; }
-    int boxLengthZ(int index) const { return boxLengthZValues[index]; }
-    int boxQuantity(int index) const { return boxQuantityValues[index]; }
-    QColor boxColor(int index) const { return boxColorValues[index]; }
-    QString boxDescription(int index) const { return boxDescriptionValues[index]; }
-    const QVector<int> &boxLengthsX() const { return boxLengthXValues; }
-    const QVector<int> &boxLengthsY() const { return boxLengthYValues; }
-    const QVector<int> &boxLengthsZ() const { return boxLengthZValues; }
-    void removeBoxes(QModelIndexList indexes);
-    int allBoxesQuantity() const { return std::accumulate(boxQuantityValues.begin(), boxQuantityValues.end(), 0); }
+    int groupsCounter() const { return groupLengthXValues.size(); }
+    int groupLengthX(int index) const { return groupLengthXValues[index]; }
+    int groupLengthY(int index) const { return groupLengthYValues[index]; }
+    int groupLengthZ(int index) const { return groupLengthZValues[index]; }
+    int groupBoxesCounter(int index) const { return groupBoxesCounterValues[index]; }
+    QColor groupColor(int index) const { return groupColorValues[index]; }
+    QString groupDescription(int index) const { return groupDescriptionValues[index]; }
+    void removeGroup(int index);
+    int allBoxesQuantity() const { return std::accumulate(groupBoxesCounterValues.begin(), groupBoxesCounterValues.end(), 0); }
 
 signals:
-    void containerLengthX_changed(int value);
-    void containerLengthY_changed(int value);
-    void containerLengthZ_changed(int value);
-    void textUnit_changed(QString value);
-    void beforeAddBox();
-    void afterAddBox();
-    void beforeBoxCountChanged();
-    void afterBoxCountChanged();
-    void boxValuesChanged(int index);
+    void containerLengthXChanged(int value);
+    void containerLengthYChanged(int value);
+    void containerLengthZChanged(int value);
+    void textUnitChanged(QString value);
+    void beforeAddGroup();
+    void afterAddGroup();
+    void beforeGroupsCounterChanged();
+    void afterGroupsCounterChanged();
+    void groupChanged(int index);
 
 public:
-    void addBox(int lengthX, int lengthY, int lengthZ, int quantity, QColor color, QString description);
+    void addGroup(int lengthX, int lengthY, int lengthZ, int quantity, QColor color, QString description);
     void clear();
-    void setBoxCount(int count);
-    void setBox(int boxIndex, int lengthX, int lengthY, int lengthZ, int quantity, QColor color, QString description);
-    void setBoxQuantity(int boxIndex, int quantity);
+    void setGroupsCounter(int count);
+    void setGroup(int index, int lengthX, int lengthY, int lengthZ, int quantity, QColor color, QString description);
+    void setGroupBoxesCounter(int groupIndex, int boxesCounter);
     void setContainerLengthX(int value);
     void setContainerLengthY(int value);
     void setContainerLengthZ(int value);
@@ -54,12 +52,12 @@ private:
     int containerLengthXValue;
     int containerLengthYValue;
     int containerLengthZValue;
-    QVector<int> boxLengthXValues;
-    QVector<int> boxLengthYValues;
-    QVector<int> boxLengthZValues;
-    QVector<int> boxQuantityValues;
-    QVector<QColor> boxColorValues;
-    QVector<QString> boxDescriptionValues;
+    QVector<int> groupLengthXValues;
+    QVector<int> groupLengthYValues;
+    QVector<int> groupLengthZValues;
+    QVector<int> groupBoxesCounterValues;
+    QVector<QColor> groupColorValues;
+    QVector<QString> groupDescriptionValues;
     QString textUnitValue;
 };
 

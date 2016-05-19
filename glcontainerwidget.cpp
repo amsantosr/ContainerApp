@@ -34,9 +34,9 @@ void GLContainerWidget::setContainerSolution(ContainerSolution *solution)
         containerProblem = containerSolution->getContainerProblem();
         if (containerProblem != 0)
         {
-            connect(containerProblem, &ContainerProblem::containerLengthX_changed, this, functionUpdate);
-            connect(containerProblem, &ContainerProblem::containerLengthY_changed, this, functionUpdate);
-            connect(containerProblem, &ContainerProblem::containerLengthZ_changed, this, functionUpdate);
+            connect(containerProblem, &ContainerProblem::containerLengthXChanged, this, functionUpdate);
+            connect(containerProblem, &ContainerProblem::containerLengthYChanged, this, functionUpdate);
+            connect(containerProblem, &ContainerProblem::containerLengthZChanged, this, functionUpdate);
         }
         if (problem != 0)
             disconnect(problem, 0, this, 0);
@@ -130,7 +130,7 @@ void GLContainerWidget::paintGL()
             int x2 = x1 + containerSolution->packedBoxLengthX(count);
             int y2 = y1 + containerSolution->packedBoxLengthY(count);
             int z2 = z1 + containerSolution->packedBoxLengthZ(count);
-            QColor color = containerProblem->boxColor(groupIndex);
+            QColor color = containerProblem->groupColor(groupIndex);
             drawBox(x1, y1, z1, x2, y2, z2, color);
         }
     }

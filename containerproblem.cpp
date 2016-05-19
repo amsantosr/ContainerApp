@@ -9,97 +9,81 @@ ContainerProblem::ContainerProblem(QObject *parent)
 {
 }
 
-void ContainerProblem::removeBoxes(QModelIndexList indexes)
+void ContainerProblem::removeGroup(int index)
 {
-    if (!indexes.empty())
-    {
-        emit beforeBoxCountChanged();
-        QVector<int> rowIndexes;
-        foreach (QModelIndex index, indexes)
-        {
-            rowIndexes.append(index.row());
-        }
-
-        std::sort(rowIndexes.begin(), rowIndexes.end(), std::greater<int>());
-        auto last = std::unique(rowIndexes.begin(), rowIndexes.end());
-        rowIndexes.resize(last - rowIndexes.begin());
-
-        for (int i = 0; i < rowIndexes.size(); ++i)
-        {
-            int index = rowIndexes[i];
-            boxLengthXValues.remove(index);
-            boxLengthYValues.remove(index);
-            boxLengthZValues.remove(index);
-            boxQuantityValues.remove(index);
-            boxColorValues.remove(index);
-            boxDescriptionValues.remove(index);
-        }
-        emit afterBoxCountChanged();
-    }
+    emit beforeGroupsCounterChanged();
+    groupLengthXValues.remove(index);
+    groupLengthYValues.remove(index);
+    groupLengthZValues.remove(index);
+    groupBoxesCounterValues.remove(index);
+    groupColorValues.remove(index);
+    groupDescriptionValues.remove(index);
+    emit afterGroupsCounterChanged();
 }
 
-void ContainerProblem::addBox(int lengthX, int lengthY, int lengthZ,
+void ContainerProblem::addGroup(int lengthX, int lengthY, int lengthZ,
                               int quantity, QColor color, QString description)
 {
-    emit beforeAddBox();
-    emit beforeBoxCountChanged();
-    boxLengthXValues.append(lengthX);
-    boxLengthYValues.append(lengthY);
-    boxLengthZValues.append(lengthZ);
-    boxQuantityValues.append(quantity);
-    boxColorValues.append(color);
-    boxDescriptionValues.append(description);
-    emit afterBoxCountChanged();
-    emit afterAddBox();
+    emit beforeAddGroup();
+    emit beforeGroupsCounterChanged();
+    groupLengthXValues.append(lengthX);
+    groupLengthYValues.append(lengthY);
+    groupLengthZValues.append(lengthZ);
+    groupBoxesCounterValues.append(quantity);
+    groupColorValues.append(color);
+    groupDescriptionValues.append(description);
+    emit afterGroupsCounterChanged();
+    emit afterAddGroup();
 }
 
 void ContainerProblem::clear()
 {
-    if (boxLengthXValues.size() > 0)
+    if (groupLengthXValues.size() > 0)
     {
-        emit beforeBoxCountChanged();
-        boxLengthXValues.clear();
-        boxLengthYValues.clear();
-        boxLengthZValues.clear();
-        boxQuantityValues.clear();
-        boxColorValues.clear();
-        boxDescriptionValues.clear();
-        emit afterBoxCountChanged();
+        emit beforeGroupsCounterChanged();
+        groupLengthXValues.clear();
+        groupLengthYValues.clear();
+        groupLengthZValues.clear();
+        groupBoxesCounterValues.clear();
+        groupColorValues.clear();
+        groupDescriptionValues.clear();
+        emit afterGroupsCounterChanged();
     }
     setContainerLengthX(0);
     setContainerLengthY(0);
     setContainerLengthZ(0);
 }
 
-void ContainerProblem::setBoxCount(int count)
+void ContainerProblem::setGroupsCounter(int count)
 {
-    emit beforeBoxCountChanged();
-    boxLengthXValues.resize(count);
-    boxLengthYValues.resize(count);
-    boxLengthZValues.resize(count);
-    boxColorValues.resize(count);
-    boxDescriptionValues.resize(count);
-    emit afterBoxCountChanged();
+    emit beforeGroupsCounterChanged();
+    groupLengthXValues.resize(count);
+    groupLengthYValues.resize(count);
+    groupLengthZValues.resize(count);
+    groupColorValues.resize(count);
+    groupDescriptionValues.resize(count);
+    emit afterGroupsCounterChanged();
 }
 
-void ContainerProblem::setBox(int boxIndex, int lengthX, int lengthY, int lengthZ,
+void ContainerProblem::setGroup(int index, int lengthX, int lengthY, int lengthZ,
                               int quantity, QColor color, QString description)
 {
-    boxLengthXValues[boxIndex] = lengthX;
-    boxLengthYValues[boxIndex] = lengthY;
-    boxLengthZValues[boxIndex] = lengthZ;
-    boxQuantityValues[boxIndex] = quantity;
-    boxColorValues[boxIndex] = color;
-    boxDescriptionValues[boxIndex] = description;
-    emit boxValuesChanged(boxIndex);
+    // TODO emit the signal only if at least 1 value changed
+    groupLengthXValues[index] = lengthX;
+    groupLengthYValues[index] = lengthY;
+    groupLengthZValues[index] = lengthZ;
+    groupBoxesCounterValues[index] = quantity;
+    groupColorValues[index] = color;
+    groupDescriptionValues[index] = description;
+    emit groupChanged(index);
 }
 
-void ContainerProblem::setBoxQuantity(int boxIndex, int quantity)
+void ContainerProblem::setGroupBoxesCounter(int boxIndex, int quantity)
 {
-    if (boxQuantityValues[boxIndex] != quantity)
+    if (groupBoxesCounterValues[boxIndex] != quantity)
     {
-        boxQuantityValues[boxIndex] = quantity;
-        emit boxValuesChanged(boxIndex);
+        groupBoxesCounterValues[boxIndex] = quantity;
+        emit groupChanged(boxIndex);
     }
 }
 
@@ -108,7 +92,7 @@ void ContainerProblem::setContainerLengthX(int value)
     if (containerLengthXValue != value)
     {
         containerLengthXValue = value;
-        emit containerLengthX_changed(value);
+        emit containerLengthXChanged(value);
     }
 }
 
@@ -117,7 +101,7 @@ void ContainerProblem::setContainerLengthY(int value)
     if (containerLengthYValue != value)
     {
         containerLengthYValue = value;
-        emit containerLengthY_changed(value);
+        emit containerLengthYChanged(value);
     }
 }
 
@@ -126,7 +110,7 @@ void ContainerProblem::setContainerLengthZ(int value)
     if (containerLengthZValue != value)
     {
         containerLengthZValue = value;
-        emit containerLengthZ_changed(value);
+        emit containerLengthZChanged(value);
     }
 }
 
@@ -135,6 +119,6 @@ void ContainerProblem::setTextUnit(QString value)
     if (textUnitValue != value)
     {
         textUnitValue = value;
-        emit textUnit_changed(value);
+        emit textUnitChanged(value);
     }
 }

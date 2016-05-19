@@ -92,12 +92,15 @@
            </layout>
           </item>
           <item>
-           <widget class="BoxesTableView" name="tableViewBoxes">
+           <widget class="BoxesGroupsTableView" name="tableViewBoxes">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::SingleSelection</enum>
             </property>
             <property name="selectionBehavior">
              <enum>QAbstractItemView::SelectRows</enum>
@@ -428,9 +431,9 @@
    <header>glcontainerwidget.h</header>
   </customwidget>
   <customwidget>
-   <class>BoxesTableView</class>
+   <class>BoxesGroupsTableView</class>
    <extends>QTableView</extends>
-   <header>boxestableview.h</header>
+   <header>boxesgroupstableview.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

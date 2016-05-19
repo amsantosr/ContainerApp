@@ -36,20 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     uiDialogGenerateProblem.setupUi(&dialogGenerateProblem);
     uiDialogMeasurementSystem.setupUi(&dialogMeasurementSystem);
 
-    connect(uiDialogAddBoxes.pushButtonPickColor, &QPushButton::clicked, [&]
-    {
-        QColor color = QColorDialog::getColor(Qt::red, &dialogAddBoxes, tr("Elegir color"));
-        if (color.isValid())
-        {
-            QPalette palette = uiDialogAddBoxes.labelColor->palette();
-            palette.setColor(uiDialogAddBoxes.labelColor->backgroundRole(), color);
-            uiDialogAddBoxes.labelColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);")
-                                                     .arg(color.red())
-                                                     .arg(color.green())
-                                                     .arg(color.blue()));
-        }
-    });
-    uiDialogEditBoxes.spinBoxCantidad->setDisabled(true);
+    setupColorDialog(&dialogAddBoxes, &uiDialogAddBoxes);
+    setupColorDialog(&dialogEditBoxes, &uiDialogEditBoxes);
 
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
@@ -65,13 +53,13 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     auto spinBoxSetValue = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::setValue);
-    connect(&containerProblem, &ContainerProblem::containerLengthX_changed,
+    connect(&containerProblem, &ContainerProblem::containerLengthXChanged,
             ui->spinBoxContainerDimensionX, spinBoxSetValue);
-    connect(&containerProblem, &ContainerProblem::containerLengthY_changed,
+    connect(&containerProblem, &ContainerProblem::containerLengthYChanged,
             ui->spinBoxContainerDimensionY, spinBoxSetValue);
-    connect(&containerProblem, &ContainerProblem::containerLengthZ_changed,
+    connect(&containerProblem, &ContainerProblem::containerLengthZChanged,
             ui->spinBoxContainerDimensionZ, spinBoxSetValue);
-    connect(&containerProblem, &ContainerProblem::textUnit_changed,
+    connect(&containerProblem, &ContainerProblem::textUnitChanged,
             this, &MainWindow::setTextUnit);
     containerSolution.setContainerProblem(&containerProblem);
     ui->openGLWidget->setContainerSolution(&containerSolution);
@@ -87,10 +75,11 @@ MainWindow::MainWindow(QWidget *parent) :
     listLabelsUnits << uiDialogAddBoxes.labelUnit1
                     << uiDialogAddBoxes.labelUnit2
                     << uiDialogAddBoxes.labelUnit3
+                    << uiDialogEditBoxes.labelUnit1
+                    << uiDialogEditBoxes.labelUnit2
+                    << uiDialogEditBoxes.labelUnit3
                     << uiDialogGenerateProblem.labelUnit1
                     << uiDialogGenerateProblem.labelUnit2
-                    << uiDialogGenerateProblem.labelUnit3
-                    << uiDialogGenerateProblem.labelUnit4
                     << ui->labelContainerUnit1
                     << ui->labelContainerUnit2
                     << ui->labelContainerUnit3;
@@ -166,6 +155,25 @@ void MainWindow::setTextUnit(QString text)
     }
 }
 
+void MainWindow::setupColorDialog(QDialog *dialog, Ui::DialogAddBox *uiDialog)
+{
+    connect(uiDialog->pushButtonPickColor, &QPushButton::clicked, [=]
+    {
+        QPalette palette = uiDialog->labelColor->palette();
+        QColor oldColor = palette.background().color();
+        QColor color = QColorDialog::getColor(oldColor, dialog, tr("Elegir color"));
+        if (color.isValid())
+        {
+            QPalette palette = uiDialog->labelColor->palette();
+            palette.setColor(uiDialog->labelColor->backgroundRole(), color);
+            uiDialog->labelColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);")
+                                                     .arg(color.red())
+                                                     .arg(color.green())
+                                                     .arg(color.blue()));
+        }
+    });
+}
+
 void MainWindow::on_actionGenerateProblem_triggered()
 {
     if (dialogGenerateProblem.exec() == QDialog::Accepted)
@@ -194,7 +202,7 @@ void MainWindow::on_actionSolveProblem_triggered()
         QMessageBox::critical(this, tr("Error"), tr("Todas las dimensiones del contenedor deben ser mayor que cero."));
         return;
     }
-    if (containerProblem.boxCount() == 0)
+    if (containerProblem.groupsCounter() == 0)
     {
         QMessageBox::critical(this, tr("Error"), tr("No se han ingresado cajas para procesar."));
         return;
@@ -213,7 +221,7 @@ void MainWindow::on_actionAddBoxes_triggered()
         QColor color = uiDialogAddBoxes.labelColor->palette().background().color();
         QString description = uiDialogAddBoxes.lineEditDescription->text();
 
-        containerProblem.addBox(dimensionX, dimensionY, dimensionZ, quantity, color, description);
+        containerProblem.addGroup(dimensionX, dimensionY, dimensionZ, quantity, color, description);
     }
 }
 
@@ -311,7 +319,19 @@ void MainWindow::on_actionNewProblem_triggered()
 
 void MainWindow::on_actionDeleteBoxes_triggered()
 {
-    containerProblem.removeBoxes(ui->tableViewBoxes->selectedIndexes());
+    QVector<int> indexes;
+    foreach (QModelIndex index, ui->tableViewBoxes->selectedIndexes())
+    {
+        indexes.append(index.row());
+    }
+    std::sort(indexes.begin(), indexes.end());
+    int newSize = std::unique(indexes.begin(), indexes.end()) - indexes.begin();
+    indexes.resize(newSize);
+    std::reverse(indexes.begin(), indexes.end());
+    foreach (int index, indexes)
+    {
+        containerProblem.removeGroup(index);
+    }
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -348,7 +368,39 @@ void MainWindow::on_actionEditBoxes_triggered()
             QColor color = uiDialogAddBoxes.labelColor->palette().background().color();
             QString description = uiDialogAddBoxes.lineEditDescription->text();
 
-            containerProblem.addBox(dimensionX, dimensionY, dimensionZ, quantity, color, description);
+            containerProblem.addGroup(dimensionX, dimensionY, dimensionZ, quantity, color, description);
         }
+    }
+}
+
+void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
+{
+    int row = index.row();
+    int lengthX = containerProblem.groupLengthX(row);
+    int lengthY = containerProblem.groupLengthY(row);
+    int lengthZ = containerProblem.groupLengthZ(row);
+    int quantity = containerProblem.groupBoxesCounter(row);
+    QColor color = containerProblem.groupColor(row);
+    QString description = containerProblem.groupDescription(row);
+
+    uiDialogEditBoxes.spinBoxDimensionX->setValue(lengthX);
+    uiDialogEditBoxes.spinBoxDimensionY->setValue(lengthY);
+    uiDialogEditBoxes.spinBoxDimensionZ->setValue(lengthZ);
+    uiDialogEditBoxes.spinBoxCantidad->setValue(quantity);
+    uiDialogEditBoxes.labelColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);")
+                                                .arg(color.red())
+                                                .arg(color.green())
+                                                .arg(color.blue()));
+
+    uiDialogEditBoxes.lineEditDescription->setText(description);
+    if (dialogEditBoxes.exec() == QDialog::Accepted)
+    {
+        lengthX = uiDialogEditBoxes.spinBoxDimensionX->value();
+        lengthY = uiDialogEditBoxes.spinBoxDimensionY->value();
+        lengthZ = uiDialogEditBoxes.spinBoxDimensionZ->value();
+        quantity = uiDialogEditBoxes.spinBoxCantidad->value();
+        color = uiDialogEditBoxes.labelColor->palette().background().color();
+        description = uiDialogEditBoxes.lineEditDescription->text();
+        containerProblem.setGroup(row, lengthX, lengthY, lengthZ, quantity, color, description);
     }
 }

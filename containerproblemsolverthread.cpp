@@ -30,12 +30,12 @@ void ContainerProblemSolverThread::run()
     int currentBoxCount = 0;
     for (int index = 0; index < allBoxesQuantity; ++index)
     {
-        boxLengthsX[index] = containerProblem->boxLengthX(currentGroupIndex);
-        boxLengthsY[index] = containerProblem->boxLengthY(currentGroupIndex);
-        boxLengthsZ[index] = containerProblem->boxLengthZ(currentGroupIndex);
+        boxLengthsX[index] = containerProblem->groupLengthX(currentGroupIndex);
+        boxLengthsY[index] = containerProblem->groupLengthY(currentGroupIndex);
+        boxLengthsZ[index] = containerProblem->groupLengthZ(currentGroupIndex);
         boxGroups[index] = currentGroupIndex;
         ++currentBoxCount;
-        if (currentBoxCount == containerProblem->boxQuantity(currentGroupIndex))
+        if (currentBoxCount == containerProblem->groupBoxesCounter(currentGroupIndex))
         {
             ++currentGroupIndex;
             currentBoxCount = 0;

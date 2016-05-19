@@ -1,12 +1,12 @@
-#include "boxestableview.h"
+#include "boxesgroupstableview.h"
 
-BoxesTableView::BoxesTableView(QWidget *parent)
+BoxesGroupsTableView::BoxesGroupsTableView(QWidget *parent)
     : QTableView(parent)
 {
 
 }
 
-QVector<int> BoxesTableView::selectedRows() const
+QVector<int> BoxesGroupsTableView::selectedRows() const
 {
     // returns a vector of the rows selected in the table view
     QVector<int> rows;

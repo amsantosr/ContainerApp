@@ -124,14 +124,14 @@
      <item row="2" column="2">
       <widget class="QLabel" name="labelUnit3">
        <property name="text">
-        <string>unit</string>
+        <string>%</string>
        </property>
       </widget>
      </item>
      <item row="3" column="2">
       <widget class="QLabel" name="labelUnit4">
        <property name="text">
-        <string>unit</string>
+        <string>grupos</string>
        </property>
       </widget>
      </item>

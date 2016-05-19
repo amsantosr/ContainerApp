@@ -119,19 +119,19 @@ void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerPr
     streamWriter.writeAttribute("LengthZ", dimensionZ);
 
     streamWriter.writeStartElement("Groups");
-    streamWriter.writeAttribute("Count", QString::number(containerProblem.boxCount()));
-    for (int index = 0; index < containerProblem.boxCount(); ++index)
+    streamWriter.writeAttribute("Count", QString::number(containerProblem.groupsCounter()));
+    for (int index = 0; index < containerProblem.groupsCounter(); ++index)
     {
         streamWriter.writeEmptyElement("Group");
-        int lengthX = containerProblem.boxLengthX(index);
-        int lengthY = containerProblem.boxLengthY(index);
-        int lengthZ = containerProblem.boxLengthZ(index);
+        int lengthX = containerProblem.groupLengthX(index);
+        int lengthY = containerProblem.groupLengthY(index);
+        int lengthZ = containerProblem.groupLengthZ(index);
         streamWriter.writeAttribute("Index", QString::number(index));
         streamWriter.writeAttribute("LengthX", QString::number(lengthX));
         streamWriter.writeAttribute("LengthY", QString::number(lengthY));
         streamWriter.writeAttribute("LengthZ", QString::number(lengthZ));
-        streamWriter.writeAttribute("Color", containerProblem.boxColor(index).name());
-        streamWriter.writeAttribute("Description", containerProblem.boxDescription(index));
+        streamWriter.writeAttribute("Color", containerProblem.groupColor(index).name());
+        streamWriter.writeAttribute("Description", containerProblem.groupDescription(index));
     }
     streamWriter.writeEndElement(); // Groups
     streamWriter.writeEndElement(); // ContainerProblem
@@ -251,14 +251,14 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
     checkNextElement("Groups");
     int boxCount;
     parseBoxesAttributes(boxCount);
-    containerProblem.setBoxCount(boxCount);
+    containerProblem.setGroupsCounter(boxCount);
 
     for (int boxIndex = 0; boxIndex < boxCount; ++boxIndex)
     {
         checkNextElement("Box");
         int boxDimensionX, boxDimensionY, boxDimensionZ;
         parseBoxAttributes(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
-        containerProblem.setBox(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ, 1, Qt::blue, QString());
+        containerProblem.setGroup(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ, 1, Qt::blue, QString());
         streamReader.skipCurrentElement();
     }
     checkEndElement("Groups");

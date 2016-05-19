@@ -33,6 +33,7 @@ private:
     void generateProblemFromDialog();
     void setMaximumDisplayedBoxes(int value);
     void setTextUnit(QString text);
+    void setupColorDialog(QDialog *dialog, Ui::DialogAddBox *uiDialog);
 
 public:
 #ifdef DEBUG_ISSUES
@@ -65,6 +66,8 @@ public slots:
 
 private slots:
     void on_actionEditBoxes_triggered();
+
+    void on_tableViewBoxes_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;

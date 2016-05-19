@@ -18,7 +18,7 @@ void ContainerSolution::clear()
         boxCoordinateXValues.clear();
         boxCoordinateYValues.clear();
         boxCoordinateZValues.clear();
-        packedBoxesTypesIndexes.clear();
+        packedBoxesGroupsIndexes.clear();
         emit afterDataChange();
     }
 }
@@ -34,7 +34,7 @@ void ContainerSolution::setPackedBoxes(QVector<int> boxLengthsX,
                                        QVector<int> boxCoordinatesX,
                                        QVector<int> boxCoordinatesY,
                                        QVector<int> boxCoordinatesZ,
-                                       QVector<int> packedBoxesTypes)
+                                       QVector<int> packedBoxesGroups)
 {
     emit beforeDataChange();
     boxLengthXValues = boxLengthsX;
@@ -43,6 +43,6 @@ void ContainerSolution::setPackedBoxes(QVector<int> boxLengthsX,
     boxCoordinateXValues = boxCoordinatesX;
     boxCoordinateYValues = boxCoordinatesY;
     boxCoordinateZValues = boxCoordinatesZ;
-    packedBoxesTypesIndexes = packedBoxesTypes;
+    packedBoxesGroupsIndexes = packedBoxesGroups;
     emit afterDataChange();
 }
