@@ -216,7 +216,7 @@ void MainWindow::on_actionAddGroup_triggered()
         int dimensionX = uiDialogAddGroup.spinBoxLengthX->value();
         int dimensionY = uiDialogAddGroup.spinBoxLengthY->value();
         int dimensionZ = uiDialogAddGroup.spinBoxLengthZ->value();
-        int quantity = uiDialogAddGroup.spinBoxCantidad->value();
+        int quantity = uiDialogAddGroup.spinBoxQuantity->value();
         QColor color = uiDialogAddGroup.labelColor->palette().background().color();
         QString description = uiDialogAddGroup.lineEditDescription->text();
 
@@ -384,7 +384,7 @@ void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
     uiDialogEditGroup.spinBoxLengthX->setValue(lengthX);
     uiDialogEditGroup.spinBoxLengthY->setValue(lengthY);
     uiDialogEditGroup.spinBoxLengthZ->setValue(lengthZ);
-    uiDialogEditGroup.spinBoxCantidad->setValue(quantity);
+    uiDialogEditGroup.spinBoxQuantity->setValue(quantity);
     uiDialogEditGroup.labelColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);")
                                                 .arg(color.red())
                                                 .arg(color.green())
@@ -396,7 +396,7 @@ void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
         lengthX = uiDialogEditGroup.spinBoxLengthX->value();
         lengthY = uiDialogEditGroup.spinBoxLengthY->value();
         lengthZ = uiDialogEditGroup.spinBoxLengthZ->value();
-        quantity = uiDialogEditGroup.spinBoxCantidad->value();
+        quantity = uiDialogEditGroup.spinBoxQuantity->value();
         color = uiDialogEditGroup.labelColor->palette().background().color();
         description = uiDialogEditGroup.lineEditDescription->text();
         containerProblem.setGroup(row, lengthX, lengthY, lengthZ, quantity, color, description);

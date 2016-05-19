@@ -87,7 +87,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBoxCantidad">
+      <widget class="QSpinBox" name="spinBoxQuantity">
        <property name="maximum">
         <number>9999</number>
        </property>
@@ -191,7 +191,7 @@
   <tabstop>spinBoxLengthX</tabstop>
   <tabstop>spinBoxLengthY</tabstop>
   <tabstop>spinBoxLengthZ</tabstop>
-  <tabstop>spinBoxCantidad</tabstop>
+  <tabstop>spinBoxQuantity</tabstop>
  </tabstops>
  <resources/>
  <connections>
