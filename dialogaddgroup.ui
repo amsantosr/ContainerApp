@@ -115,7 +115,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="spinBoxDimensionY">
+      <widget class="QSpinBox" name="spinBoxLengthY">
        <property name="maximum">
         <number>9999</number>
        </property>
@@ -129,7 +129,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="spinBoxDimensionX">
+      <widget class="QSpinBox" name="spinBoxLengthX">
        <property name="maximum">
         <number>9999</number>
        </property>
@@ -143,7 +143,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QSpinBox" name="spinBoxDimensionZ">
+      <widget class="QSpinBox" name="spinBoxLengthZ">
        <property name="maximum">
         <number>9999</number>
        </property>
@@ -188,9 +188,9 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>spinBoxDimensionX</tabstop>
-  <tabstop>spinBoxDimensionY</tabstop>
-  <tabstop>spinBoxDimensionZ</tabstop>
+  <tabstop>spinBoxLengthX</tabstop>
+  <tabstop>spinBoxLengthY</tabstop>
+  <tabstop>spinBoxLengthZ</tabstop>
   <tabstop>spinBoxCantidad</tabstop>
  </tabstops>
  <resources/>

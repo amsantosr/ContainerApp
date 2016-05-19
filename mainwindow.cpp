@@ -213,9 +213,9 @@ void MainWindow::on_actionAddGroup_triggered()
 {
     if (dialogAddGroup.exec() == QDialog::Accepted)
     {
-        int dimensionX = uiDialogAddGroup.spinBoxDimensionX->value();
-        int dimensionY = uiDialogAddGroup.spinBoxDimensionY->value();
-        int dimensionZ = uiDialogAddGroup.spinBoxDimensionZ->value();
+        int dimensionX = uiDialogAddGroup.spinBoxLengthX->value();
+        int dimensionY = uiDialogAddGroup.spinBoxLengthY->value();
+        int dimensionZ = uiDialogAddGroup.spinBoxLengthZ->value();
         int quantity = uiDialogAddGroup.spinBoxCantidad->value();
         QColor color = uiDialogAddGroup.labelColor->palette().background().color();
         QString description = uiDialogAddGroup.lineEditDescription->text();
@@ -381,9 +381,9 @@ void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
     QColor color = containerProblem.groupColor(row);
     QString description = containerProblem.groupDescription(row);
 
-    uiDialogEditGroup.spinBoxDimensionX->setValue(lengthX);
-    uiDialogEditGroup.spinBoxDimensionY->setValue(lengthY);
-    uiDialogEditGroup.spinBoxDimensionZ->setValue(lengthZ);
+    uiDialogEditGroup.spinBoxLengthX->setValue(lengthX);
+    uiDialogEditGroup.spinBoxLengthY->setValue(lengthY);
+    uiDialogEditGroup.spinBoxLengthZ->setValue(lengthZ);
     uiDialogEditGroup.spinBoxCantidad->setValue(quantity);
     uiDialogEditGroup.labelColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);")
                                                 .arg(color.red())
@@ -393,9 +393,9 @@ void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
     uiDialogEditGroup.lineEditDescription->setText(description);
     if (dialogEditGroup.exec() == QDialog::Accepted)
     {
-        lengthX = uiDialogEditGroup.spinBoxDimensionX->value();
-        lengthY = uiDialogEditGroup.spinBoxDimensionY->value();
-        lengthZ = uiDialogEditGroup.spinBoxDimensionZ->value();
+        lengthX = uiDialogEditGroup.spinBoxLengthX->value();
+        lengthY = uiDialogEditGroup.spinBoxLengthY->value();
+        lengthZ = uiDialogEditGroup.spinBoxLengthZ->value();
         quantity = uiDialogEditGroup.spinBoxCantidad->value();
         color = uiDialogEditGroup.labelColor->palette().background().color();
         description = uiDialogEditGroup.lineEditDescription->text();
