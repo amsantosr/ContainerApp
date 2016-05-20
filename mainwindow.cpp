@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setupColorDialog(&dialogAddGroup, &uiDialogAddGroup);
     setupColorDialog(&dialogEditGroup, &uiDialogEditGroup);
+    dialogEditGroup.setWindowTitle("Modificar grupo");
 
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
@@ -103,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
             &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::solutionReady,
             &containerSolution, &ContainerSolution::setPackedBoxes, Qt::BlockingQueuedConnection);
-    connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, this, [this]
+    connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [this]
     {
         uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(false);
         QApplication::processEvents();
