@@ -364,7 +364,6 @@ void MainWindow::on_actionSetMeasurementSystem_triggered()
 
 void MainWindow::on_actionEditGroup_triggered()
 {
-    //QVector<int> rows = ui->tableViewBoxes->selectedRows();
     QModelIndexList selectedIndexes = ui->tableViewBoxes->selectedIndexes();
     if (selectedIndexes.isEmpty())
         return;
