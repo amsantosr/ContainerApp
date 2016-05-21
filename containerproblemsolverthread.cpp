@@ -27,18 +27,18 @@ void ContainerProblemSolverThread::run()
     QVector<int> boxLengthsZ(allBoxesQuantity);
     QVector<int> boxGroups(allBoxesQuantity);
     int currentGroupIndex = 0;
-    int currentBoxCount = 0;
+    int currentGroupCount = 0;
     for (int index = 0; index < allBoxesQuantity; ++index)
     {
         boxLengthsX[index] = containerProblem->groupLengthX(currentGroupIndex);
         boxLengthsY[index] = containerProblem->groupLengthY(currentGroupIndex);
         boxLengthsZ[index] = containerProblem->groupLengthZ(currentGroupIndex);
         boxGroups[index] = currentGroupIndex;
-        ++currentBoxCount;
-        if (currentBoxCount == containerProblem->groupBoxesCounter(currentGroupIndex))
+        ++currentGroupCount;
+        if (currentGroupCount == containerProblem->groupBoxesCounter(currentGroupIndex))
         {
             ++currentGroupIndex;
-            currentBoxCount = 0;
+            currentGroupCount = 0;
         }
     }
 

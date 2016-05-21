@@ -45,26 +45,24 @@ int ContainerProblemTableModel::columnCount(const QModelIndex &) const
 
 QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) const
 {
+    QVariant result;
     if (role == Qt::DisplayRole)
     {
         int row = index.row();
-        QString textUnit = containerProblem->textUnit();
-        QString string;
         switch (index.column())
         {
-        case 0: string = QString("%1 %2").arg(containerProblem->groupLengthX(row)).arg(textUnit); break;
-        case 1: string = QString("%1 %2").arg(containerProblem->groupLengthY(row)).arg(textUnit); break;
-        case 2: string = QString("%1 %2").arg(containerProblem->groupLengthZ(row)).arg(textUnit); break;
-        case 3: string = QString::number(containerProblem->groupBoxesCounter(row)); break;
-        case 4: string = containerProblem->groupDescription(index.row()); break;
+        case 0: result = containerProblem->groupLengthX(row); break;
+        case 1: result = containerProblem->groupLengthY(row); break;
+        case 2: result = containerProblem->groupLengthZ(row); break;
+        case 3: result = containerProblem->groupBoxesCounter(row); break;
+        case 4: result = containerProblem->groupDescription(index.row()); break;
         }
-        return string;
     }
     else if (role == Qt::TextAlignmentRole)
     {
-        return Qt::AlignRight;
+        //result = Qt::AlignRight;
     }
-    return QVariant();
+    return result;
 }
 
 QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation orientation, int role) const
