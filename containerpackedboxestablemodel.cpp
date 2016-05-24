@@ -1,14 +1,14 @@
-#include "containersolutiontablemodel.h"
+#include "containerpackedboxestablemodel.h"
 #include "containersolution.h"
 
-ContainerSolutionTableModel::ContainerSolutionTableModel(QObject *parent)
+ContainerPackedBoxesTableModel::ContainerPackedBoxesTableModel(QObject *parent)
     : QAbstractTableModel(parent),
       containerSolution(0)
 {
 
 }
 
-void ContainerSolutionTableModel::setContainerSolution(ContainerSolution *solution)
+void ContainerPackedBoxesTableModel::setContainerSolution(ContainerSolution *solution)
 {
     if (solution != containerSolution)
     {
@@ -16,9 +16,9 @@ void ContainerSolutionTableModel::setContainerSolution(ContainerSolution *soluti
         if (containerSolution != 0)
         {
             connect(containerSolution, &ContainerSolution::beforeDataChange,
-                    this, &ContainerSolutionTableModel::beginResetModel);
+                    this, &ContainerPackedBoxesTableModel::beginResetModel);
             connect(containerSolution, &ContainerSolution::afterDataChange,
-                    this, &ContainerSolutionTableModel::endResetModel);
+                    this, &ContainerPackedBoxesTableModel::endResetModel);
         }
         if (solution != 0)
         {
@@ -27,17 +27,17 @@ void ContainerSolutionTableModel::setContainerSolution(ContainerSolution *soluti
     }
 }
 
-int ContainerSolutionTableModel::rowCount(const QModelIndex &) const
+int ContainerPackedBoxesTableModel::rowCount(const QModelIndex &) const
 {
     return containerSolution != 0 ? containerSolution->packedBoxesCount() : 0;
 }
 
-int ContainerSolutionTableModel::columnCount(const QModelIndex &) const
+int ContainerPackedBoxesTableModel::columnCount(const QModelIndex &) const
 {
     return 8;
 }
 
-QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) const
+QVariant ContainerPackedBoxesTableModel::data(const QModelIndex &index, int role) const
 {
     QVariant result;
     if (role == Qt::DisplayRole)
@@ -55,9 +55,9 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
         case 6: string = QString::number(containerSolution->packedBoxCoordinateY(index.row())); break;
         case 7: string = QString::number(containerSolution->packedBoxCoordinateZ(index.row())); break;
         }
-        QString textUnit = containerSolution->textUnit();
-        if (!textUnit.isNull() && 2 <= index.column())
-            string += " " + containerSolution->textUnit();
+//        QString textUnit = containerSolution->textUnit();
+//        if (!textUnit.isNull() && 2 <= index.column())
+//            string += " " + containerSolution->textUnit();
         result = string;
     }
     else if (role == Qt::TextAlignmentRole)
@@ -68,7 +68,7 @@ QVariant ContainerSolutionTableModel::data(const QModelIndex &index, int role) c
     return result;
 }
 
-QVariant ContainerSolutionTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant ContainerPackedBoxesTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::DisplayRole)
     {

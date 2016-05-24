@@ -5,8 +5,8 @@
 #include "Pisinger/testcont.h"
 #include "glcontainerwidget.h"
 #include "containerproblemtablemodel.h"
-#include "containersolutiontablemodel.h"
-#include "containersolutiontablemodel.h"
+#include "containerpackedboxestablemodel.h"
+#include "containerpackedboxestablemodel.h"
 #include "containerxmlparserexception.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogAlgorithmExecution(this),
     dialogMeasurementSystem(this),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
-    containerSolutionTableModel(new ContainerSolutionTableModel(this))
+    containerSolutionTableModel(new ContainerPackedBoxesTableModel(this))
 {
     ui->setupUi(this);
     uiDialogAbout.setupUi(&dialogAbout);
