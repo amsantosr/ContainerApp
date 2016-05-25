@@ -17,6 +17,7 @@ namespace Ui {
 class MainWindow;
 }
 
+class ContainerGroupsTableModel;
 class ContainerProblemTableModel;
 class ContainerPackedBoxesTableModel;
 class ContainerPackedBoxesTableModel;
@@ -90,7 +91,8 @@ private:
     ContainerSolution containerSolution;
     ContainerXmlParser containerXmlParser;
     ContainerProblemTableModel *containerProblemTableModel;
-    ContainerPackedBoxesTableModel *containerSolutionTableModel;
+    ContainerPackedBoxesTableModel *containerPackedBoxesTableModel;
+    ContainerGroupsTableModel *containerGroupsTableModel;
 
     QList<QLabel*> listLabelsUnits;
 };

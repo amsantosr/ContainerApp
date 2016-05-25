@@ -6,7 +6,7 @@
 #include "glcontainerwidget.h"
 #include "containerproblemtablemodel.h"
 #include "containerpackedboxestablemodel.h"
-#include "containerpackedboxestablemodel.h"
+#include "containergroupstablemodel.h"
 #include "containerxmlparserexception.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
@@ -26,7 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogAlgorithmExecution(this),
     dialogMeasurementSystem(this),
     containerProblemTableModel(new ContainerProblemTableModel(this)),
-    containerSolutionTableModel(new ContainerPackedBoxesTableModel(this))
+    containerPackedBoxesTableModel(new ContainerPackedBoxesTableModel(this)),
+    containerGroupsTableModel(new ContainerGroupsTableModel(this))
 {
     ui->setupUi(this);
     uiDialogAbout.setupUi(&dialogAbout);
@@ -40,12 +41,16 @@ MainWindow::MainWindow(QWidget *parent) :
     setupColorDialog(&dialogEditGroup, &uiDialogEditGroup);
     dialogEditGroup.setWindowTitle("Modificar grupo");
 
+    containerSolution.setContainerProblem(&containerProblem);
+    ui->openGLWidget->setContainerSolution(&containerSolution);
     ui->splitterHorizontal->setStretchFactor(0, 0);
     ui->splitterHorizontal->setStretchFactor(1, 1);
     ui->tableViewBoxes->setModel(containerProblemTableModel);
-    ui->tableViewSolution->setModel(containerSolutionTableModel);
+    ui->tableViewOrdering->setModel(containerPackedBoxesTableModel);
+    ui->tableViewSolution->setModel(containerGroupsTableModel);
     containerProblemTableModel->setContainerProblem(&containerProblem);
-    containerSolutionTableModel->setContainerSolution(&containerSolution);
+    containerPackedBoxesTableModel->setContainerSolution(&containerSolution);
+    containerGroupsTableModel->setContainerSolution(&containerSolution);
     connect(uiDialogMeasurementSystem.buttonBox, &QDialogButtonBox::accepted, [this]
     {
         if (uiDialogMeasurementSystem.radioButtonCentimeters->isChecked() ||
@@ -62,8 +67,6 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->spinBoxContainerDimensionZ, spinBoxSetValue);
     connect(&containerProblem, &ContainerProblem::textUnitChanged,
             this, &MainWindow::setTextUnit);
-    containerSolution.setContainerProblem(&containerProblem);
-    ui->openGLWidget->setContainerSolution(&containerSolution);
 
     auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->spinBoxContainerDimensionX, spinBoxValueChanged,
@@ -313,8 +316,8 @@ void MainWindow::on_actionOpenSolution_triggered()
 
 void MainWindow::on_actionNewProblem_triggered()
 {
-    containerProblem.clear();
     containerSolution.clear();
+    containerProblem.clear();
 }
 
 void MainWindow::on_actionDeleteGroup_triggered()
