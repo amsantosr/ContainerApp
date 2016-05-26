@@ -64,7 +64,7 @@ QVariant ContainerGroupsTableModel::data(const QModelIndex &index, int role) con
         int row = index.row();
         switch (index.column())
         {
-        case 0: result = QString::number(row); break;
+        case 0: result = QString::number(row + 1); break;
         case 1: result = containerProblem->groupDescription(index.row()); break;
         case 2: result = packedBoxesCounters[index.row()]; break;
         case 3: result = unpackedBoxesCounters[index.row()]; break;
@@ -103,6 +103,7 @@ void ContainerGroupsTableModel::updateCounters()
     }
     for (int groupIndex = 0; groupIndex < containerProblem->groupsCounter(); ++groupIndex)
     {
-        unpackedBoxesCounters[groupIndex] = containerProblem->groupBoxesCounter(groupIndex) - packedBoxesCounters[groupIndex];
+        unpackedBoxesCounters[groupIndex] =
+                containerProblem->groupBoxesCounter(groupIndex) - packedBoxesCounters[groupIndex];
     }
 }
