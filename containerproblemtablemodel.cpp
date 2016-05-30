@@ -40,7 +40,7 @@ int ContainerProblemTableModel::rowCount(const QModelIndex &) const
 
 int ContainerProblemTableModel::columnCount(const QModelIndex &) const
 {
-    return 5;
+    return 6;
 }
 
 QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) const
@@ -58,9 +58,12 @@ QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) co
         case 4: result = containerProblem->groupDescription(index.row()); break;
         }
     }
-    else if (role == Qt::TextAlignmentRole)
+    else if (role == Qt::BackgroundColorRole)
     {
-        //result = Qt::AlignRight;
+        if (index.column() == 5)
+        {
+            result = containerProblem->groupColor(index.row());
+        }
     }
     return result;
 }
@@ -78,6 +81,7 @@ QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation ori
             case 2: return QString("Dim Z");
             case 3: return QString("Cantidad");
             case 4: return QString("Descripción");
+            case 5: return QString("Color");
             }
         }
     }

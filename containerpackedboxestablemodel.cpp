@@ -55,9 +55,6 @@ QVariant ContainerPackedBoxesTableModel::data(const QModelIndex &index, int role
         case 6: string = QString::number(containerSolution->packedBoxCoordinateY(index.row())); break;
         case 7: string = QString::number(containerSolution->packedBoxCoordinateZ(index.row())); break;
         }
-//        QString textUnit = containerSolution->textUnit();
-//        if (!textUnit.isNull() && 2 <= index.column())
-//            string += " " + containerSolution->textUnit();
         result = string;
     }
     else if (role == Qt::TextAlignmentRole)
