@@ -24,7 +24,7 @@ void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
                 this, &ContainerProblemTableModel::beginResetModel);
         connect(containerProblem, &ContainerProblem::afterGroupsCounterChanged,
                 this, &ContainerProblemTableModel::endResetModel);
-        connect(containerProblem, &ContainerProblem::groupChanged, this, [this](int boxIndex)
+        connect(containerProblem, &ContainerProblem::groupChanged, [this](int boxIndex)
         {
             emit dataChanged(this->index(boxIndex, 0), this->index(boxIndex, columnCount()));
         });

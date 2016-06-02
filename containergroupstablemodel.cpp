@@ -106,4 +106,5 @@ void ContainerGroupsTableModel::updateCounters()
         unpackedBoxesCounters[groupIndex] =
                 containerProblem->groupBoxesCounter(groupIndex) - packedBoxesCounters[groupIndex];
     }
+    emit dataChanged(this->index(0, 2), this->index(rowCount() - 1, 3));
 }
