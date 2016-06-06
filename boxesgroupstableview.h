@@ -1,4 +1,4 @@
-#ifndef BOXESGROUPSTABLEVIEW_H
+    #ifndef BOXESGROUPSTABLEVIEW_H
 #define BOXESGROUPSTABLEVIEW_H
 
 #include <QTableView>

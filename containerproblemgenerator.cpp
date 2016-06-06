@@ -30,7 +30,7 @@ void ContainerProblemGenerator::generate(int minLength, int maxLength, int fillP
                 problem.groupLengthZ(index) == items[i].dz)
             {
                 // increment the counter
-                problem.setGroupBoxesCounter(index, problem.groupBoxesCounter(index) + 1);
+                problem.setGroupBoxCount(index, problem.groupBoxesCounter(index) + 1);
                 break;
             }
         }

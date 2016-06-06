@@ -54,7 +54,7 @@ void ContainerProblem::clear()
     setContainerLengthZ(0);
 }
 
-void ContainerProblem::setGroupsCounter(int count)
+void ContainerProblem::setGroupsCount(int count)
 {
     emit beforeGroupsCounterChanged();
     groupLengthXValues.resize(count);
@@ -68,17 +68,42 @@ void ContainerProblem::setGroupsCounter(int count)
 void ContainerProblem::setGroup(int index, int lengthX, int lengthY, int lengthZ,
                               int quantity, QColor color, QString description)
 {
-    // TODO emit the signal only if at least 1 value changed
-    groupLengthXValues[index] = lengthX;
-    groupLengthYValues[index] = lengthY;
-    groupLengthZValues[index] = lengthZ;
-    groupBoxesCounterValues[index] = quantity;
-    groupColorValues[index] = color;
-    groupDescriptionValues[index] = description;
-    emit groupChanged(index);
+    bool emitSignal = false;
+    if (groupLengthXValues[index] != lengthX)
+    {
+        groupLengthXValues[index] = lengthX;
+        emitSignal = true;
+    }
+    if (groupLengthYValues[index] != lengthY)
+    {
+        groupLengthYValues[index] = lengthY;
+        emitSignal = true;
+    }
+    if (groupLengthZValues[index] != lengthZ)
+    {
+        groupLengthZValues[index] = lengthZ;
+        emitSignal = true;
+    }
+    if (groupBoxesCounterValues[index] != quantity)
+    {
+        groupBoxesCounterValues[index] = quantity;
+        emitSignal = true;
+    }
+    if (groupColorValues[index] != color)
+    {
+        groupColorValues[index] = color;
+        emitSignal = true;
+    }
+    if (groupDescriptionValues[index] != description)
+    {
+        groupDescriptionValues[index] = description;
+        emitSignal = true;
+    }
+    if (emitSignal)
+        emit groupChanged(index);
 }
 
-void ContainerProblem::setGroupBoxesCounter(int boxIndex, int quantity)
+void ContainerProblem::setGroupBoxCount(int boxIndex, int quantity)
 {
     if (groupBoxesCounterValues[boxIndex] != quantity)
     {

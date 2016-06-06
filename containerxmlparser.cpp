@@ -251,7 +251,7 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
     checkNextElement("Groups");
     int boxCount;
     parseBoxesAttributes(boxCount);
-    containerProblem.setGroupsCounter(boxCount);
+    containerProblem.setGroupsCount(boxCount);
 
     for (int boxIndex = 0; boxIndex < boxCount; ++boxIndex)
     {
