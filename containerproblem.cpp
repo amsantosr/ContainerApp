@@ -60,15 +60,21 @@ void ContainerProblem::setGroupsCount(int count)
     groupLengthXValues.resize(count);
     groupLengthYValues.resize(count);
     groupLengthZValues.resize(count);
+    groupBoxesCounterValues.resize(count);
     groupColorValues.resize(count);
     groupDescriptionValues.resize(count);
     emit afterGroupsCounterChanged();
 }
 
-void ContainerProblem::setGroup(int index, int lengthX, int lengthY, int lengthZ,
-                              int quantity, QColor color, QString description)
+void ContainerProblem::setGroup(int index, int quantity, int lengthX, int lengthY, int lengthZ,
+                                QColor color, QString description)
 {
     bool emitSignal = false;
+    if (groupBoxesCounterValues[index] != quantity)
+    {
+        groupBoxesCounterValues[index] = quantity;
+        emitSignal = true;
+    }
     if (groupLengthXValues[index] != lengthX)
     {
         groupLengthXValues[index] = lengthX;
@@ -82,11 +88,6 @@ void ContainerProblem::setGroup(int index, int lengthX, int lengthY, int lengthZ
     if (groupLengthZValues[index] != lengthZ)
     {
         groupLengthZValues[index] = lengthZ;
-        emitSignal = true;
-    }
-    if (groupBoxesCounterValues[index] != quantity)
-    {
-        groupBoxesCounterValues[index] = quantity;
         emitSignal = true;
     }
     if (groupColorValues[index] != color)

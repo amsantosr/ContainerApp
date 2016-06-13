@@ -29,7 +29,7 @@ private:
     void parseContainerProblemAttributes(ContainerProblem &containerProblem);
     void parseContainerAttributes(ContainerProblem &containerProblem);
     void parseBoxesAttributes(int &boxCount);
-    void parseBoxAttributes(int boxIndex, int &boxDimensionX, int &boxDimensionY, int &boxDimensionZ);
+    void parseGroupAttributes(int &groupIndex, int &boxCount, int &boxDimensionX, int &boxDimensionY, int &boxDimensionZ, QColor &color, QString &description);
     void checkBoxAttributePresent(bool present, QString attributeName);
     void parsePackedBoxAttributes(int &boxIndex);
     void parseBoxPositionAttributes(int &positionX, int &positionY, int &positionZ);

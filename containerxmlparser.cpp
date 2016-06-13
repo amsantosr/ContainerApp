@@ -126,7 +126,9 @@ void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerPr
         int lengthX = containerProblem.groupLengthX(index);
         int lengthY = containerProblem.groupLengthY(index);
         int lengthZ = containerProblem.groupLengthZ(index);
+        int counter = containerProblem.groupBoxesCounter(index);
         streamWriter.writeAttribute("Index", QString::number(index));
+        streamWriter.writeAttribute("BoxCount", QString::number(counter));
         streamWriter.writeAttribute("LengthX", QString::number(lengthX));
         streamWriter.writeAttribute("LengthY", QString::number(lengthY));
         streamWriter.writeAttribute("LengthZ", QString::number(lengthZ));
@@ -196,39 +198,62 @@ void ContainerXmlParser::parseBoxesAttributes(int &boxCount)
     checkBoxAttributePresent(flag, "Count");
 }
 
-void ContainerXmlParser::parseBoxAttributes(int boxIndex, int &boxDimensionX, int &boxDimensionY, int &boxDimensionZ)
+void ContainerXmlParser::parseGroupAttributes(int &groupIndex, int &boxCount,
+                                              int &boxDimensionX, int &boxDimensionY, int &boxDimensionZ,
+                                              QColor &color, QString &description)
 {
-    bool flags[4] = { 0 };
+    bool flags[7] = { 0 };
     foreach (QXmlStreamAttribute attribute, streamReader.attributes())
     {
         if (attribute.name() == "Index")
         {
-            checkIntegerAttribute(attribute, boxIndex);
+            groupIndex = parseIntegerAttribute(attribute);
             flags[0] = true;
+        }
+        else if (attribute.name() == "BoxCount")
+        {
+            boxCount = parseIntegerAttribute(attribute);
+            flags[1] = true;
         }
         else if (attribute.name() == "LengthX")
         {
             boxDimensionX = checkIntegerRangeAttribute(attribute, 1, 9999);
-            flags[1] = true;
+            flags[2] = true;
         }
         else if (attribute.name() == "LengthY")
         {
             boxDimensionY = checkIntegerRangeAttribute(attribute, 1, 9999);
-            flags[2] = true;
+            flags[3] = true;
         }
         else if (attribute.name() == "LengthZ")
         {
             boxDimensionZ = checkIntegerRangeAttribute(attribute, 1, 9999);
-            flags[3] = true;
+            flags[4] = true;
         }
+        else if (attribute.name() == "Color")
+        {
+            color = QColor(attribute.value().toString());
+            if (!color.isValid())
+                throwException(QString("Unable to parse color '%1'").arg(attribute.value().toString()));
+            flags[5] = true;
+        }
+        else if (attribute.name() == "Description")
+        {
+            description = attribute.value().toString();
+            flags[6] = true;
+        }
+        else
         {
             invalidAttribute(attribute);
         }
     }
     checkBoxAttributePresent(flags[0], "Index");
-    checkBoxAttributePresent(flags[1], "LengthX");
-    checkBoxAttributePresent(flags[2], "LengthY");
-    checkBoxAttributePresent(flags[3], "LengthZ");
+    checkBoxAttributePresent(flags[1], "BoxCount");
+    checkBoxAttributePresent(flags[2], "LengthX");
+    checkBoxAttributePresent(flags[3], "LengthY");
+    checkBoxAttributePresent(flags[4], "LengthZ");
+    checkBoxAttributePresent(flags[5], "Color");
+    checkBoxAttributePresent(flags[6], "Description");
 }
 
 void ContainerXmlParser::checkBoxAttributePresent(bool present, QString attributeName)
@@ -249,16 +274,18 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
     parseContainerAttributes(containerProblem);
     streamReader.skipCurrentElement();
     checkNextElement("Groups");
-    int boxCount;
-    parseBoxesAttributes(boxCount);
-    containerProblem.setGroupsCount(boxCount);
+    int groupCount;
+    parseBoxesAttributes(groupCount);
+    containerProblem.setGroupsCount(groupCount);
 
-    for (int boxIndex = 0; boxIndex < boxCount; ++boxIndex)
+    for (int i = 0; i < groupCount; ++i)
     {
-        checkNextElement("Box");
-        int boxDimensionX, boxDimensionY, boxDimensionZ;
-        parseBoxAttributes(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ);
-        containerProblem.setGroup(boxIndex, boxDimensionX, boxDimensionY, boxDimensionZ, 1, Qt::blue, QString());
+        checkNextElement("Group");
+        int groupIndex, boxCount, lengthX, lengthY, lengthZ;
+        QColor color;
+        QString description;
+        parseGroupAttributes(groupIndex, boxCount, lengthX, lengthY, lengthZ, color, description);
+        containerProblem.setGroup(groupIndex, boxCount, lengthX, lengthY, lengthZ, color, description);
         streamReader.skipCurrentElement();
     }
     checkEndElement("Groups");
