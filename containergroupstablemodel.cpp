@@ -46,12 +46,12 @@ void ContainerGroupsTableModel::setContainerSolution(ContainerSolution *solution
     }
 }
 
-int ContainerGroupsTableModel::rowCount(const QModelIndex &parent) const
+int ContainerGroupsTableModel::rowCount(const QModelIndex &) const
 {
     return containerSolution != 0 ? containerSolution->getContainerProblem()->groupsCounter() : 0;
 }
 
-int ContainerGroupsTableModel::columnCount(const QModelIndex &parent) const
+int ContainerGroupsTableModel::columnCount(const QModelIndex &) const
 {
     return 4;
 }
