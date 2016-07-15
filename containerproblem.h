@@ -15,7 +15,6 @@ public:
     int containerLengthX() const { return containerLengthXValue; }
     int containerLengthY() const { return containerLengthYValue; }
     int containerLengthZ() const { return containerLengthZValue; }
-    QString textUnit() const { return textUnitValue; }
     int groupsCounter() const { return groupLengthXValues.size(); }
     int groupLengthX(int index) const { return groupLengthXValues[index]; }
     int groupLengthY(int index) const { return groupLengthYValues[index]; }
@@ -30,7 +29,6 @@ signals:
     void containerLengthXChanged(int value);
     void containerLengthYChanged(int value);
     void containerLengthZChanged(int value);
-    void textUnitChanged(QString value);
     void beforeAddGroup();
     void afterAddGroup();
     void beforeGroupsCounterChanged();
@@ -46,7 +44,6 @@ public:
     void setContainerLengthX(int value);
     void setContainerLengthY(int value);
     void setContainerLengthZ(int value);
-    void setTextUnit(QString value);
 
 private:
     int containerLengthXValue;
@@ -58,7 +55,6 @@ private:
     QVector<int> groupBoxesCounterValues;
     QVector<QColor> groupColorValues;
     QVector<QString> groupDescriptionValues;
-    QString textUnitValue;
 };
 
 #endif // CONTAINERPROBLEM_H

@@ -15,7 +15,6 @@ public:
     void setContainerProblem(ContainerProblem *problem);
     const ContainerProblem *getContainerProblem() const { return containerProblem; }
     ContainerProblem *getContainerProblem() { return containerProblem; }
-    QString textUnit() const { return containerProblem ? containerProblem->textUnit() : QString::null; }
     int packedBoxLengthX(int index) const { return boxLengthXValues[index]; }
     int packedBoxLengthY(int index) const { return boxLengthYValues[index]; }
     int packedBoxLengthZ(int index) const { return boxLengthZValues[index]; }

@@ -62,9 +62,6 @@ public slots:
 
     void on_actionAbout_triggered();
 
-    void on_actionSetMeasurementSystem_triggered();
-
-
 private slots:
     void on_actionEditGroup_triggered();
 
@@ -93,8 +90,6 @@ private:
     ContainerProblemTableModel *containerProblemTableModel;
     ContainerPackedBoxesTableModel *containerPackedBoxesTableModel;
     ContainerGroupsTableModel *containerGroupsTableModel;
-
-    QList<QLabel*> listLabelsUnits;
 };
 
 #endif // MAINWINDOW_H

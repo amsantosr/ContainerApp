@@ -65,8 +65,6 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->spinBoxContainerDimensionY, spinBoxSetValue);
     connect(&containerProblem, &ContainerProblem::containerLengthZChanged,
             ui->spinBoxContainerDimensionZ, spinBoxSetValue);
-    connect(&containerProblem, &ContainerProblem::textUnitChanged,
-            this, &MainWindow::setTextUnit);
 
     auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->spinBoxContainerDimensionX, spinBoxValueChanged,
@@ -75,20 +73,6 @@ MainWindow::MainWindow(QWidget *parent) :
             &containerProblem, &ContainerProblem::setContainerLengthY);
     connect(ui->spinBoxContainerDimensionZ, spinBoxValueChanged,
             &containerProblem, &ContainerProblem::setContainerLengthZ);
-
-    listLabelsUnits << uiDialogAddGroup.labelUnit1
-                    << uiDialogAddGroup.labelUnit2
-                    << uiDialogAddGroup.labelUnit3
-                    << uiDialogEditGroup.labelUnit1
-                    << uiDialogEditGroup.labelUnit2
-                    << uiDialogEditGroup.labelUnit3
-                    << uiDialogGenerateProblem.labelUnit1
-                    << uiDialogGenerateProblem.labelUnit2
-                    << ui->labelContainerUnit1
-                    << ui->labelContainerUnit2
-                    << ui->labelContainerUnit3;
-
-    setTextUnit(containerProblem.textUnit());
 
     // connect the slider to the GLContainerWidget
     connect(ui->sliderDisplayedBoxes, &QSlider::valueChanged, this, &MainWindow::setMaximumDisplayedBoxes);
@@ -147,14 +131,6 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     else
     {
         ui->labelLastBox->clear();
-    }
-}
-
-void MainWindow::setTextUnit(QString text)
-{
-    foreach (QLabel *label, listLabelsUnits)
-    {
-        label->setText(text);
     }
 }
 
@@ -349,21 +325,6 @@ void MainWindow::on_actionDeleteGroup_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     dialogAbout.show();
-}
-
-void MainWindow::on_actionSetMeasurementSystem_triggered()
-{
-    if (dialogMeasurementSystem.exec() == QDialog::Accepted)
-    {
-        if (uiDialogMeasurementSystem.radioButtonCentimeters->isChecked())
-        {
-            setTextUnit("cm.");
-        }
-        else if (uiDialogMeasurementSystem.radioButtonInches->isChecked())
-        {
-            setTextUnit("in.");
-        }
-    }
 }
 
 void MainWindow::on_actionEditGroup_triggered()

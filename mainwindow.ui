@@ -162,27 +162,6 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
-           <widget class="QLabel" name="labelContainerUnit1">
-            <property name="text">
-             <string>unit</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QLabel" name="labelContainerUnit2">
-            <property name="text">
-             <string>unit</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QLabel" name="labelContainerUnit3">
-            <property name="text">
-             <string>unit</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0" colspan="3">
            <spacer name="verticalSpacer_2">
             <property name="orientation">
@@ -323,7 +302,6 @@
    <addaction name="actionSaveProblem"/>
    <addaction name="actionOpenSolution"/>
    <addaction name="actionSaveSolution"/>
-   <addaction name="actionSetMeasurementSystem"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

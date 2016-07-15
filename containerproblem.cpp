@@ -4,8 +4,7 @@ ContainerProblem::ContainerProblem(QObject *parent)
     : QObject(parent),
       containerLengthXValue(0),
       containerLengthYValue(0),
-      containerLengthZValue(0),
-      textUnitValue("cm.")
+      containerLengthZValue(0)
 {
 }
 
@@ -137,14 +136,5 @@ void ContainerProblem::setContainerLengthZ(int value)
     {
         containerLengthZValue = value;
         emit containerLengthZChanged(value);
-    }
-}
-
-void ContainerProblem::setTextUnit(QString value)
-{
-    if (textUnitValue != value)
-    {
-        textUnitValue = value;
-        emit textUnitChanged(value);
     }
 }

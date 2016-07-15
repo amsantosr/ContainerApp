@@ -108,7 +108,6 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
 void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerProblem)
 {
     streamWriter.writeStartElement("ContainerProblem");
-    streamWriter.writeAttribute("UnitLabel", containerProblem.textUnit());
 
     streamWriter.writeEmptyElement("Container");
     QString dimensionX = QString::number(containerProblem.containerLengthX());
@@ -137,21 +136,6 @@ void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerPr
     }
     streamWriter.writeEndElement(); // Groups
     streamWriter.writeEndElement(); // ContainerProblem
-}
-
-void ContainerXmlParser::parseContainerProblemAttributes(ContainerProblem &containerProblem)
-{
-    foreach (QXmlStreamAttribute attribute, streamReader.attributes())
-    {
-        if (attribute.name() == "UnitLabel")
-        {
-            containerProblem.setTextUnit(attribute.value().toString());
-        }
-        else
-        {
-            invalidAttribute(attribute);
-        }
-    }
 }
 
 void ContainerXmlParser::parseContainerAttributes(ContainerProblem &containerProblem)
@@ -269,7 +253,6 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
     containerProblem.clear();
 
     checkNextElement("ContainerProblem");
-    parseContainerProblemAttributes(containerProblem);
     checkNextElement("Container");
     parseContainerAttributes(containerProblem);
     streamReader.skipCurrentElement();
