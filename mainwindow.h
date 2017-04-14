@@ -18,7 +18,7 @@ class MainWindow;
 }
 
 class ContainerGroupsTableModel;
-class ContainerProblemTableModel;
+class BoxesGroupsTableModel;
 class ContainerPackedBoxesTableModel;
 class ContainerPackedBoxesTableModel;
 
@@ -87,7 +87,7 @@ private:
     ContainerProblem containerProblem;
     ContainerSolution containerSolution;
     ContainerXmlParser containerXmlParser;
-    ContainerProblemTableModel *containerProblemTableModel;
+    BoxesGroupsTableModel *containerProblemTableModel;
     ContainerPackedBoxesTableModel *containerPackedBoxesTableModel;
     ContainerGroupsTableModel *containerGroupsTableModel;
 };

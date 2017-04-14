@@ -1,13 +1,13 @@
-#include "containerproblemtablemodel.h"
+#include "boxesgroupstablemodel.h"
 
-ContainerProblemTableModel::ContainerProblemTableModel(QObject *parent)
+BoxesGroupsTableModel::BoxesGroupsTableModel(QObject *parent)
     : QAbstractTableModel(parent),
       containerProblem(0)
 {
 
 }
 
-void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
+void BoxesGroupsTableModel::setContainerProblem(ContainerProblem *pointer)
 {
     if (containerProblem != pointer)
     {
@@ -19,11 +19,11 @@ void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
             beginInsertRows(QModelIndex(), rowCount(), rowCount());
         });
         connect(containerProblem, &ContainerProblem::afterAddGroup,
-                this, &ContainerProblemTableModel::endInsertRows);
+                this, &BoxesGroupsTableModel::endInsertRows);
         connect(containerProblem, &ContainerProblem::beforeGroupsCounterChanged,
-                this, &ContainerProblemTableModel::beginResetModel);
+                this, &BoxesGroupsTableModel::beginResetModel);
         connect(containerProblem, &ContainerProblem::afterGroupsCounterChanged,
-                this, &ContainerProblemTableModel::endResetModel);
+                this, &BoxesGroupsTableModel::endResetModel);
         connect(containerProblem, &ContainerProblem::groupChanged, [this](int boxIndex)
         {
             emit dataChanged(this->index(boxIndex, 0), this->index(boxIndex, columnCount()));
@@ -31,19 +31,19 @@ void ContainerProblemTableModel::setContainerProblem(ContainerProblem *pointer)
     }
 }
 
-int ContainerProblemTableModel::rowCount(const QModelIndex &) const
+int BoxesGroupsTableModel::rowCount(const QModelIndex &) const
 {
     if (!containerProblem)
         return 0;
     return containerProblem->groupsCounter();
 }
 
-int ContainerProblemTableModel::columnCount(const QModelIndex &) const
+int BoxesGroupsTableModel::columnCount(const QModelIndex &) const
 {
     return 6;
 }
 
-QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) const
+QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
 {
     QVariant result;
     if (role == Qt::DisplayRole)
@@ -68,7 +68,7 @@ QVariant ContainerProblemTableModel::data(const QModelIndex &index, int role) co
     return result;
 }
 
-QVariant ContainerProblemTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant BoxesGroupsTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::DisplayRole)
     {

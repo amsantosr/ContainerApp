@@ -4,7 +4,7 @@
 #include "ui_dialogabout.h"
 #include "Pisinger/testcont.h"
 #include "glcontainerwidget.h"
-#include "containerproblemtablemodel.h"
+#include "boxesgroupstablemodel.h"
 #include "containerpackedboxestablemodel.h"
 #include "containergroupstablemodel.h"
 #include "containerxmlparserexception.h"
@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogEditGroup(this),
     dialogAlgorithmExecution(this),
     dialogMeasurementSystem(this),
-    containerProblemTableModel(new ContainerProblemTableModel(this)),
+    containerProblemTableModel(new BoxesGroupsTableModel(this)),
     containerPackedBoxesTableModel(new ContainerPackedBoxesTableModel(this)),
     containerGroupsTableModel(new ContainerGroupsTableModel(this))
 {

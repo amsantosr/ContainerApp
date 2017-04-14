@@ -4,10 +4,10 @@
 #include <QAbstractTableModel>
 #include "containerproblem.h"
 
-class ContainerProblemTableModel : public QAbstractTableModel
+class BoxesGroupsTableModel : public QAbstractTableModel
 {
 public:
-    ContainerProblemTableModel(QObject *parent = 0);
+    BoxesGroupsTableModel(QObject *parent = 0);
     void setContainerProblem(ContainerProblem *problem);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
