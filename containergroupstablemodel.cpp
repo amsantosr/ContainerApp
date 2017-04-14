@@ -65,7 +65,7 @@ QVariant ContainerGroupsTableModel::data(const QModelIndex &index, int role) con
         switch (index.column())
         {
         case 0: result = QString::number(row + 1); break;
-        case 1: result = containerProblem->groupDescription(index.row()); break;
+        case 1: result = containerProblem->groupName(index.row()); break;
         case 2: result = packedBoxesCounters[index.row()]; break;
         case 3: result = unpackedBoxesCounters[index.row()]; break;
         }
@@ -81,7 +81,7 @@ QVariant ContainerGroupsTableModel::headerData(int section, Qt::Orientation orie
         switch (section)
         {
         case 0: result = tr("Grupo"); break;
-        case 1: result = tr("Descripción"); break;
+        case 1: result = tr("Nombre"); break;
         case 2: result = tr("Cajas empacadas"); break;
         case 3: result = tr("Cajas sin empacar"); break;
         }

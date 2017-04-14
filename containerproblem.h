@@ -21,7 +21,7 @@ public:
     int groupLengthZ(int index) const { return groupLengthZValues[index]; }
     int groupBoxesCounter(int index) const { return groupBoxesCounterValues[index]; }
     QColor groupColor(int index) const { return groupColorValues[index]; }
-    QString groupDescription(int index) const { return groupDescriptionValues[index]; }
+    QString groupName(int index) const { return groupDescriptionValues[index]; }
     void removeGroup(int index);
     int allBoxesQuantity() const { return std::accumulate(groupBoxesCounterValues.begin(), groupBoxesCounterValues.end(), 0); }
 

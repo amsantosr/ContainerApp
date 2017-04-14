@@ -47,7 +47,7 @@ QVariant ContainerPackedBoxesTableModel::data(const QModelIndex &index, int role
         switch (index.column())
         {
         case 0: string = QString::number(boxTypeIndex + 1); break;
-        case 1: string = containerSolution->getContainerProblem()->groupDescription(boxTypeIndex); break;
+        case 1: string = containerSolution->getContainerProblem()->groupName(boxTypeIndex); break;
         case 2: string = QString::number(containerSolution->packedBoxLengthX(index.row())); break;
         case 3: string = QString::number(containerSolution->packedBoxLengthY(index.row())); break;
         case 4: string = QString::number(containerSolution->packedBoxLengthZ(index.row())); break;

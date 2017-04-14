@@ -43,8 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     containerSolution.setContainerProblem(&containerProblem);
     ui->openGLWidget->setContainerSolution(&containerSolution);
-    ui->splitterHorizontal->setStretchFactor(0, 0);
-    ui->splitterHorizontal->setStretchFactor(1, 1);
+    ui->splitterHorizontal->setStretchFactor(0, 1);
+    ui->splitterHorizontal->setStretchFactor(1, 3);
     ui->tableViewBoxes->setModel(containerProblemTableModel);
     ui->tableViewOrdering->setModel(containerPackedBoxesTableModel);
     ui->tableViewSolution->setModel(containerGroupsTableModel);
@@ -343,7 +343,7 @@ void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
     int lengthZ = containerProblem.groupLengthZ(row);
     int quantity = containerProblem.groupBoxesCounter(row);
     QColor color = containerProblem.groupColor(row);
-    QString description = containerProblem.groupDescription(row);
+    QString description = containerProblem.groupName(row);
 
     uiDialogEditGroup.spinBoxLengthX->setValue(lengthX);
     uiDialogEditGroup.spinBoxLengthY->setValue(lengthY);

@@ -51,11 +51,11 @@ QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
         int row = index.row();
         switch (index.column())
         {
-        case 0: result = containerProblem->groupLengthX(row); break;
-        case 1: result = containerProblem->groupLengthY(row); break;
-        case 2: result = containerProblem->groupLengthZ(row); break;
-        case 3: result = containerProblem->groupBoxesCounter(row); break;
-        case 4: result = containerProblem->groupDescription(index.row()); break;
+        case 0: result = containerProblem->groupName(index.row()); break;
+        case 1: result = containerProblem->groupLengthX(row); break;
+        case 2: result = containerProblem->groupLengthY(row); break;
+        case 3: result = containerProblem->groupLengthZ(row); break;
+        case 4: result = containerProblem->groupBoxesCounter(row); break;
         }
     }
     else if (role == Qt::BackgroundColorRole)
@@ -76,11 +76,11 @@ QVariant BoxesGroupsTableModel::headerData(int section, Qt::Orientation orientat
         {
             switch (section)
             {
-            case 0: return QString("Dim X");
-            case 1: return QString("Dim Y");
-            case 2: return QString("Dim Z");
-            case 3: return QString("Cantidad");
-            case 4: return QString("Descripción");
+            case 0: return QString("Nombre");
+            case 1: return QString("Dim X");
+            case 2: return QString("Dim Y");
+            case 3: return QString("Dim Z");
+            case 4: return QString("Cantidad");
             case 5: return QString("Color");
             }
         }

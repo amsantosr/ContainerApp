@@ -132,7 +132,7 @@ void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerPr
         streamWriter.writeAttribute("LengthY", QString::number(lengthY));
         streamWriter.writeAttribute("LengthZ", QString::number(lengthZ));
         streamWriter.writeAttribute("Color", containerProblem.groupColor(index).name());
-        streamWriter.writeAttribute("Description", containerProblem.groupDescription(index));
+        streamWriter.writeAttribute("Description", containerProblem.groupName(index));
     }
     streamWriter.writeEndElement(); // Groups
     streamWriter.writeEndElement(); // ContainerProblem
