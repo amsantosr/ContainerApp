@@ -5,7 +5,7 @@
 #include "Pisinger/testcont.h"
 #include "glcontainerwidget.h"
 #include "boxesgroupstablemodel.h"
-#include "containerpackedboxestablemodel.h"
+#include "solutionboxestablemodel.h"
 #include "containergroupstablemodel.h"
 #include "containerxmlparserexception.h"
 #include <QPlainTextEdit>
@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogAlgorithmExecution(this),
     dialogMeasurementSystem(this),
     containerProblemTableModel(new BoxesGroupsTableModel(this)),
-    containerPackedBoxesTableModel(new ContainerPackedBoxesTableModel(this)),
+    containerPackedBoxesTableModel(new SolutionBoxesTableModel(this)),
     containerGroupsTableModel(new ContainerGroupsTableModel(this))
 {
     ui->setupUi(this);
@@ -43,11 +43,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     containerSolution.setContainerProblem(&containerProblem);
     ui->openGLWidget->setContainerSolution(&containerSolution);
-    ui->splitterHorizontal->setStretchFactor(0, 1);
-    ui->splitterHorizontal->setStretchFactor(1, 3);
     ui->tableViewBoxes->setModel(containerProblemTableModel);
     ui->tableViewOrdering->setModel(containerPackedBoxesTableModel);
-    ui->tableViewSolution->setModel(containerGroupsTableModel);
+    //ui->tableViewSolution->setModel(containerGroupsTableModel);
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerPackedBoxesTableModel->setContainerSolution(&containerSolution);
     containerGroupsTableModel->setContainerSolution(&containerSolution);

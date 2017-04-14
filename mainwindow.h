@@ -19,8 +19,8 @@ class MainWindow;
 
 class ContainerGroupsTableModel;
 class BoxesGroupsTableModel;
-class ContainerPackedBoxesTableModel;
-class ContainerPackedBoxesTableModel;
+class SolutionBoxesTableModel;
+class SolutionBoxesTableModel;
 
 class MainWindow : public QMainWindow
 {
@@ -88,7 +88,7 @@ private:
     ContainerSolution containerSolution;
     ContainerXmlParser containerXmlParser;
     BoxesGroupsTableModel *containerProblemTableModel;
-    ContainerPackedBoxesTableModel *containerPackedBoxesTableModel;
+    SolutionBoxesTableModel *containerPackedBoxesTableModel;
     ContainerGroupsTableModel *containerGroupsTableModel;
 };
 

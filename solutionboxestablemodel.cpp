@@ -1,14 +1,14 @@
-#include "containerpackedboxestablemodel.h"
+#include "solutionboxestablemodel.h"
 #include "containersolution.h"
 
-ContainerPackedBoxesTableModel::ContainerPackedBoxesTableModel(QObject *parent)
+SolutionBoxesTableModel::SolutionBoxesTableModel(QObject *parent)
     : QAbstractTableModel(parent),
       containerSolution(0)
 {
 
 }
 
-void ContainerPackedBoxesTableModel::setContainerSolution(ContainerSolution *solution)
+void SolutionBoxesTableModel::setContainerSolution(ContainerSolution *solution)
 {
     if (solution != containerSolution)
     {
@@ -16,9 +16,9 @@ void ContainerPackedBoxesTableModel::setContainerSolution(ContainerSolution *sol
         if (containerSolution != 0)
         {
             connect(containerSolution, &ContainerSolution::beforeDataChange,
-                    this, &ContainerPackedBoxesTableModel::beginResetModel);
+                    this, &SolutionBoxesTableModel::beginResetModel);
             connect(containerSolution, &ContainerSolution::afterDataChange,
-                    this, &ContainerPackedBoxesTableModel::endResetModel);
+                    this, &SolutionBoxesTableModel::endResetModel);
         }
         if (solution != 0)
         {
@@ -27,17 +27,17 @@ void ContainerPackedBoxesTableModel::setContainerSolution(ContainerSolution *sol
     }
 }
 
-int ContainerPackedBoxesTableModel::rowCount(const QModelIndex &) const
+int SolutionBoxesTableModel::rowCount(const QModelIndex &) const
 {
     return containerSolution != 0 ? containerSolution->packedBoxesCount() : 0;
 }
 
-int ContainerPackedBoxesTableModel::columnCount(const QModelIndex &) const
+int SolutionBoxesTableModel::columnCount(const QModelIndex &) const
 {
     return 8;
 }
 
-QVariant ContainerPackedBoxesTableModel::data(const QModelIndex &index, int role) const
+QVariant SolutionBoxesTableModel::data(const QModelIndex &index, int role) const
 {
     QVariant result;
     if (role == Qt::DisplayRole)
@@ -65,7 +65,7 @@ QVariant ContainerPackedBoxesTableModel::data(const QModelIndex &index, int role
     return result;
 }
 
-QVariant ContainerPackedBoxesTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant SolutionBoxesTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::DisplayRole)
     {

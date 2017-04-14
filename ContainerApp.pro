@@ -24,9 +24,9 @@ SOURCES += main.cpp\
     containerproblemsolverthread.cpp \
     containerxmlparserexception.cpp \
     boxesgroupstableview.cpp \
-    containerpackedboxestablemodel.cpp \
     containergroupstablemodel.cpp \
-    boxesgroupstablemodel.cpp
+    boxesgroupstablemodel.cpp \
+    solutionboxestablemodel.cpp
 
 HEADERS  += mainwindow.h \
     Pisinger/testcont.h \
@@ -38,9 +38,9 @@ HEADERS  += mainwindow.h \
     containerproblemsolverthread.h \
     containerxmlparserexception.h \
     boxesgroupstableview.h \
-    containerpackedboxestablemodel.h \
     containergroupstablemodel.h \
-    boxesgroupstablemodel.h
+    boxesgroupstablemodel.h \
+    solutionboxestablemodel.h
 
 FORMS    += mainwindow.ui \
     dialoggenerateproblem.ui \

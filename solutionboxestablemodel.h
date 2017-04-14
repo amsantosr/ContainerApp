@@ -5,10 +5,10 @@
 
 class ContainerSolution;
 
-class ContainerPackedBoxesTableModel : public QAbstractTableModel
+class SolutionBoxesTableModel : public QAbstractTableModel
 {
 public:
-    ContainerPackedBoxesTableModel(QObject *parent = 0);
+    SolutionBoxesTableModel(QObject *parent = 0);
     void setContainerSolution(ContainerSolution *solution);
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
