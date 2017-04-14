@@ -65,6 +65,15 @@ QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
             result = containerProblem->groupColor(index.row());
         }
     }
+    else if (role == Qt::TextAlignmentRole)
+    {
+        switch (index.column())
+        {
+        case 1: case 2: case 3: case 4:
+            result = int(Qt::AlignRight | Qt::AlignVCenter);
+            break;
+        }
+    }
     return result;
 }
 
