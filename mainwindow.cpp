@@ -6,7 +6,6 @@
 #include "glcontainerwidget.h"
 #include "boxesgroupstablemodel.h"
 #include "solutionboxestablemodel.h"
-#include "containergroupstablemodel.h"
 #include "containerxmlparserexception.h"
 #include <QPlainTextEdit>
 #include <QTextStream>
@@ -26,8 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogAlgorithmExecution(this),
     dialogMeasurementSystem(this),
     containerProblemTableModel(new BoxesGroupsTableModel(this)),
-    containerPackedBoxesTableModel(new SolutionBoxesTableModel(this)),
-    containerGroupsTableModel(new ContainerGroupsTableModel(this))
+    containerPackedBoxesTableModel(new SolutionBoxesTableModel(this))
 {
     ui->setupUi(this);
     uiDialogAbout.setupUi(&dialogAbout);
@@ -45,10 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->openGLWidget->setContainerSolution(&containerSolution);
     ui->tableViewBoxes->setModel(containerProblemTableModel);
     ui->tableViewOrdering->setModel(containerPackedBoxesTableModel);
-    //ui->tableViewSolution->setModel(containerGroupsTableModel);
     containerProblemTableModel->setContainerProblem(&containerProblem);
     containerPackedBoxesTableModel->setContainerSolution(&containerSolution);
-    containerGroupsTableModel->setContainerSolution(&containerSolution);
     connect(uiDialogMeasurementSystem.buttonBox, &QDialogButtonBox::accepted, [this]
     {
         if (uiDialogMeasurementSystem.radioButtonCentimeters->isChecked() ||

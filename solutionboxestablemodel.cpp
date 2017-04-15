@@ -59,8 +59,13 @@ QVariant SolutionBoxesTableModel::data(const QModelIndex &index, int role) const
     }
     else if (role == Qt::TextAlignmentRole)
     {
-        if (0 < index.column())
-            return Qt::AlignRight;
+        switch (index.column())
+        {
+        // align right only for columns Tipo, Dim X, Dim Y, Dim Z, Pos X, Pos Y, Pos Z
+        case 0: case 2: case 3: case 4: case 5: case 6: case 7:
+            result = int(Qt::AlignRight | Qt::AlignVCenter);
+            break;
+        }
     }
     return result;
 }
@@ -73,8 +78,8 @@ QVariant SolutionBoxesTableModel::headerData(int section, Qt::Orientation orient
         {
             switch (section)
             {
-            case 0: return tr("Tipo"); break;
-            case 1: return tr("Descripción"); break;
+            case 0: return tr("ID de grupo"); break;
+            case 1: return tr("Nombre de grupo"); break;
             case 2: return tr("Dim X"); break;
             case 3: return tr("Dim Y"); break;
             case 4: return tr("Dim Z"); break;

@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     containerproblemsolverthread.cpp \
     containerxmlparserexception.cpp \
     boxesgroupstableview.cpp \
-    containergroupstablemodel.cpp \
     boxesgroupstablemodel.cpp \
     solutionboxestablemodel.cpp
 
@@ -38,7 +37,6 @@ HEADERS  += mainwindow.h \
     containerproblemsolverthread.h \
     containerxmlparserexception.h \
     boxesgroupstableview.h \
-    containergroupstablemodel.h \
     boxesgroupstablemodel.h \
     solutionboxestablemodel.h
 

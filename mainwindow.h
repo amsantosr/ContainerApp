@@ -17,7 +17,6 @@ namespace Ui {
 class MainWindow;
 }
 
-class ContainerGroupsTableModel;
 class BoxesGroupsTableModel;
 class SolutionBoxesTableModel;
 class SolutionBoxesTableModel;
@@ -89,7 +88,6 @@ private:
     ContainerXmlParser containerXmlParser;
     BoxesGroupsTableModel *containerProblemTableModel;
     SolutionBoxesTableModel *containerPackedBoxesTableModel;
-    ContainerGroupsTableModel *containerGroupsTableModel;
 };
 
 #endif // MAINWINDOW_H
