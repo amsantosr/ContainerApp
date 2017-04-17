@@ -122,16 +122,18 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     if (value > 0)
     {
         int index = value - 1;
-        int lastBoxGroupIndex = containerSolution.packedBoxGroupIndex(index) + 1;
+        int lastBoxGroupIndex = containerSolution.packedBoxGroupIndex(index);
+        QString groupName = containerProblem.groupName(lastBoxGroupIndex);
         int posX = containerSolution.packedBoxCoordinateX(index);
         int posY = containerSolution.packedBoxCoordinateY(index);
         int posZ = containerSolution.packedBoxCoordinateZ(index);
         int dimX = containerSolution.packedBoxLengthX(index);
         int dimY = containerSolution.packedBoxLengthY(index);
         int dimZ = containerSolution.packedBoxLengthZ(index);
-        QString label = tr("%1: Caja de grupo %2\n"
-                           "Posición: (%3, %4, %5)\n"
-                           "Orientación: (%6, %7, %8)\n").arg(value).arg(lastBoxGroupIndex)
+        QString label = tr("Caja nro. %1: Tomada del grupo %2 (%3)\n"
+                           "Posición: (%4, %5, %6)\n"
+                           "Orientación: (%7, %8, %9)\n")
+                .arg(value).arg(lastBoxGroupIndex + 1).arg(groupName)
                 .arg(posX).arg(posY).arg(posZ)
                 .arg(dimX).arg(dimY).arg(dimZ);
         ui->labelLastBox->setText(label);
