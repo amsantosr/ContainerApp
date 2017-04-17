@@ -31,6 +31,12 @@ void BoxesGroupsTableModel::setContainerProblem(ContainerProblem *pointer)
     }
 }
 
+void BoxesGroupsTableModel::setPackedBoxesCounters(QVector<int> packedBoxesCounters)
+{
+    this->packedBoxesCounters = packedBoxesCounters;
+    // update the column
+}
+
 int BoxesGroupsTableModel::rowCount(const QModelIndex &) const
 {
     if (!containerProblem)
@@ -40,7 +46,7 @@ int BoxesGroupsTableModel::rowCount(const QModelIndex &) const
 
 int BoxesGroupsTableModel::columnCount(const QModelIndex &) const
 {
-    return 6;
+    return 8;
 }
 
 QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
@@ -51,11 +57,19 @@ QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
         int row = index.row();
         switch (index.column())
         {
-        case 0: result = containerProblem->groupName(index.row()); break;
+        case 0: result = containerProblem->groupName(row); break;
         case 1: result = containerProblem->groupLengthX(row); break;
         case 2: result = containerProblem->groupLengthY(row); break;
         case 3: result = containerProblem->groupLengthZ(row); break;
         case 4: result = containerProblem->groupBoxesCounter(row); break;
+        case 5: /* empty string and print the color */ break;
+        case 6: /* empty column */ break;
+        case 7:
+            if (row < packedBoxesCounters.size())
+            {
+                result = QString("%1 de %2").arg(packedBoxesCounters[row]).arg(containerProblem->groupBoxesCounter(row));
+            }
+            break;
         }
     }
     else if (role == Qt::BackgroundColorRole)
@@ -91,6 +105,8 @@ QVariant BoxesGroupsTableModel::headerData(int section, Qt::Orientation orientat
             case 3: return QString("Dim Z");
             case 4: return QString("Cantidad");
             case 5: return QString("Color");
+            case 6: return QString(""); break;
+            case 7: return QString("Cajas empacadas");
             }
         }
     }

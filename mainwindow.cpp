@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogEditGroup(this),
     dialogAlgorithmExecution(this),
     dialogMeasurementSystem(this),
-    containerProblemTableModel(new BoxesGroupsTableModel(this)),
+    boxesGroupsTableModel(new BoxesGroupsTableModel(this)),
     containerPackedBoxesTableModel(new SolutionBoxesTableModel(this))
 {
     ui->setupUi(this);
@@ -41,9 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     containerSolution.setContainerProblem(&containerProblem);
     ui->openGLWidget->setContainerSolution(&containerSolution);
-    ui->tableViewBoxes->setModel(containerProblemTableModel);
+    ui->tableViewBoxes->setModel(boxesGroupsTableModel);
     ui->tableViewOrdering->setModel(containerPackedBoxesTableModel);
-    containerProblemTableModel->setContainerProblem(&containerProblem);
+    boxesGroupsTableModel->setContainerProblem(&containerProblem);
     containerPackedBoxesTableModel->setContainerSolution(&containerSolution);
     connect(uiDialogMeasurementSystem.buttonBox, &QDialogButtonBox::accepted, [this]
     {
@@ -85,6 +85,8 @@ MainWindow::MainWindow(QWidget *parent) :
             &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::solutionReady,
             &containerSolution, &ContainerSolution::setPackedBoxes, Qt::BlockingQueuedConnection);
+    connect(&containerProblemSolverThread, &ContainerProblemSolverThread::countersReady,
+            boxesGroupsTableModel, &BoxesGroupsTableModel::setPackedBoxesCounters, Qt::BlockingQueuedConnection);
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [this]
     {
         uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(false);

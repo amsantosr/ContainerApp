@@ -86,7 +86,7 @@ private:
     ContainerProblem containerProblem;
     ContainerSolution containerSolution;
     ContainerXmlParser containerXmlParser;
-    BoxesGroupsTableModel *containerProblemTableModel;
+    BoxesGroupsTableModel *boxesGroupsTableModel;
     SolutionBoxesTableModel *containerPackedBoxesTableModel;
 };
 
