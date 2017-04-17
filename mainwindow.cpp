@@ -121,12 +121,24 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     ui->openGLWidget->setDisplayedBoxesLimit(value);
     if (value > 0)
     {
-        int lastBoxIndex = containerSolution.packedBoxGroupIndex(value - 1) + 1;
-        ui->labelLastBox->setText(tr("Caja de grupo %1").arg(lastBoxIndex));
+        int index = value - 1;
+        int lastBoxGroupIndex = containerSolution.packedBoxGroupIndex(index) + 1;
+        int posX = containerSolution.packedBoxCoordinateX(index);
+        int posY = containerSolution.packedBoxCoordinateY(index);
+        int posZ = containerSolution.packedBoxCoordinateZ(index);
+        int dimX = containerSolution.packedBoxLengthX(index);
+        int dimY = containerSolution.packedBoxLengthY(index);
+        int dimZ = containerSolution.packedBoxLengthZ(index);
+        QString label = tr("%1: Caja de grupo %2\n"
+                           "Posición: (%3, %4, %5)\n"
+                           "Orientación: (%6, %7, %8)\n").arg(value).arg(lastBoxGroupIndex)
+                .arg(posX).arg(posY).arg(posZ)
+                .arg(dimX).arg(dimY).arg(dimZ);
+        ui->labelLastBox->setText(label);
     }
     else
     {
-        ui->labelLastBox->clear();
+        ui->labelLastBox->setText("Contenedor vacío");
     }
 }
 

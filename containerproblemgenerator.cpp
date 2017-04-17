@@ -37,7 +37,7 @@ void ContainerProblemGenerator::generate(int minLength, int maxLength, int fillP
         if (index == problem.groupsCounter())
         {
             QColor randomColor(rand() % 256, rand() % 256, rand() % 256);
-            problem.addGroup(items[i].dx, items[i].dy, items[i].dz, 1, randomColor, QString("Caja tipo %1").arg(index + 1));
+            problem.addGroup(items[i].dx, items[i].dy, items[i].dz, 1, randomColor, QString("Tipo %1").arg(index + 1));
         }
     }
 }

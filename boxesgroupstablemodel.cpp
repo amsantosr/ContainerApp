@@ -46,7 +46,7 @@ int BoxesGroupsTableModel::rowCount(const QModelIndex &) const
 
 int BoxesGroupsTableModel::columnCount(const QModelIndex &) const
 {
-    return 8;
+    return 7;
 }
 
 QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
@@ -63,8 +63,7 @@ QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
         case 3: result = containerProblem->groupLengthZ(row); break;
         case 4: result = containerProblem->groupBoxesCounter(row); break;
         case 5: /* empty string and print the color */ break;
-        case 6: /* empty column */ break;
-        case 7:
+        case 6:
             if (row < packedBoxesCounters.size())
             {
                 result = QString("%1 de %2").arg(packedBoxesCounters[row]).arg(containerProblem->groupBoxesCounter(row));
@@ -93,22 +92,22 @@ QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
 
 QVariant BoxesGroupsTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    QVariant result = QAbstractTableModel::headerData(section, orientation, role);
     if (role == Qt::DisplayRole)
     {
         if (orientation == Qt::Horizontal)
         {
             switch (section)
             {
-            case 0: return QString("Nombre");
-            case 1: return QString("Dim X");
-            case 2: return QString("Dim Y");
-            case 3: return QString("Dim Z");
-            case 4: return QString("Cantidad");
-            case 5: return QString("Color");
-            case 6: return QString(""); break;
-            case 7: return QString("Cajas empacadas");
+            case 0: result = QString("Nombre"); break;
+            case 1: result = QString("Dim X"); break;
+            case 2: result = QString("Dim Y"); break;
+            case 3: result = QString("Dim Z"); break;
+            case 4: result = QString("Cantidad"); break;
+            case 5: result = QString("Color"); break;
+            case 6: result = QString("Cajas empacadas"); break;
             }
         }
     }
-    return QAbstractTableModel::headerData(section, orientation, role);
+    return result;
 }
