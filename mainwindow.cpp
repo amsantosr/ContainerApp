@@ -85,8 +85,6 @@ MainWindow::MainWindow(QWidget *parent) :
             &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::solutionReady,
             &containerSolution, &ContainerSolution::setPackedBoxes, Qt::BlockingQueuedConnection);
-    connect(&containerProblemSolverThread, &ContainerProblemSolverThread::countersReady,
-            boxesGroupsTableModel, &BoxesGroupsTableModel::setPackedBoxesCounters, Qt::BlockingQueuedConnection);
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [this]
     {
         uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(false);

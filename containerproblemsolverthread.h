@@ -16,7 +16,6 @@ signals:
     void solutionReady(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
                        QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
                        QVector<int> packedBoxesIndexes);
-    void countersReady(QVector<int> packedBoxesCounterForEachGroup);
 
 private:
     ContainerProblem *containerProblem;

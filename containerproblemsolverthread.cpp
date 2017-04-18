@@ -57,6 +57,7 @@ void ContainerProblemSolverThread::run()
              boxCoordinatesX.data(), boxCoordinatesY.data(), boxCoordinatesZ.data(),
              boxPackedFlagsInt.data(), &volume);
 
+    // utilizar este vector de otra manera
     QVector<int> packedBoxesCounterForEachGroup(containerProblem->groupsCounter());
 
     for (int index = 0; index < boxPackedFlagsInt.size(); ++index)
@@ -122,5 +123,4 @@ void ContainerProblemSolverThread::run()
     emit solutionReady(newBoxLengthsX, newBoxLengthsY, newBoxLengthsZ,
                        newBoxCoordinatesX, newBoxCoordinatesY, newBoxCoordinatesZ,
                        packedBoxesGroupIndexes);
-    emit countersReady(packedBoxesCounterForEachGroup);
 }
