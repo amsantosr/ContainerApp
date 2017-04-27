@@ -74,8 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&containerSolution, &ContainerSolution::afterDataChange, [this]()
     {
         // update the maximum value in the slider and set the value to the maximum
-        ui->sliderDisplayedBoxes->setMaximum(containerSolution.packedBoxesCount());
-        ui->sliderDisplayedBoxes->setValue(containerSolution.packedBoxesCount());
+        ui->sliderDisplayedBoxes->setMaximum(containerSolution.boxesCount());
+        ui->sliderDisplayedBoxes->setValue(containerSolution.boxesCount());
     });
 
     containerProblemSolverThread.setContainerProblem(&containerProblem);
@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::finished,
             &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::solutionReady,
-            &containerSolution, &ContainerSolution::setPackedBoxes, Qt::BlockingQueuedConnection);
+            &containerSolution, &ContainerSolution::setBoxes, Qt::BlockingQueuedConnection);
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [this]
     {
         uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(false);
@@ -120,14 +120,14 @@ void MainWindow::setMaximumDisplayedBoxes(int value)
     if (value > 0)
     {
         int index = value - 1;
-        int lastBoxGroupIndex = containerSolution.packedBoxGroupIndex(index);
+        int lastBoxGroupIndex = containerSolution.boxGroupIndex(index);
         QString groupName = containerProblem.groupName(lastBoxGroupIndex);
-        int posX = containerSolution.packedBoxCoordinateX(index);
-        int posY = containerSolution.packedBoxCoordinateY(index);
-        int posZ = containerSolution.packedBoxCoordinateZ(index);
-        int dimX = containerSolution.packedBoxLengthX(index);
-        int dimY = containerSolution.packedBoxLengthY(index);
-        int dimZ = containerSolution.packedBoxLengthZ(index);
+        int posX = containerSolution.boxCoordinateX(index);
+        int posY = containerSolution.boxCoordinateY(index);
+        int posZ = containerSolution.boxCoordinateZ(index);
+        int dimX = containerSolution.boxLengthX(index);
+        int dimY = containerSolution.boxLengthY(index);
+        int dimZ = containerSolution.boxLengthZ(index);
         QString label = tr("Caja nro. %1: Tomada del grupo %2 (%3)\n"
                            "Posición: (%4, %5, %6)\n"
                            "Orientación: (%7, %8, %9)\n")
@@ -206,7 +206,7 @@ void MainWindow::on_actionAddGroup_triggered()
         int dimensionZ = uiDialogAddGroup.spinBoxLengthZ->value();
         int quantity = uiDialogAddGroup.spinBoxQuantity->value();
         QColor color = uiDialogAddGroup.labelColor->palette().background().color();
-        QString description = uiDialogAddGroup.lineEditDescription->text();
+        QString description = uiDialogAddGroup.lineEditGroupName->text();
 
         containerProblem.addGroup(dimensionX, dimensionY, dimensionZ, quantity, color, description);
     }
@@ -362,7 +362,7 @@ void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
                                                 .arg(color.green())
                                                 .arg(color.blue()));
 
-    uiDialogEditGroup.lineEditDescription->setText(description);
+    uiDialogEditGroup.lineEditGroupName->setText(description);
     if (dialogEditGroup.exec() == QDialog::Accepted)
     {
         lengthX = uiDialogEditGroup.spinBoxLengthX->value();
@@ -370,7 +370,7 @@ void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
         lengthZ = uiDialogEditGroup.spinBoxLengthZ->value();
         quantity = uiDialogEditGroup.spinBoxQuantity->value();
         color = uiDialogEditGroup.labelColor->palette().background().color();
-        description = uiDialogEditGroup.lineEditDescription->text();
+        description = uiDialogEditGroup.lineEditGroupName->text();
         containerProblem.setGroup(row, lengthX, lengthY, lengthZ, quantity, color, description);
     }
 }

@@ -21,7 +21,7 @@ void ContainerProblem::removeGroup(int index)
 }
 
 void ContainerProblem::addGroup(int lengthX, int lengthY, int lengthZ,
-                              int quantity, QColor color, QString description)
+                              int quantity, QColor color, QString name)
 {
     emit beforeAddGroup();
     emit beforeGroupsCounterChanged();
@@ -30,7 +30,7 @@ void ContainerProblem::addGroup(int lengthX, int lengthY, int lengthZ,
     groupLengthZValues.append(lengthZ);
     groupBoxesCounterValues.append(quantity);
     groupColorValues.append(color);
-    groupDescriptionValues.append(description);
+    groupDescriptionValues.append(name);
     emit afterGroupsCounterChanged();
     emit afterAddGroup();
 }
@@ -66,7 +66,7 @@ void ContainerProblem::setGroupsCount(int count)
 }
 
 void ContainerProblem::setGroup(int index, int quantity, int lengthX, int lengthY, int lengthZ,
-                                QColor color, QString description)
+                                QColor color, QString name)
 {
     bool emitSignal = false;
     if (groupBoxesCounterValues[index] != quantity)
@@ -94,9 +94,9 @@ void ContainerProblem::setGroup(int index, int quantity, int lengthX, int length
         groupColorValues[index] = color;
         emitSignal = true;
     }
-    if (groupDescriptionValues[index] != description)
+    if (groupDescriptionValues[index] != name)
     {
-        groupDescriptionValues[index] = description;
+        groupDescriptionValues[index] = name;
         emitSignal = true;
     }
     if (emitSignal)

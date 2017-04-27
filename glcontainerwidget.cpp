@@ -120,16 +120,16 @@ void GLContainerWidget::paintGL()
         }
 
         srand(0);
-        int displayedBoxes = std::min(displayedBoxesLimit, containerSolution->packedBoxesCount());
+        int displayedBoxes = std::min(displayedBoxesLimit, containerSolution->boxesCount());
         for (int count = 0; count < displayedBoxes; ++count)
         {
-            int groupIndex = containerSolution->packedBoxGroupIndex(count);
-            int x1 = containerSolution->packedBoxCoordinateX(count);
-            int y1 = containerSolution->packedBoxCoordinateY(count);
-            int z1 = containerSolution->packedBoxCoordinateZ(count);
-            int x2 = x1 + containerSolution->packedBoxLengthX(count);
-            int y2 = y1 + containerSolution->packedBoxLengthY(count);
-            int z2 = z1 + containerSolution->packedBoxLengthZ(count);
+            int groupIndex = containerSolution->boxGroupIndex(count);
+            int x1 = containerSolution->boxCoordinateX(count);
+            int y1 = containerSolution->boxCoordinateY(count);
+            int z1 = containerSolution->boxCoordinateZ(count);
+            int x2 = x1 + containerSolution->boxLengthX(count);
+            int y2 = y1 + containerSolution->boxLengthY(count);
+            int z2 = z1 + containerSolution->boxLengthZ(count);
             QColor color = containerProblem->groupColor(groupIndex);
             drawBox(x1, y1, z1, x2, y2, z2, color);
         }

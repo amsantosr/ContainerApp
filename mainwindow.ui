@@ -26,7 +26,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QGroupBox" name="groupBox">
+         <widget class="QGroupBox" name="groupBox1">
           <property name="title">
            <string>Dimensiones del contenedor</string>
           </property>
@@ -122,7 +122,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="">
+         <widget class="QGroupBox" name="groupBox2">
           <property name="title">
            <string>Datos de los grupos de cajas</string>
           </property>
@@ -446,5 +446,54 @@
  <resources>
   <include location="Resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>toolButtonAddBoxes</sender>
+   <signal>clicked()</signal>
+   <receiver>actionAddGroup</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>44</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButtonDeleteBoxes</sender>
+   <signal>clicked()</signal>
+   <receiver>actionDeleteGroup</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>74</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButtonEditBoxes</sender>
+   <signal>clicked()</signal>
+   <receiver>actionEditGroup</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>107</x>
+     <y>217</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

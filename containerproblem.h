@@ -36,10 +36,10 @@ signals:
     void groupChanged(int index);
 
 public:
-    void addGroup(int lengthX, int lengthY, int lengthZ, int quantity, QColor color, QString description);
     void clear();
+    void addGroup(int lengthX, int lengthY, int lengthZ, int quantity, QColor color, QString name);
     void setGroupsCount(int count);
-    void setGroup(int index, int quantity, int lengthX, int lengthY, int lengthZ, QColor color, QString description);
+    void setGroup(int index, int quantity, int lengthX, int lengthY, int lengthZ, QColor color, QString name);
     void setGroupBoxCount(int groupIndex, int boxesCounter);
     void setContainerLengthX(int value);
     void setContainerLengthY(int value);

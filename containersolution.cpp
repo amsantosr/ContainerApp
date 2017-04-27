@@ -28,7 +28,7 @@ void ContainerSolution::setContainerProblem(ContainerProblem *problem)
     containerProblem = problem;
 }
 
-void ContainerSolution::setPackedBoxes(QVector<int> boxLengthsX,
+void ContainerSolution::setBoxes(QVector<int> boxLengthsX,
                                        QVector<int> boxLengthsY,
                                        QVector<int> boxLengthsZ,
                                        QVector<int> boxCoordinatesX,

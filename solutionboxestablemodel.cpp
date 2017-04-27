@@ -29,7 +29,7 @@ void SolutionBoxesTableModel::setContainerSolution(ContainerSolution *solution)
 
 int SolutionBoxesTableModel::rowCount(const QModelIndex &) const
 {
-    return containerSolution != 0 ? containerSolution->packedBoxesCount() : 0;
+    return containerSolution != 0 ? containerSolution->boxesCount() : 0;
 }
 
 int SolutionBoxesTableModel::columnCount(const QModelIndex &) const
@@ -42,18 +42,18 @@ QVariant SolutionBoxesTableModel::data(const QModelIndex &index, int role) const
     QVariant result;
     if (role == Qt::DisplayRole)
     {
-        int boxTypeIndex = containerSolution->packedBoxGroupIndex(index.row());
+        int boxTypeIndex = containerSolution->boxGroupIndex(index.row());
         QString string;
         switch (index.column())
         {
         case 0: string = QString::number(boxTypeIndex + 1); break;
         case 1: string = containerSolution->getContainerProblem()->groupName(boxTypeIndex); break;
-        case 2: string = QString::number(containerSolution->packedBoxLengthX(index.row())); break;
-        case 3: string = QString::number(containerSolution->packedBoxLengthY(index.row())); break;
-        case 4: string = QString::number(containerSolution->packedBoxLengthZ(index.row())); break;
-        case 5: string = QString::number(containerSolution->packedBoxCoordinateX(index.row())); break;
-        case 6: string = QString::number(containerSolution->packedBoxCoordinateY(index.row())); break;
-        case 7: string = QString::number(containerSolution->packedBoxCoordinateZ(index.row())); break;
+        case 2: string = QString::number(containerSolution->boxLengthX(index.row())); break;
+        case 3: string = QString::number(containerSolution->boxLengthY(index.row())); break;
+        case 4: string = QString::number(containerSolution->boxLengthZ(index.row())); break;
+        case 5: string = QString::number(containerSolution->boxCoordinateX(index.row())); break;
+        case 6: string = QString::number(containerSolution->boxCoordinateY(index.row())); break;
+        case 7: string = QString::number(containerSolution->boxCoordinateZ(index.row())); break;
         }
         result = string;
     }

@@ -33,22 +33,22 @@ void ContainerXmlParser::writeSolution(const ContainerSolution &containerSolutio
     streamWriter.writeStartElement("ContainerSolution");
     writeProblemElement(*containerSolution.getContainerProblem());
     streamWriter.writeStartElement("PackedBoxes");
-    for (int index = 0; index < containerSolution.packedBoxesCount(); ++index)
+    for (int index = 0; index < containerSolution.boxesCount(); ++index)
     {
-        int boxIndex = containerSolution.packedBoxGroupIndex(index);
+        int boxIndex = containerSolution.boxGroupIndex(index);
         streamWriter.writeStartElement("Box");
         streamWriter.writeAttribute("GroupIndex", QString::number(boxIndex));
         streamWriter.writeEmptyElement("Position");
-        int posX = containerSolution.packedBoxCoordinateX(index);
-        int posY = containerSolution.packedBoxCoordinateY(index);
-        int posZ = containerSolution.packedBoxCoordinateZ(index);
+        int posX = containerSolution.boxCoordinateX(index);
+        int posY = containerSolution.boxCoordinateY(index);
+        int posZ = containerSolution.boxCoordinateZ(index);
         streamWriter.writeAttribute("X", QString::number(posX));
         streamWriter.writeAttribute("Y", QString::number(posY));
         streamWriter.writeAttribute("Z", QString::number(posZ));
         streamWriter.writeEmptyElement("Orientation");
-        int x = containerSolution.packedBoxLengthX(index);
-        int y = containerSolution.packedBoxLengthY(index);
-        int z = containerSolution.packedBoxLengthZ(index);
+        int x = containerSolution.boxLengthX(index);
+        int y = containerSolution.boxLengthY(index);
+        int z = containerSolution.boxLengthZ(index);
         streamWriter.writeAttribute("X", QString::number(x));
         streamWriter.writeAttribute("Y", QString::number(y));
         streamWriter.writeAttribute("Z", QString::number(z));
@@ -100,7 +100,7 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
         packedBoxesIndexes.append(boxGroupIndex);
         streamReader.skipCurrentElement();
     }
-    containerSolution.setPackedBoxes(vectorDimensionX, vectorDimensionY, vectorDimensionZ,
+    containerSolution.setBoxes(vectorDimensionX, vectorDimensionY, vectorDimensionZ,
                                      vectorPositionX, vectorPositionY, vectorPositionZ,
                                      packedBoxesIndexes);
 }
