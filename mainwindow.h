@@ -61,7 +61,6 @@ public slots:
 
     void on_actionAbout_triggered();
 
-private slots:
     void on_actionEditGroup_triggered();
 
     void on_tableViewBoxes_doubleClicked(const QModelIndex &index);
