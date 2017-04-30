@@ -13,29 +13,30 @@ ContainerProblemSolverThread::ContainerProblemSolverThread(QObject *parent)
 {
 }
 
-void ContainerProblemSolverThread::setContainerProblem(ContainerProblem *problem)
+void ContainerProblemSolverThread::setContainerProblem(ProblemData problemData)
 {
-    containerProblem = problem;
+    this->problemData = problemData;
 }
 
 void ContainerProblemSolverThread::run()
 {
     int volume = 0;
-    int allBoxesQuantity = containerProblem->allBoxesQuantity();
+    int allBoxesQuantity = std::accumulate(problemData.groupBoxesCounterValues.begin(),
+                                           problemData.groupBoxesCounterValues.end(), 0);
     QVector<int> boxLengthsX(allBoxesQuantity);
     QVector<int> boxLengthsY(allBoxesQuantity);
     QVector<int> boxLengthsZ(allBoxesQuantity);
-    QVector<int> boxGroups(allBoxesQuantity);
+    QVector<int> boxGroupsIndexes(allBoxesQuantity);
     int currentGroupIndex = 0;
     int currentGroupCount = 0;
     for (int index = 0; index < allBoxesQuantity; ++index)
     {
-        boxLengthsX[index] = containerProblem->groupLengthX(currentGroupIndex);
-        boxLengthsY[index] = containerProblem->groupLengthY(currentGroupIndex);
-        boxLengthsZ[index] = containerProblem->groupLengthZ(currentGroupIndex);
-        boxGroups[index] = currentGroupIndex;
+        boxLengthsX[index] = problemData.groupLengthXValues[currentGroupIndex];
+        boxLengthsY[index] = problemData.groupLengthYValues[currentGroupIndex];
+        boxLengthsZ[index] = problemData.groupLengthZValues[currentGroupIndex];
+        boxGroupsIndexes[index] = currentGroupIndex;
         ++currentGroupCount;
-        if (currentGroupCount == containerProblem->groupBoxesCounter(currentGroupIndex))
+        if (currentGroupCount == problemData.groupBoxesCounterValues[currentGroupIndex])
         {
             ++currentGroupIndex;
             currentGroupCount = 0;
@@ -50,12 +51,20 @@ void ContainerProblemSolverThread::run()
 
     // llamar al procedimiento en C
     contload(allBoxesQuantity,
-             containerProblem->containerLengthX(),
-             containerProblem->containerLengthY(),
-             containerProblem->containerLengthZ(),
+             problemData.containerLengthXValue,
+             problemData.containerLengthYValue,
+             problemData.containerLengthZValue,
              boxLengthsX.data(), boxLengthsY.data(), boxLengthsZ.data(),
              boxCoordinatesX.data(), boxCoordinatesY.data(), boxCoordinatesZ.data(),
              boxPackedFlagsInt.data(), &volume);
+
+    for (int index = 0; index < boxPackedFlagsInt.size(); ++index)
+    {
+        if (boxPackedFlagsInt[index])
+        {
+            packedBoxesIndexes.append(index);
+        }
+    }
 
     // ordering of the boxes according to the explained algorithm
     std::sort(packedBoxesIndexes.begin(), packedBoxesIndexes.end(), [&](int a, int b) -> bool
@@ -103,7 +112,7 @@ void ContainerProblemSolverThread::run()
         solutionData.boxCoordXValues[i] = boxCoordinatesX[boxIndex];
         solutionData.boxCoordYValues[i] = boxCoordinatesY[boxIndex];
         solutionData.boxCoordZValues[i] = boxCoordinatesZ[boxIndex];
-        solutionData.boxGroupIndexValues[i] = boxGroups[boxIndex];
+        solutionData.boxGroupIndexValues[i] = boxGroupsIndexes[boxIndex];
     }
 
     // TODO tratar de eliminar esta linea de codigo

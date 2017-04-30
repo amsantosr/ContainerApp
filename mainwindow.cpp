@@ -78,7 +78,6 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->sliderDisplayedBoxes->setValue(containerSolution.boxesCount());
     });
 
-    containerProblemSolverThread.setContainerProblem(&containerProblem);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::started,
             &dialogAlgorithmExecution, &QDialog::show, Qt::BlockingQueuedConnection);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::finished,
@@ -194,6 +193,7 @@ void MainWindow::on_actionSolveProblem_triggered()
         QMessageBox::critical(this, tr("Error"), tr("No se han ingresado cajas para procesar."));
         return;
     }
+    containerProblemSolverThread.setContainerProblem(containerProblem.data());
     containerProblemSolverThread.start();
 }
 
