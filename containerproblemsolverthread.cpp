@@ -57,19 +57,6 @@ void ContainerProblemSolverThread::run()
              boxCoordinatesX.data(), boxCoordinatesY.data(), boxCoordinatesZ.data(),
              boxPackedFlagsInt.data(), &volume);
 
-    // utilizar este vector de otra manera
-    QVector<int> packedBoxesCounterForEachGroup(containerProblem->groupsCounter());
-
-    for (int index = 0; index < boxPackedFlagsInt.size(); ++index)
-    {
-        if (boxPackedFlagsInt[index])
-        {
-            packedBoxesIndexes.append(index);
-            int currentGroup = boxGroups[index];
-            ++packedBoxesCounterForEachGroup[currentGroup];
-        }
-    }
-
     // ordering of the boxes according to the explained algorithm
     std::sort(packedBoxesIndexes.begin(), packedBoxesIndexes.end(), [&](int a, int b) -> bool
     {
