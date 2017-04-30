@@ -68,13 +68,7 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
     readProblemElement(*containerSolution.getContainerProblem());
 
     checkNextElement("PackedBoxes");
-    QVector<int> packedBoxesIndexes;
-    QVector<int> vectorPositionX;
-    QVector<int> vectorPositionY;
-    QVector<int> vectorPositionZ;
-    QVector<int> vectorDimensionX;
-    QVector<int> vectorDimensionY;
-    QVector<int> vectorDimensionZ;
+    SolutionData solutionData;
 
     while (streamReader.readNextStartElement())
     {
@@ -91,18 +85,16 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
         parseBoxOrientationAttributes(dimensionX, dimensionY, dimensionZ);
         streamReader.skipCurrentElement();
 
-        vectorPositionX.append(positionX);
-        vectorPositionY.append(positionY);
-        vectorPositionZ.append(positionZ);
-        vectorDimensionX.append(dimensionX);
-        vectorDimensionY.append(dimensionY);
-        vectorDimensionZ.append(dimensionZ);
-        packedBoxesIndexes.append(boxGroupIndex);
+        solutionData.boxCoordXValues.append(positionX);
+        solutionData.boxCoordYValues.append(positionY);
+        solutionData.boxCoordZValues.append(positionZ);
+        solutionData.boxLengthXValues.append(dimensionX);
+        solutionData.boxLengthYValues.append(dimensionY);
+        solutionData.boxLengthZValues.append(dimensionZ);
+        solutionData.boxGroupIndexValues.append(boxGroupIndex);
         streamReader.skipCurrentElement();
     }
-    containerSolution.setBoxes(vectorDimensionX, vectorDimensionY, vectorDimensionZ,
-                                     vectorPositionX, vectorPositionY, vectorPositionZ,
-                                     packedBoxesIndexes);
+    containerSolution.setSolutionData(solutionData);
 }
 
 void ContainerXmlParser::writeProblemElement(const ContainerProblem &containerProblem)

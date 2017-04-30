@@ -5,6 +5,16 @@
 #include <QVector>
 #include "containerproblem.h"
 
+struct SolutionData {
+    QVector<int> boxLengthXValues;
+    QVector<int> boxLengthYValues;
+    QVector<int> boxLengthZValues;
+    QVector<int> boxCoordXValues;
+    QVector<int> boxCoordYValues;
+    QVector<int> boxCoordZValues;
+    QVector<int> boxGroupIndexValues;
+};
+
 class ContainerSolution : public QObject
 {
     Q_OBJECT
@@ -14,18 +24,16 @@ public:
     void setContainerProblem(ContainerProblem *problem);
     const ContainerProblem *getContainerProblem() const { return containerProblem; }
     ContainerProblem *getContainerProblem() { return containerProblem; }
-    void setBoxes(QVector<int> boxLengthsX, QVector<int> boxLengthsY, QVector<int> boxLengthsZ,
-                  QVector<int> boxCoordinatesX, QVector<int> boxCoordinatesY, QVector<int> boxCoordinatesZ,
-                  QVector<int> packedBoxesGroups);
+    void setSolutionData(const SolutionData &solutionData);
     void clear();
-    int boxLengthX(int index) const { return boxLengthXValues[index]; }
-    int boxLengthY(int index) const { return boxLengthYValues[index]; }
-    int boxLengthZ(int index) const { return boxLengthZValues[index]; }
-    int boxCoordinateX(int index) const { return boxCoordinateXValues[index]; }
-    int boxCoordinateY(int index) const { return boxCoordinateYValues[index]; }
-    int boxCoordinateZ(int index) const { return boxCoordinateZValues[index]; }
-    int boxGroupIndex(int i) const { return packedBoxesGroupsIndexes[i]; }
-    int boxesCount() const { return packedBoxesGroupsIndexes.size(); }
+    int boxLengthX(int index) const { return solutionData.boxLengthXValues[index]; }
+    int boxLengthY(int index) const { return solutionData.boxLengthYValues[index]; }
+    int boxLengthZ(int index) const { return solutionData.boxLengthZValues[index]; }
+    int boxCoordinateX(int index) const { return solutionData.boxCoordXValues[index]; }
+    int boxCoordinateY(int index) const { return solutionData.boxCoordYValues[index]; }
+    int boxCoordinateZ(int index) const { return solutionData.boxCoordZValues[index]; }
+    int boxGroupIndex(int index) const { return solutionData.boxGroupIndexValues[index]; }
+    int boxesCount() const { return solutionData.boxGroupIndexValues.size(); }
 
 signals:
     void beforeDataChange();
@@ -33,13 +41,7 @@ signals:
 
 private:
     ContainerProblem *containerProblem;
-    QVector<int> boxLengthXValues;
-    QVector<int> boxLengthYValues;
-    QVector<int> boxLengthZValues;
-    QVector<int> boxCoordinateXValues;
-    QVector<int> boxCoordinateYValues;
-    QVector<int> boxCoordinateZValues;
-    QVector<int> packedBoxesGroupsIndexes;
+    SolutionData solutionData;
 };
 
 #endif // CONTAINERSOLUTION_H

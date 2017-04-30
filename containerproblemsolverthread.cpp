@@ -98,29 +98,28 @@ void ContainerProblemSolverThread::run()
     }
 
     int packedBoxesCount = packedBoxesIndexes.size();
-    QVector<int> newBoxLengthsX(packedBoxesCount);
-    QVector<int> newBoxLengthsY(packedBoxesCount);
-    QVector<int> newBoxLengthsZ(packedBoxesCount);
-    QVector<int> newBoxCoordinatesX(packedBoxesCount);
-    QVector<int> newBoxCoordinatesY(packedBoxesCount);
-    QVector<int> newBoxCoordinatesZ(packedBoxesCount);
-    QVector<int> packedBoxesGroupIndexes(packedBoxesCount);
+    SolutionData solutionData;
+    solutionData.boxLengthXValues.resize(packedBoxesCount);
+    solutionData.boxLengthYValues.resize(packedBoxesCount);
+    solutionData.boxLengthZValues.resize(packedBoxesCount);
+    solutionData.boxCoordXValues.resize(packedBoxesCount);
+    solutionData.boxCoordYValues.resize(packedBoxesCount);
+    solutionData.boxCoordZValues.resize(packedBoxesCount);
+    solutionData.boxGroupIndexValues.resize(packedBoxesCount);
 
     for (int i = 0; i < packedBoxesIndexes.size(); ++i)
     {
         int boxIndex = packedBoxesIndexes[i];
-        newBoxLengthsX[i] = boxLengthsX[boxIndex];
-        newBoxLengthsY[i] = boxLengthsY[boxIndex];
-        newBoxLengthsZ[i] = boxLengthsZ[boxIndex];
-        newBoxCoordinatesX[i] = boxCoordinatesX[boxIndex];
-        newBoxCoordinatesY[i] = boxCoordinatesY[boxIndex];
-        newBoxCoordinatesZ[i] = boxCoordinatesZ[boxIndex];
-        packedBoxesGroupIndexes[i] = boxGroups[boxIndex];
+        solutionData.boxLengthXValues[i] = boxLengthsX[boxIndex];
+        solutionData.boxLengthYValues[i] = boxLengthsY[boxIndex];
+        solutionData.boxLengthZValues[i] = boxLengthsZ[boxIndex];
+        solutionData.boxCoordXValues[i] = boxCoordinatesX[boxIndex];
+        solutionData.boxCoordYValues[i] = boxCoordinatesY[boxIndex];
+        solutionData.boxCoordZValues[i] = boxCoordinatesZ[boxIndex];
+        solutionData.boxGroupIndexValues[i] = boxGroups[boxIndex];
     }
 
     // TODO tratar de eliminar esta linea de codigo
     msleep(10);
-    emit solutionReady(newBoxLengthsX, newBoxLengthsY, newBoxLengthsZ,
-                       newBoxCoordinatesX, newBoxCoordinatesY, newBoxCoordinatesZ,
-                       packedBoxesGroupIndexes);
+    emit solutionReady(solutionData);
 }

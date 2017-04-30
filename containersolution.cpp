@@ -9,16 +9,16 @@ ContainerSolution::ContainerSolution(QObject *parent)
 
 void ContainerSolution::clear()
 {
-    if (!boxLengthXValues.empty())
+    if (!solutionData.boxLengthXValues.empty())
     {
         emit beforeDataChange();
-        boxLengthXValues.clear();
-        boxLengthYValues.clear();
-        boxLengthZValues.clear();
-        boxCoordinateXValues.clear();
-        boxCoordinateYValues.clear();
-        boxCoordinateZValues.clear();
-        packedBoxesGroupsIndexes.clear();
+        solutionData.boxLengthXValues.clear();
+        solutionData.boxLengthYValues.clear();
+        solutionData.boxLengthZValues.clear();
+        solutionData.boxCoordXValues.clear();
+        solutionData.boxCoordYValues.clear();
+        solutionData.boxCoordZValues.clear();
+        solutionData.boxGroupIndexValues.clear();
         emit afterDataChange();
     }
 }
@@ -28,21 +28,9 @@ void ContainerSolution::setContainerProblem(ContainerProblem *problem)
     containerProblem = problem;
 }
 
-void ContainerSolution::setBoxes(QVector<int> boxLengthsX,
-                                       QVector<int> boxLengthsY,
-                                       QVector<int> boxLengthsZ,
-                                       QVector<int> boxCoordinatesX,
-                                       QVector<int> boxCoordinatesY,
-                                       QVector<int> boxCoordinatesZ,
-                                       QVector<int> packedBoxesGroups)
+void ContainerSolution::setSolutionData(const SolutionData &solutionData)
 {
     emit beforeDataChange();
-    boxLengthXValues = boxLengthsX;
-    boxLengthYValues = boxLengthsY;
-    boxLengthZValues = boxLengthsZ;
-    boxCoordinateXValues = boxCoordinatesX;
-    boxCoordinateYValues = boxCoordinatesY;
-    boxCoordinateZValues = boxCoordinatesZ;
-    packedBoxesGroupsIndexes = packedBoxesGroups;
+    this->solutionData = solutionData;
     emit afterDataChange();
 }
