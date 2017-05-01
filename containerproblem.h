@@ -28,7 +28,7 @@ public:
     int containerLengthX() const { return problemData.containerLengthXValue; }
     int containerLengthY() const { return problemData.containerLengthYValue; }
     int containerLengthZ() const { return problemData.containerLengthZValue; }
-    int groupsCounter() const { return problemData.groupLengthXValues.size(); }
+    int groupsCounter() const { return problemData.groupBoxesCounterValues.size(); }
     int groupLengthX(int index) const { return problemData.groupLengthXValues[index]; }
     int groupLengthY(int index) const { return problemData.groupLengthYValues[index]; }
     int groupLengthZ(int index) const { return problemData.groupLengthZValues[index]; }
@@ -53,7 +53,7 @@ public:
     void clear();
     void addGroup(int lengthX, int lengthY, int lengthZ, int quantity, QColor color, QString name);
     void setGroupsCount(int count);
-    void setGroup(int index, int quantity, int lengthX, int lengthY, int lengthZ, QColor color, QString name);
+    void setGroup(int index, int lengthX, int lengthY, int lengthZ, int quantity, QColor color, QString name);
     void setGroupBoxCount(int groupIndex, int boxesCounter);
     void setContainerLengthX(int value);
     void setContainerLengthY(int value);

@@ -1,5 +1,6 @@
 #include "containerproblemsolverthread.h"
 #include <QRect>
+#include <QApplication>
 
 extern "C" {
 void contload(int n, int W, int H, int D,
@@ -13,9 +14,10 @@ ContainerProblemSolverThread::ContainerProblemSolverThread(QObject *parent)
 {
 }
 
-void ContainerProblemSolverThread::setContainerProblem(ProblemData problemData)
+void ContainerProblemSolverThread::solveProblem(const ProblemData &problemData)
 {
     this->problemData = problemData;
+    start();
 }
 
 void ContainerProblemSolverThread::run()
@@ -116,6 +118,7 @@ void ContainerProblemSolverThread::run()
     }
 
     // TODO tratar de eliminar esta linea de codigo
-    msleep(10);
+    //msleep(10);
+    QApplication::processEvents();
     emit solutionReady(solutionData);
 }

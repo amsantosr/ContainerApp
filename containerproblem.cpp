@@ -65,7 +65,7 @@ void ContainerProblem::setGroupsCount(int count)
     emit afterGroupsCounterChanged();
 }
 
-void ContainerProblem::setGroup(int index, int quantity, int lengthX, int lengthY, int lengthZ,
+void ContainerProblem::setGroup(int index, int lengthX, int lengthY, int lengthZ, int quantity,
                                 QColor color, QString name)
 {
     bool emitSignal = false;

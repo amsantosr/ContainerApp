@@ -193,8 +193,7 @@ void MainWindow::on_actionSolveProblem_triggered()
         QMessageBox::critical(this, tr("Error"), tr("No se han ingresado cajas para procesar."));
         return;
     }
-    containerProblemSolverThread.setContainerProblem(containerProblem.data());
-    containerProblemSolverThread.start();
+    containerProblemSolverThread.solveProblem(containerProblem.data());
 }
 
 void MainWindow::on_actionAddGroup_triggered()

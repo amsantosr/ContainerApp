@@ -10,7 +10,7 @@ class ContainerProblemSolverThread : public QThread
     Q_OBJECT
 public:
     explicit ContainerProblemSolverThread(QObject *parent = 0);
-    void setContainerProblem(ProblemData problemData);
+    void solveProblem(const ProblemData &problemData);
     void run();
 
 signals:

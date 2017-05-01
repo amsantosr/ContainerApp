@@ -56,7 +56,7 @@ QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
         case 2: result = containerProblem->groupLengthY(row); break;
         case 3: result = containerProblem->groupLengthZ(row); break;
         case 4: result = containerProblem->groupBoxesCounter(row); break;
-        case 5: /* empty string and print the color */ break;
+        case 5: result = containerProblem->groupColor(row).name(); break;
         }
     }
     else if (role == Qt::BackgroundColorRole)
@@ -73,6 +73,8 @@ QVariant BoxesGroupsTableModel::data(const QModelIndex &index, int role) const
         case 1: case 2: case 3: case 4:
             result = int(Qt::AlignRight | Qt::AlignVCenter);
             break;
+        case 5:
+            result = Qt::AlignCenter;
         }
     }
     return result;

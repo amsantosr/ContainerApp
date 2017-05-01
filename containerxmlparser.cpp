@@ -256,11 +256,11 @@ void ContainerXmlParser::readProblemElement(ContainerProblem &containerProblem)
     for (int i = 0; i < groupCount; ++i)
     {
         checkNextElement("Group");
-        int groupIndex, boxCount, lengthX, lengthY, lengthZ;
+        int groupIndex, quantity, lengthX, lengthY, lengthZ;
         QColor color;
         QString description;
-        parseGroupAttributes(groupIndex, boxCount, lengthX, lengthY, lengthZ, color, description);
-        containerProblem.setGroup(groupIndex, boxCount, lengthX, lengthY, lengthZ, color, description);
+        parseGroupAttributes(groupIndex, quantity, lengthX, lengthY, lengthZ, color, description);
+        containerProblem.setGroup(groupIndex, lengthX, lengthY, lengthZ, quantity, color, description);
         streamReader.skipCurrentElement();
     }
     checkEndElement("Groups");
