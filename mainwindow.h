@@ -8,7 +8,7 @@
 #include "containerxmlparser.h"
 #include "containerproblemsolverthread.h"
 #include "ui_dialogalgorithmexecution.h"
-#include "ui_dialogaddgroup.h"
+#include "ui_dialoggroupdata.h"
 #include "ui_dialoggenerateproblem.h"
 #include "ui_dialogmeasurementsystem.h"
 #include "ui_dialogabout.h"
@@ -30,15 +30,8 @@ public:
     ~MainWindow();
 
 private:
-    void generateProblemFromDialog();
     void setMaximumDisplayedBoxes(int value);
-    void setTextUnit(QString text);
-    void setupColorDialog(QDialog *dialog, Ui::DialogAddGroup *uiDialog);
-
-public:
-#ifdef DEBUG_ISSUES
-    void testGenerateProblem();
-#endif
+    void setupColorDialog(QDialog *dialog, Ui::DialogGroupData *uiDialog);
 
 public slots:
     void on_actionGenerateProblem_triggered();
@@ -46,6 +39,10 @@ public slots:
     void on_actionSolveProblem_triggered();
 
     void on_actionAddGroup_triggered();
+
+    void on_actionDeleteGroup_triggered();
+
+    void on_actionEditGroup_triggered();
 
     void on_actionSaveProblem_triggered();
 
@@ -57,18 +54,14 @@ public slots:
 
     void on_actionNewProblem_triggered();
 
-    void on_actionDeleteGroup_triggered();
-
     void on_actionAbout_triggered();
-
-    void on_actionEditGroup_triggered();
 
 private:
     Ui::MainWindow *ui;
     QDialog dialogGenerateProblem;
     Ui::DialogGenerateProblem uiDialogGenerateProblem;
-    QDialog dialogGroupInfo;
-    Ui::DialogAddGroup uiDialogGroupInfo;
+    QDialog dialogGroupData;
+    Ui::DialogGroupData uiDialogGroupData;
     QDialog dialogAlgorithmExecution;
     Ui::DialogAlgorithmExecution uiDialogAlgorithmExecution;
     QDialog dialogMeasurementSystem;
