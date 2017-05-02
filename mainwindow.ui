@@ -194,7 +194,7 @@
               </sizepolicy>
              </property>
              <property name="selectionMode">
-              <enum>QAbstractItemView::MultiSelection</enum>
+              <enum>QAbstractItemView::SingleSelection</enum>
              </property>
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
@@ -488,6 +488,22 @@
     <hint type="sourcelabel">
      <x>107</x>
      <y>217</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableViewBoxes</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>actionEditGroup</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>399</x>
+     <y>391</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

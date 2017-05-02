@@ -337,11 +337,8 @@ void MainWindow::on_actionEditGroup_triggered()
     if (selectedIndexes.isEmpty())
         return;
     dialogGroupInfo.setWindowTitle("Modificar grupo");
-    on_tableViewBoxes_doubleClicked(selectedIndexes.front());
-}
-
-void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
-{
+    //on_tableViewBoxes_doubleClicked(selectedIndexes.front());
+    QModelIndex index = selectedIndexes.front();
     int row = index.row();
     int lengthX = containerProblem.groupLengthX(row);
     int lengthY = containerProblem.groupLengthY(row);

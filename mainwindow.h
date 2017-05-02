@@ -63,8 +63,6 @@ public slots:
 
     void on_actionEditGroup_triggered();
 
-    void on_tableViewBoxes_doubleClicked(const QModelIndex &index);
-
 private:
     Ui::MainWindow *ui;
     QDialog dialogGenerateProblem;
