@@ -75,11 +75,11 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::started,
-            &dialogAlgorithmExecution, &QDialog::show, Qt::BlockingQueuedConnection);
+            &dialogAlgorithmExecution, &QDialog::show);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::finished,
-            &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
+            &dialogAlgorithmExecution, &QDialog::close);
     connect(&containerProblemSolverThread, &ContainerProblemSolverThread::solutionReady,
-            &containerSolution, &ContainerSolution::setSolutionData, Qt::BlockingQueuedConnection);
+            &containerSolution, &ContainerSolution::setSolutionData);
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [this]
     {
         uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(false);
