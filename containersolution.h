@@ -6,13 +6,13 @@
 #include "containerproblem.h"
 
 struct SolutionData {
-    QVector<int> boxLengthXValues;
-    QVector<int> boxLengthYValues;
-    QVector<int> boxLengthZValues;
-    QVector<int> boxCoordXValues;
-    QVector<int> boxCoordYValues;
-    QVector<int> boxCoordZValues;
-    QVector<int> boxGroupIndexValues;
+    QVector<int> boxLengthXVector;
+    QVector<int> boxLengthYVector;
+    QVector<int> boxLengthZVector;
+    QVector<int> boxCoordXVector;
+    QVector<int> boxCoordYVector;
+    QVector<int> boxCoordZVector;
+    QVector<int> boxGroupIndexVector;
 };
 
 class ContainerSolution : public QObject
@@ -26,14 +26,14 @@ public:
     ContainerProblem *getContainerProblem() { return containerProblem; }
     void setSolutionData(const SolutionData &solutionData);
     void clear();
-    int boxLengthX(int index) const { return solutionData.boxLengthXValues[index]; }
-    int boxLengthY(int index) const { return solutionData.boxLengthYValues[index]; }
-    int boxLengthZ(int index) const { return solutionData.boxLengthZValues[index]; }
-    int boxCoordinateX(int index) const { return solutionData.boxCoordXValues[index]; }
-    int boxCoordinateY(int index) const { return solutionData.boxCoordYValues[index]; }
-    int boxCoordinateZ(int index) const { return solutionData.boxCoordZValues[index]; }
-    int boxGroupIndex(int index) const { return solutionData.boxGroupIndexValues[index]; }
-    int boxesCount() const { return solutionData.boxGroupIndexValues.size(); }
+    int boxLengthX(int index) const { return solutionData.boxLengthXVector[index]; }
+    int boxLengthY(int index) const { return solutionData.boxLengthYVector[index]; }
+    int boxLengthZ(int index) const { return solutionData.boxLengthZVector[index]; }
+    int boxCoordinateX(int index) const { return solutionData.boxCoordXVector[index]; }
+    int boxCoordinateY(int index) const { return solutionData.boxCoordYVector[index]; }
+    int boxCoordinateZ(int index) const { return solutionData.boxCoordZVector[index]; }
+    int boxGroupIndex(int index) const { return solutionData.boxGroupIndexVector[index]; }
+    int boxesCount() const { return solutionData.boxGroupIndexVector.size(); }
 
 signals:
     void beforeDataChange();

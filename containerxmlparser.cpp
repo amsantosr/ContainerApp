@@ -85,13 +85,13 @@ void ContainerXmlParser::readSolution(QFile *file, ContainerSolution &containerS
         parseBoxOrientationAttributes(dimensionX, dimensionY, dimensionZ);
         streamReader.skipCurrentElement();
 
-        solutionData.boxCoordXValues.append(positionX);
-        solutionData.boxCoordYValues.append(positionY);
-        solutionData.boxCoordZValues.append(positionZ);
-        solutionData.boxLengthXValues.append(dimensionX);
-        solutionData.boxLengthYValues.append(dimensionY);
-        solutionData.boxLengthZValues.append(dimensionZ);
-        solutionData.boxGroupIndexValues.append(boxGroupIndex);
+        solutionData.boxCoordXVector.append(positionX);
+        solutionData.boxCoordYVector.append(positionY);
+        solutionData.boxCoordZVector.append(positionZ);
+        solutionData.boxLengthXVector.append(dimensionX);
+        solutionData.boxLengthYVector.append(dimensionY);
+        solutionData.boxLengthZVector.append(dimensionZ);
+        solutionData.boxGroupIndexVector.append(boxGroupIndex);
         streamReader.skipCurrentElement();
     }
     containerSolution.setSolutionData(solutionData);

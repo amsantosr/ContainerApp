@@ -8,15 +8,15 @@
 #include <algorithm>
 
 struct ProblemData {
-    int containerLengthXValue;
-    int containerLengthYValue;
-    int containerLengthZValue;
-    QVector<int> groupLengthXValues;
-    QVector<int> groupLengthYValues;
-    QVector<int> groupLengthZValues;
-    QVector<int> groupBoxesCounterValues;
-    QVector<QColor> groupColorValues;
-    QVector<QString> groupDescriptionValues;
+    int containerLengthX;
+    int containerLengthY;
+    int containerLengthZ;
+    QVector<int> groupLengthXVector;
+    QVector<int> groupLengthYVector;
+    QVector<int> groupLengthZVector;
+    QVector<int> groupBoxesCountersVector;
+    QVector<QColor> groupColorVector;
+    QVector<QString> groupNamesVector;
 };
 
 class ContainerProblem : public QObject
@@ -25,19 +25,19 @@ class ContainerProblem : public QObject
 public:
     ContainerProblem(QObject *parent = 0);
     const ProblemData &data() const { return problemData; }
-    int containerLengthX() const { return problemData.containerLengthXValue; }
-    int containerLengthY() const { return problemData.containerLengthYValue; }
-    int containerLengthZ() const { return problemData.containerLengthZValue; }
-    int groupsCounter() const { return problemData.groupBoxesCounterValues.size(); }
-    int groupLengthX(int index) const { return problemData.groupLengthXValues[index]; }
-    int groupLengthY(int index) const { return problemData.groupLengthYValues[index]; }
-    int groupLengthZ(int index) const { return problemData.groupLengthZValues[index]; }
-    int groupBoxesCounter(int index) const { return problemData.groupBoxesCounterValues[index]; }
-    QColor groupColor(int index) const { return problemData.groupColorValues[index]; }
-    QString groupName(int index) const { return problemData.groupDescriptionValues[index]; }
+    int containerLengthX() const { return problemData.containerLengthX; }
+    int containerLengthY() const { return problemData.containerLengthY; }
+    int containerLengthZ() const { return problemData.containerLengthZ; }
+    int groupsCounter() const { return problemData.groupBoxesCountersVector.size(); }
+    int groupLengthX(int index) const { return problemData.groupLengthXVector[index]; }
+    int groupLengthY(int index) const { return problemData.groupLengthYVector[index]; }
+    int groupLengthZ(int index) const { return problemData.groupLengthZVector[index]; }
+    int groupBoxesCounter(int index) const { return problemData.groupBoxesCountersVector[index]; }
+    QColor groupColor(int index) const { return problemData.groupColorVector[index]; }
+    QString groupName(int index) const { return problemData.groupNamesVector[index]; }
     void removeGroup(int index);
-    int allBoxesQuantity() const { return std::accumulate(problemData.groupBoxesCounterValues.begin(),
-                                                          problemData.groupBoxesCounterValues.end(), 0); }
+    int allBoxesQuantity() const { return std::accumulate(problemData.groupBoxesCountersVector.begin(),
+                                                          problemData.groupBoxesCountersVector.end(), 0); }
 
 signals:
     void containerLengthXChanged(int value);

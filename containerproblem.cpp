@@ -3,20 +3,20 @@
 ContainerProblem::ContainerProblem(QObject *parent)
     : QObject(parent)
 {
-    problemData.containerLengthXValue = 0;
-    problemData.containerLengthYValue = 0;
-    problemData.containerLengthZValue = 0;
+    problemData.containerLengthX = 0;
+    problemData.containerLengthY = 0;
+    problemData.containerLengthZ = 0;
 }
 
 void ContainerProblem::removeGroup(int index)
 {
     emit beforeGroupsCounterChanged();
-    problemData.groupLengthXValues.remove(index);
-    problemData.groupLengthYValues.remove(index);
-    problemData.groupLengthZValues.remove(index);
-    problemData.groupBoxesCounterValues.remove(index);
-    problemData.groupColorValues.remove(index);
-    problemData.groupDescriptionValues.remove(index);
+    problemData.groupLengthXVector.remove(index);
+    problemData.groupLengthYVector.remove(index);
+    problemData.groupLengthZVector.remove(index);
+    problemData.groupBoxesCountersVector.remove(index);
+    problemData.groupColorVector.remove(index);
+    problemData.groupNamesVector.remove(index);
     emit afterGroupsCounterChanged();
 }
 
@@ -25,27 +25,27 @@ void ContainerProblem::addGroup(int lengthX, int lengthY, int lengthZ,
 {
     emit beforeAddGroup();
     emit beforeGroupsCounterChanged();
-    problemData.groupLengthXValues.append(lengthX);
-    problemData.groupLengthYValues.append(lengthY);
-    problemData.groupLengthZValues.append(lengthZ);
-    problemData.groupBoxesCounterValues.append(quantity);
-    problemData.groupColorValues.append(color);
-    problemData.groupDescriptionValues.append(name);
+    problemData.groupLengthXVector.append(lengthX);
+    problemData.groupLengthYVector.append(lengthY);
+    problemData.groupLengthZVector.append(lengthZ);
+    problemData.groupBoxesCountersVector.append(quantity);
+    problemData.groupColorVector.append(color);
+    problemData.groupNamesVector.append(name);
     emit afterGroupsCounterChanged();
     emit afterAddGroup();
 }
 
 void ContainerProblem::clear()
 {
-    if (problemData.groupLengthXValues.size() > 0)
+    if (problemData.groupLengthXVector.size() > 0)
     {
         emit beforeGroupsCounterChanged();
-        problemData.groupLengthXValues.clear();
-        problemData.groupLengthYValues.clear();
-        problemData.groupLengthZValues.clear();
-        problemData.groupBoxesCounterValues.clear();
-        problemData.groupColorValues.clear();
-        problemData.groupDescriptionValues.clear();
+        problemData.groupLengthXVector.clear();
+        problemData.groupLengthYVector.clear();
+        problemData.groupLengthZVector.clear();
+        problemData.groupBoxesCountersVector.clear();
+        problemData.groupColorVector.clear();
+        problemData.groupNamesVector.clear();
         emit afterGroupsCounterChanged();
     }
     setContainerLengthX(0);
@@ -56,12 +56,12 @@ void ContainerProblem::clear()
 void ContainerProblem::setGroupsCount(int count)
 {
     emit beforeGroupsCounterChanged();
-    problemData.groupLengthXValues.resize(count);
-    problemData.groupLengthYValues.resize(count);
-    problemData.groupLengthZValues.resize(count);
-    problemData.groupBoxesCounterValues.resize(count);
-    problemData.groupColorValues.resize(count);
-    problemData.groupDescriptionValues.resize(count);
+    problemData.groupLengthXVector.resize(count);
+    problemData.groupLengthYVector.resize(count);
+    problemData.groupLengthZVector.resize(count);
+    problemData.groupBoxesCountersVector.resize(count);
+    problemData.groupColorVector.resize(count);
+    problemData.groupNamesVector.resize(count);
     emit afterGroupsCounterChanged();
 }
 
@@ -69,34 +69,34 @@ void ContainerProblem::setGroup(int index, int lengthX, int lengthY, int lengthZ
                                 QColor color, QString name)
 {
     bool emitSignal = false;
-    if (problemData.groupBoxesCounterValues[index] != quantity)
+    if (problemData.groupBoxesCountersVector[index] != quantity)
     {
-        problemData.groupBoxesCounterValues[index] = quantity;
+        problemData.groupBoxesCountersVector[index] = quantity;
         emitSignal = true;
     }
-    if (problemData.groupLengthXValues[index] != lengthX)
+    if (problemData.groupLengthXVector[index] != lengthX)
     {
-        problemData.groupLengthXValues[index] = lengthX;
+        problemData.groupLengthXVector[index] = lengthX;
         emitSignal = true;
     }
-    if (problemData.groupLengthYValues[index] != lengthY)
+    if (problemData.groupLengthYVector[index] != lengthY)
     {
-        problemData.groupLengthYValues[index] = lengthY;
+        problemData.groupLengthYVector[index] = lengthY;
         emitSignal = true;
     }
-    if (problemData.groupLengthZValues[index] != lengthZ)
+    if (problemData.groupLengthZVector[index] != lengthZ)
     {
-        problemData.groupLengthZValues[index] = lengthZ;
+        problemData.groupLengthZVector[index] = lengthZ;
         emitSignal = true;
     }
-    if (problemData.groupColorValues[index] != color)
+    if (problemData.groupColorVector[index] != color)
     {
-        problemData.groupColorValues[index] = color;
+        problemData.groupColorVector[index] = color;
         emitSignal = true;
     }
-    if (problemData.groupDescriptionValues[index] != name)
+    if (problemData.groupNamesVector[index] != name)
     {
-        problemData.groupDescriptionValues[index] = name;
+        problemData.groupNamesVector[index] = name;
         emitSignal = true;
     }
     if (emitSignal)
@@ -105,36 +105,36 @@ void ContainerProblem::setGroup(int index, int lengthX, int lengthY, int lengthZ
 
 void ContainerProblem::setGroupBoxCount(int boxIndex, int quantity)
 {
-    if (problemData.groupBoxesCounterValues[boxIndex] != quantity)
+    if (problemData.groupBoxesCountersVector[boxIndex] != quantity)
     {
-        problemData.groupBoxesCounterValues[boxIndex] = quantity;
+        problemData.groupBoxesCountersVector[boxIndex] = quantity;
         emit groupChanged(boxIndex);
     }
 }
 
 void ContainerProblem::setContainerLengthX(int value)
 {
-    if (problemData.containerLengthXValue != value)
+    if (problemData.containerLengthX != value)
     {
-        problemData.containerLengthXValue = value;
+        problemData.containerLengthX = value;
         emit containerLengthXChanged(value);
     }
 }
 
 void ContainerProblem::setContainerLengthY(int value)
 {
-    if (problemData.containerLengthYValue != value)
+    if (problemData.containerLengthY != value)
     {
-        problemData.containerLengthYValue = value;
+        problemData.containerLengthY = value;
         emit containerLengthYChanged(value);
     }
 }
 
 void ContainerProblem::setContainerLengthZ(int value)
 {
-    if (problemData.containerLengthZValue != value)
+    if (problemData.containerLengthZ != value)
     {
-        problemData.containerLengthZValue = value;
+        problemData.containerLengthZ = value;
         emit containerLengthZChanged(value);
     }
 }

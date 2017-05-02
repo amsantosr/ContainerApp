@@ -23,8 +23,8 @@ void ContainerProblemSolverThread::solveProblem(const ProblemData &problemData)
 void ContainerProblemSolverThread::run()
 {
     int volume = 0;
-    int allBoxesQuantity = std::accumulate(problemData.groupBoxesCounterValues.begin(),
-                                           problemData.groupBoxesCounterValues.end(), 0);
+    int allBoxesQuantity = std::accumulate(problemData.groupBoxesCountersVector.begin(),
+                                           problemData.groupBoxesCountersVector.end(), 0);
     QVector<int> boxLengthsX(allBoxesQuantity);
     QVector<int> boxLengthsY(allBoxesQuantity);
     QVector<int> boxLengthsZ(allBoxesQuantity);
@@ -33,12 +33,12 @@ void ContainerProblemSolverThread::run()
     int currentGroupCount = 0;
     for (int index = 0; index < allBoxesQuantity; ++index)
     {
-        boxLengthsX[index] = problemData.groupLengthXValues[currentGroupIndex];
-        boxLengthsY[index] = problemData.groupLengthYValues[currentGroupIndex];
-        boxLengthsZ[index] = problemData.groupLengthZValues[currentGroupIndex];
+        boxLengthsX[index] = problemData.groupLengthXVector[currentGroupIndex];
+        boxLengthsY[index] = problemData.groupLengthYVector[currentGroupIndex];
+        boxLengthsZ[index] = problemData.groupLengthZVector[currentGroupIndex];
         boxGroupsIndexes[index] = currentGroupIndex;
         ++currentGroupCount;
-        if (currentGroupCount == problemData.groupBoxesCounterValues[currentGroupIndex])
+        if (currentGroupCount == problemData.groupBoxesCountersVector[currentGroupIndex])
         {
             ++currentGroupIndex;
             currentGroupCount = 0;
@@ -53,9 +53,9 @@ void ContainerProblemSolverThread::run()
 
     // llamar al procedimiento en C
     contload(allBoxesQuantity,
-             problemData.containerLengthXValue,
-             problemData.containerLengthYValue,
-             problemData.containerLengthZValue,
+             problemData.containerLengthX,
+             problemData.containerLengthY,
+             problemData.containerLengthZ,
              boxLengthsX.data(), boxLengthsY.data(), boxLengthsZ.data(),
              boxCoordinatesX.data(), boxCoordinatesY.data(), boxCoordinatesZ.data(),
              boxPackedFlagsInt.data(), &volume);
@@ -97,24 +97,24 @@ void ContainerProblemSolverThread::run()
 
     int packedBoxesCount = packedBoxesIndexes.size();
     SolutionData solutionData;
-    solutionData.boxLengthXValues.resize(packedBoxesCount);
-    solutionData.boxLengthYValues.resize(packedBoxesCount);
-    solutionData.boxLengthZValues.resize(packedBoxesCount);
-    solutionData.boxCoordXValues.resize(packedBoxesCount);
-    solutionData.boxCoordYValues.resize(packedBoxesCount);
-    solutionData.boxCoordZValues.resize(packedBoxesCount);
-    solutionData.boxGroupIndexValues.resize(packedBoxesCount);
+    solutionData.boxLengthXVector.resize(packedBoxesCount);
+    solutionData.boxLengthYVector.resize(packedBoxesCount);
+    solutionData.boxLengthZVector.resize(packedBoxesCount);
+    solutionData.boxCoordXVector.resize(packedBoxesCount);
+    solutionData.boxCoordYVector.resize(packedBoxesCount);
+    solutionData.boxCoordZVector.resize(packedBoxesCount);
+    solutionData.boxGroupIndexVector.resize(packedBoxesCount);
 
     for (int i = 0; i < packedBoxesIndexes.size(); ++i)
     {
         int boxIndex = packedBoxesIndexes[i];
-        solutionData.boxLengthXValues[i] = boxLengthsX[boxIndex];
-        solutionData.boxLengthYValues[i] = boxLengthsY[boxIndex];
-        solutionData.boxLengthZValues[i] = boxLengthsZ[boxIndex];
-        solutionData.boxCoordXValues[i] = boxCoordinatesX[boxIndex];
-        solutionData.boxCoordYValues[i] = boxCoordinatesY[boxIndex];
-        solutionData.boxCoordZValues[i] = boxCoordinatesZ[boxIndex];
-        solutionData.boxGroupIndexValues[i] = boxGroupsIndexes[boxIndex];
+        solutionData.boxLengthXVector[i] = boxLengthsX[boxIndex];
+        solutionData.boxLengthYVector[i] = boxLengthsY[boxIndex];
+        solutionData.boxLengthZVector[i] = boxLengthsZ[boxIndex];
+        solutionData.boxCoordXVector[i] = boxCoordinatesX[boxIndex];
+        solutionData.boxCoordYVector[i] = boxCoordinatesY[boxIndex];
+        solutionData.boxCoordZVector[i] = boxCoordinatesZ[boxIndex];
+        solutionData.boxGroupIndexVector[i] = boxGroupsIndexes[boxIndex];
     }
 
     QApplication::processEvents();

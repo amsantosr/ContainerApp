@@ -9,16 +9,16 @@ ContainerSolution::ContainerSolution(QObject *parent)
 
 void ContainerSolution::clear()
 {
-    if (!solutionData.boxLengthXValues.empty())
+    if (!solutionData.boxLengthXVector.empty())
     {
         emit beforeDataChange();
-        solutionData.boxLengthXValues.clear();
-        solutionData.boxLengthYValues.clear();
-        solutionData.boxLengthZValues.clear();
-        solutionData.boxCoordXValues.clear();
-        solutionData.boxCoordYValues.clear();
-        solutionData.boxCoordZValues.clear();
-        solutionData.boxGroupIndexValues.clear();
+        solutionData.boxLengthXVector.clear();
+        solutionData.boxLengthYVector.clear();
+        solutionData.boxLengthZVector.clear();
+        solutionData.boxCoordXVector.clear();
+        solutionData.boxCoordYVector.clear();
+        solutionData.boxCoordZVector.clear();
+        solutionData.boxGroupIndexVector.clear();
         emit afterDataChange();
     }
 }
