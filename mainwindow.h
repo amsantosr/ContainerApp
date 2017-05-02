@@ -69,10 +69,8 @@ private:
     Ui::MainWindow *ui;
     QDialog dialogGenerateProblem;
     Ui::DialogGenerateProblem uiDialogGenerateProblem;
-    QDialog dialogAddGroup;
-    Ui::DialogAddGroup uiDialogAddGroup;
-    QDialog dialogEditGroup;
-    Ui::DialogAddGroup uiDialogEditGroup;
+    QDialog dialogGroupInfo;
+    Ui::DialogAddGroup uiDialogGroupInfo;
     QDialog dialogAlgorithmExecution;
     Ui::DialogAlgorithmExecution uiDialogAlgorithmExecution;
     QDialog dialogMeasurementSystem;

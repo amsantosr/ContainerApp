@@ -20,8 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     dialogGenerateProblem(this),
-    dialogAddGroup(this),
-    dialogEditGroup(this),
+    dialogGroupInfo(this),
     dialogAlgorithmExecution(this),
     dialogMeasurementSystem(this),
     boxesGroupsTableModel(new BoxesGroupsTableModel(this)),
@@ -29,15 +28,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     uiDialogAbout.setupUi(&dialogAbout);
-    uiDialogAddGroup.setupUi(&dialogAddGroup);
-    uiDialogEditGroup.setupUi(&dialogEditGroup);
+    uiDialogGroupInfo.setupUi(&dialogGroupInfo);
     uiDialogAlgorithmExecution.setupUi(&dialogAlgorithmExecution);
     uiDialogGenerateProblem.setupUi(&dialogGenerateProblem);
     uiDialogMeasurementSystem.setupUi(&dialogMeasurementSystem);
 
-    setupColorDialog(&dialogAddGroup, &uiDialogAddGroup);
-    setupColorDialog(&dialogEditGroup, &uiDialogEditGroup);
-    dialogEditGroup.setWindowTitle("Modificar grupo");
+    setupColorDialog(&dialogGroupInfo, &uiDialogGroupInfo);
 
     containerSolution.setContainerProblem(&containerProblem);
     ui->openGLWidget->setContainerSolution(&containerSolution);
@@ -198,14 +194,15 @@ void MainWindow::on_actionSolveProblem_triggered()
 
 void MainWindow::on_actionAddGroup_triggered()
 {
-    if (dialogAddGroup.exec() == QDialog::Accepted)
+    dialogGroupInfo.setWindowTitle("Añadir grupo");
+    if (dialogGroupInfo.exec() == QDialog::Accepted)
     {
-        int dimensionX = uiDialogAddGroup.spinBoxLengthX->value();
-        int dimensionY = uiDialogAddGroup.spinBoxLengthY->value();
-        int dimensionZ = uiDialogAddGroup.spinBoxLengthZ->value();
-        int quantity = uiDialogAddGroup.spinBoxQuantity->value();
-        QColor color = uiDialogAddGroup.labelColor->palette().background().color();
-        QString description = uiDialogAddGroup.lineEditGroupName->text();
+        int dimensionX = uiDialogGroupInfo.spinBoxLengthX->value();
+        int dimensionY = uiDialogGroupInfo.spinBoxLengthY->value();
+        int dimensionZ = uiDialogGroupInfo.spinBoxLengthZ->value();
+        int quantity = uiDialogGroupInfo.spinBoxQuantity->value();
+        QColor color = uiDialogGroupInfo.labelColor->palette().background().color();
+        QString description = uiDialogGroupInfo.lineEditGroupName->text();
 
         containerProblem.addGroup(dimensionX, dimensionY, dimensionZ, quantity, color, description);
     }
@@ -339,6 +336,7 @@ void MainWindow::on_actionEditGroup_triggered()
     QModelIndexList selectedIndexes = ui->tableViewBoxes->selectedIndexes();
     if (selectedIndexes.isEmpty())
         return;
+    dialogGroupInfo.setWindowTitle("Modificar grupo");
     on_tableViewBoxes_doubleClicked(selectedIndexes.front());
 }
 
@@ -352,24 +350,24 @@ void MainWindow::on_tableViewBoxes_doubleClicked(const QModelIndex &index)
     QColor color = containerProblem.groupColor(row);
     QString description = containerProblem.groupName(row);
 
-    uiDialogEditGroup.spinBoxLengthX->setValue(lengthX);
-    uiDialogEditGroup.spinBoxLengthY->setValue(lengthY);
-    uiDialogEditGroup.spinBoxLengthZ->setValue(lengthZ);
-    uiDialogEditGroup.spinBoxQuantity->setValue(quantity);
-    uiDialogEditGroup.labelColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);")
+    uiDialogGroupInfo.spinBoxLengthX->setValue(lengthX);
+    uiDialogGroupInfo.spinBoxLengthY->setValue(lengthY);
+    uiDialogGroupInfo.spinBoxLengthZ->setValue(lengthZ);
+    uiDialogGroupInfo.spinBoxQuantity->setValue(quantity);
+    uiDialogGroupInfo.labelColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);")
                                                 .arg(color.red())
                                                 .arg(color.green())
                                                 .arg(color.blue()));
 
-    uiDialogEditGroup.lineEditGroupName->setText(description);
-    if (dialogEditGroup.exec() == QDialog::Accepted)
+    uiDialogGroupInfo.lineEditGroupName->setText(description);
+    if (dialogGroupInfo.exec() == QDialog::Accepted)
     {
-        lengthX = uiDialogEditGroup.spinBoxLengthX->value();
-        lengthY = uiDialogEditGroup.spinBoxLengthY->value();
-        lengthZ = uiDialogEditGroup.spinBoxLengthZ->value();
-        quantity = uiDialogEditGroup.spinBoxQuantity->value();
-        color = uiDialogEditGroup.labelColor->palette().background().color();
-        description = uiDialogEditGroup.lineEditGroupName->text();
+        lengthX = uiDialogGroupInfo.spinBoxLengthX->value();
+        lengthY = uiDialogGroupInfo.spinBoxLengthY->value();
+        lengthZ = uiDialogGroupInfo.spinBoxLengthZ->value();
+        quantity = uiDialogGroupInfo.spinBoxQuantity->value();
+        color = uiDialogGroupInfo.labelColor->palette().background().color();
+        description = uiDialogGroupInfo.lineEditGroupName->text();
         containerProblem.setGroup(row, lengthX, lengthY, lengthZ, quantity, color, description);
     }
 }

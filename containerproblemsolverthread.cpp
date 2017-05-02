@@ -117,8 +117,6 @@ void ContainerProblemSolverThread::run()
         solutionData.boxGroupIndexValues[i] = boxGroupsIndexes[boxIndex];
     }
 
-    // TODO tratar de eliminar esta linea de codigo
-    //msleep(10);
     QApplication::processEvents();
     emit solutionReady(solutionData);
 }
