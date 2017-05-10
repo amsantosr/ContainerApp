@@ -16,13 +16,13 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QTabWidget" name="tabWidgetBottomLeft">
+     <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
        <number>0</number>
       </property>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
-        <string>Datos de la planificación</string>
+        <string>Datos del problema</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -434,7 +434,7 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>tabWidgetBottomLeft</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>toolButtonAddGroup</tabstop>
   <tabstop>toolButtonDeleteGroup</tabstop>
   <tabstop>tableViewGroups</tabstop>
