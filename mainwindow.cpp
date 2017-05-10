@@ -74,11 +74,11 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->sliderDisplayedBoxes->setValue(containerSolution.boxesCount());
     });
 
-    connect(&containerProblemSolverThread, &ContainerProblemSolverThread::started,
+    /*connect(&containerProblemSolverThread, &ContainerProblemSolver::started,
             &dialogAlgorithmExecution, &QDialog::show, Qt::BlockingQueuedConnection);
-    connect(&containerProblemSolverThread, &ContainerProblemSolverThread::finished,
+    connect(&containerProblemSolverThread, &ContainerProblemSolver::finished,
             &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
-    connect(&containerProblemSolverThread, &ContainerProblemSolverThread::solutionReady,
+    connect(&containerProblemSolverThread, &ContainerProblemSolver::solutionReady,
             &containerSolution, &ContainerSolution::setSolutionData, Qt::BlockingQueuedConnection);
     connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [this]
     {
@@ -88,11 +88,23 @@ MainWindow::MainWindow(QWidget *parent) :
         containerProblemSolverThread.wait();
         dialogAlgorithmExecution.hide();
         uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(true);
-    });
+    });*/
+    ContainerProblemSolver *containerProblemSolver = new ContainerProblemSolver(this);
+    containerProblemSolver->moveToThread(&workerThread);
+    connect(&workerThread, &QThread::finished, containerProblemSolver, &QObject::deleteLater);
+    connect(this, &MainWindow::problemReady, &dialogAlgorithmExecution, &QDialog::show);
+    connect(this, &MainWindow::problemReady, containerProblemSolver, &ContainerProblemSolver::solveProblem);
+    connect(containerProblemSolver, &ContainerProblemSolver::solutionReady,
+            &containerSolution, &ContainerSolution::setSolutionData);
+    connect(containerProblemSolver, &ContainerProblemSolver::solutionReady,
+            &dialogAlgorithmExecution, &QDialog::close);
+    workerThread.start();
 }
 
 MainWindow::~MainWindow()
 {
+    workerThread.quit();
+    workerThread.wait();
     delete ui;
 }
 
@@ -172,7 +184,7 @@ void MainWindow::on_actionSolveProblem_triggered()
         QMessageBox::critical(this, tr("Error"), tr("No se han ingresado cajas para procesar."));
         return;
     }
-    containerProblemSolverThread.solveProblem(containerProblem.data());
+    emit problemReady(containerProblem.data());
 }
 
 void MainWindow::on_actionAddGroup_triggered()

@@ -6,7 +6,7 @@
 #include <QList>
 #include "containerproblemgenerator.h"
 #include "containerxmlparser.h"
-#include "containerproblemsolverthread.h"
+#include "containerproblemsolver.h"
 #include "ui_dialogalgorithmexecution.h"
 #include "ui_dialoggroupdata.h"
 #include "ui_dialoggenerateproblem.h"
@@ -32,6 +32,9 @@ public:
 private:
     void setMaximumDisplayedBoxes(int value);
     void setupColorDialog(QDialog *dialog, Ui::DialogGroupData *uiDialog);
+
+signals:
+    void problemReady(const ProblemData &problemData);
 
 public slots:
     void on_actionGenerateProblem_triggered();
@@ -70,12 +73,12 @@ private:
     Ui::DialogAbout uiDialogAbout;
 
     ContainerProblemGenerator containerProblemGenerator;
-    ContainerProblemSolverThread containerProblemSolverThread;
     ContainerProblem containerProblem;
     ContainerSolution containerSolution;
     ContainerXmlParser containerXmlParser;
     BoxesGroupsTableModel *boxesGroupsTableModel;
     SolutionBoxesTableModel *containerPackedBoxesTableModel;
+    QThread workerThread;
 };
 
 #endif // MAINWINDOW_H

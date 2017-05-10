@@ -1,4 +1,4 @@
-#include "containerproblemsolverthread.h"
+#include "containerproblemsolver.h"
 #include <QRect>
 #include <QApplication>
 
@@ -9,18 +9,12 @@ void contload(int n, int W, int H, int D,
               int *vol);
 }
 
-ContainerProblemSolverThread::ContainerProblemSolverThread(QObject *parent)
-    : QThread(parent)
+ContainerProblemSolver::ContainerProblemSolver(QObject *parent)
+    : QObject(parent)
 {
 }
 
-void ContainerProblemSolverThread::solveProblem(const ProblemData &problemData)
-{
-    this->problemData = problemData;
-    start();
-}
-
-void ContainerProblemSolverThread::run()
+void ContainerProblemSolver::solveProblem(const ProblemData &problemData)
 {
     int volume = 0;
     int allBoxesQuantity = std::accumulate(problemData.groupBoxesCountersVector.begin(),
@@ -116,7 +110,5 @@ void ContainerProblemSolverThread::run()
         solutionData.boxCoordZVector[i] = boxCoordinatesZ[boxIndex];
         solutionData.boxGroupIndexVector[i] = boxGroupsIndexes[boxIndex];
     }
-
-    QApplication::processEvents();
     emit solutionReady(solutionData);
 }
