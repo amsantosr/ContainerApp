@@ -74,24 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->sliderDisplayedBoxes->setValue(containerSolution.boxesCount());
     });
 
-    /*connect(&containerProblemSolverThread, &ContainerProblemSolver::started,
-            &dialogAlgorithmExecution, &QDialog::show, Qt::BlockingQueuedConnection);
-    connect(&containerProblemSolverThread, &ContainerProblemSolver::finished,
-            &dialogAlgorithmExecution, &QDialog::close, Qt::BlockingQueuedConnection);
-    connect(&containerProblemSolverThread, &ContainerProblemSolver::solutionReady,
-            &containerSolution, &ContainerSolution::setSolutionData, Qt::BlockingQueuedConnection);
-    connect(uiDialogAlgorithmExecution.pushButtonCancel, &QPushButton::clicked, [this]
-    {
-        uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(false);
-        QApplication::processEvents();
-        containerProblemSolverThread.terminate();
-        containerProblemSolverThread.wait();
-        dialogAlgorithmExecution.hide();
-        uiDialogAlgorithmExecution.pushButtonCancel->setEnabled(true);
-    });*/
     ContainerProblemSolver *containerProblemSolver = new ContainerProblemSolver(this);
     containerProblemSolver->moveToThread(&workerThread);
-    connect(&workerThread, &QThread::finished, containerProblemSolver, &QObject::deleteLater);
     connect(this, &MainWindow::problemReady, &dialogAlgorithmExecution, &QDialog::show);
     connect(this, &MainWindow::problemReady, containerProblemSolver, &ContainerProblemSolver::solveProblem);
     connect(containerProblemSolver, &ContainerProblemSolver::solutionReady,
