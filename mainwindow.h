@@ -34,7 +34,7 @@ private:
     void setupColorDialog(QDialog *dialog, Ui::DialogGroupData *uiDialog);
 
 signals:
-    void problemReady(const ProblemData &problemData);
+    void problemReady(ProblemData problemData);
 
 public slots:
     void on_actionGenerateProblem_triggered();

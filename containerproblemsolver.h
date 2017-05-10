@@ -9,7 +9,7 @@ class ContainerProblemSolver : public QObject
     Q_OBJECT
 public:
     explicit ContainerProblemSolver(QObject *parent = 0);
-    void solveProblem(const ProblemData &problemData);
+    void solveProblem(ProblemData problemData);
 
 signals:
     void solutionReady(SolutionData solution);

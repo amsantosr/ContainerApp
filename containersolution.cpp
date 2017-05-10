@@ -25,7 +25,7 @@ void ContainerSolution::clear()
 
 void ContainerSolution::setContainerProblem(ContainerProblem *problem)
 {
-    containerProblem = problem;
+    std::swap(containerProblem, problem);
 }
 
 void ContainerSolution::setSolutionData(const SolutionData &solutionData)

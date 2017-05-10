@@ -142,6 +142,7 @@ void MainWindow::on_actionGenerateProblem_triggered()
 {
     if (dialogGenerateProblem.exec() == QDialog::Accepted)
     {
+        on_actionNewProblem_triggered();
         int minimumDimension = uiDialogGenerateProblem.spinBoxMinimumDimension->value();
         int maximumDimension = uiDialogGenerateProblem.spinBoxMaximumDimension->value();
         int fillPercentage = uiDialogGenerateProblem.spinBoxFillPercentage->value();

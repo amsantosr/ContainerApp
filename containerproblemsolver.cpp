@@ -14,7 +14,7 @@ ContainerProblemSolver::ContainerProblemSolver(QObject *parent)
 {
 }
 
-void ContainerProblemSolver::solveProblem(const ProblemData &problemData)
+void ContainerProblemSolver::solveProblem(ProblemData problemData)
 {
     int volume = 0;
     int allBoxesQuantity = std::accumulate(problemData.groupBoxesCountersVector.begin(),
