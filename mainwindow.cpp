@@ -175,6 +175,12 @@ void MainWindow::on_actionSolveProblem_triggered()
 void MainWindow::on_actionAddGroup_triggered()
 {
     dialogGroupData.setWindowTitle("Añadir grupo");
+    uiDialogGroupData.spinBoxLengthX->setValue(10);
+    uiDialogGroupData.spinBoxLengthY->setValue(10);
+    uiDialogGroupData.spinBoxLengthZ->setValue(10);
+    uiDialogGroupData.lineEditGroupName->setText("Nuevo grupo");
+    uiDialogGroupData.labelColor->setText("#000000");
+    uiDialogGroupData.labelColor->setStyleSheet(QString("background-color: rgb(0, 0, 0);"));
     if (dialogGroupData.exec() == QDialog::Accepted)
     {
         int dimensionX = uiDialogGroupData.spinBoxLengthX->value();

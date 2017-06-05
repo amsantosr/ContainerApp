@@ -51,3 +51,5 @@ RESOURCES += \
     Resources.qrc
 
 win32:LIBS += -lopengl32
+
+STATECHARTS +=
